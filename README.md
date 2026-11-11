@@ -62,3 +62,14 @@ din fiecare folder — contează, unele module se bazează pe cele dinainte.
 - Widgetul `tm0ofradm` conține doar `loader/elementor-tm0ofradm.html` (locul unde intră ofertele).
 - Versiunea încărcată se vede în consolă: `WM_ADMIN_VERSION`.
 - Codul vechi, întreg, rămâne în `dist/` la commit-ul `de4d202` și în backupurile din Drive.
+
+## Backup și restaurare (testat 11.11.2026)
+- Backup: zilnic, automat, la prima deschidere a adminului (butonul „💾 Fă backup acum” sub taburi). Scriptul Google
+  „WattMusic Backup Admin” (contul wattmusic.ro) salvează în Drive → „WattMusic – Backup admin (privat)” fișierul
+  `date-admin_AAAA-LL-ZZ_HH-MM.json` = toate rândurile tabelului `offers` (oferte + rândurile interne: events, leads,
+  stats, pipeline, deals, assoc criptat, disq).
+- Verificare: același script, cu `{action:'verify'}`, compară cel mai nou backup cu baza de date (nu scrie nimic).
+  Test 11.11.2026 19:32 → 147 / 147 rânduri identice.
+- Restaurare (doar la nevoie, cu acordul Madei): din fișierul JSON se ia rândul dorit (după `id`) și se trimite
+  `PATCH /rest/v1/offers?id=eq.<id>` cu `{notes: <notes din backup>}` (logat în admin). Se restaurează rând cu rând,
+  niciodată tot tabelul orbește. Rândul `assoc` e criptat: se restaurează ca atare și se deschide cu aceeași parolă.
