@@ -1,0 +1,15 @@
+<!-- WM BACKUP ZILNIC (11.11.2026): o data pe zi, cand esti logata, scriptul Google "WattMusic Backup Admin" salveaza toate datele + codul paginii in Drive -> "WattMusic – Backup admin (privat)" -->
+<style>#wmBk{margin:10px 0 0;font-size:12.5px;color:#6b6b76;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}#wmBk button{border:1px solid #d4d4da;background:#fff;color:#16161a;border-radius:999px;padding:5px 12px;font-weight:600;font-size:12.5px;cursor:pointer}#wmBk .ok{color:#1d6b2a}#wmBk .er{color:#b42318}</style>
+<script>
+(function(){if(window.__wmBk)return;window.__wmBk=1;
+var URL_BK='https://script.google.com/macros/s/AKfycbwXBh_T5zisDg8tkS6Q9UkSzDxoEVKCZHGKi6-e-KSx-PnVJPkMjmga4NQuO-ceHwaVMw/exec',K='wm-bk-last',RUN=false,MSG='';
+function at(){try{return JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}').at||''}catch(_){return ''}}
+function last(){try{return Number(localStorage.getItem(K)||0)}catch(_){return 0}}
+function fmt(t){if(!t)return 'niciodată pe acest calculator';var d=new Date(t);return d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'})}
+function box(){var nav=document.querySelector('.wm-ad .tabsA');if(!nav)return null;var b=document.getElementById('wmBk');if(!b){b=document.createElement('div');b.id='wmBk';nav.parentNode.insertBefore(b,nav.nextSibling);b.addEventListener('click',function(e){if(e.target.closest('button'))run(true)})}return b}
+function paint(){var b=box();if(!b)return;var h='💾 Backup Drive: '+(RUN?'se face acum…':'ultimul '+fmt(last()))+(MSG?' '+MSG:'')+(RUN?'':' <button type="button">Fă backup acum</button>');if(b.__h!==h){b.__h=h;b.innerHTML=h}}
+function run(force){var a=at();if(!a||RUN)return;if(!force&&Date.now()-last()<20*3600*1000)return;RUN=true;MSG='';paint();
+ fetch(URL_BK,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({at:a})}).then(function(r){return r.json()}).then(function(j){RUN=false;if(j&&j.ok){try{localStorage.setItem(K,String(Date.now()))}catch(_){}MSG='<span class="ok">✓ '+j.rows+' înregistrări salvate</span>'}else MSG='<span class="er">✗ '+((j&&j.err)||'eroare')+'</span>';paint()}).catch(function(){RUN=false;MSG='<span class="er">✗ nu s-a putut contacta Drive</span>';paint()})}
+setInterval(function(){paint();if(at())run(false)},5000);
+})();
+</script>

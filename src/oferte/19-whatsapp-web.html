@@ -1,0 +1,8 @@
+<!-- WM WHATSAPP WEB FIX (11.11.2026): pe laptop deschide web.whatsapp.com direct (wa.me strica emoji-urile), pe telefon ramane wa.me -->
+<script>
+(function(){if(window.__wmWaFix)return;window.__wmWaFix=1;
+function mob(){var u=navigator.userAgent||'';return /Android|iPhone|iPad|iPod|Mobile/i.test(u)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform||''))}
+document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href^="https://wa.me/"]');if(!a||mob())return;try{var u=new URL(a.href),ph=u.pathname.replace(/\D/g,''),t=u.searchParams.get('text');var w='https://web.whatsapp.com/send?'+(ph?'phone='+ph:'')+(t!=null?(ph?'&':'')+'text='+encodeURIComponent(t):'');e.preventDefault();e.stopPropagation();window.open(w,'_blank','noopener')}catch(_){}},true);
+})();
+</script>
+

@@ -1,0 +1,26 @@
+<!-- ofr-prefill: completează formularul din linkul trimis de WattMusic Booking -->
+<script>
+(function(){
+  var q=new URLSearchParams(location.search);
+  if(q.get('ofr')!=='new')return;
+  var tries=0;
+  function go(){
+    if(!document.getElementById('ofrForm')||typeof window.ofrTab!=='function'){if(++tries<40)setTimeout(go,250);return}
+    window.ofrTab('new');
+    function set(id,k){var v=q.get(k);if(v!=null&&v!==''){var el=document.getElementById(id);if(el)el.value=v}}
+    set('nBride','n');set('nGroom','n2');set('nPhone','tel');set('nEmail','e');set('nDate','d');set('nVenue','v');set('nCity','c');set('nNotes','note');
+    var free=(q.get('b')||'').split(',').filter(Boolean);
+    document.querySelectorAll('#nBands input').forEach(function(i){i.checked=free.indexOf(i.value)>=0});
+    var busy=q.get('busy');
+    var box=document.getElementById('nBands');
+    if(box){var old=document.getElementById('ofrBusyNote');if(old)old.remove();
+      var d=document.createElement('div');d.id='ofrBusyNote';
+      d.style.cssText='font:400 13px/1.4 "Open Sans",sans-serif;margin:-8px 0 14px;padding:8px 12px;border-radius:10px;background:'+(busy?'#fff6c2;color:#7a5b00':'#e8f5e9;color:#2e7d32');
+      d.textContent=busy?'Din WattMusic Booking: ocupate pe această dată → '+busy+'. Am bifat doar trupele libere.':'Din WattMusic Booking: toate trupele sunt libere pe această dată.';
+      box.parentNode.insertBefore(d,box.nextSibling)}
+    if(q.get('c')&&typeof window.ofrKm==='function')window.ofrKm();
+    var f=document.getElementById('ofrAdm');if(f)f.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go();
+})();
+</script>

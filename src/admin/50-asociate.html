@@ -1,0 +1,65 @@
+<!-- wm-asoc (06.11.2026) -->
+<style>
+#wmAs{max-width:980px;color:#16161a}
+#wmAs .lk{max-width:420px;margin:30px auto;background:#fff;border:1px solid #e6e6ea;border-radius:20px;padding:26px;box-shadow:0 10px 30px -18px rgba(0,0,0,.3);text-align:center}
+#wmAs .lk .ic{font-size:40px;margin-bottom:6px}
+#wmAs .lk h2{margin:0 0 6px;font:600 22px/1.25 "Lexend Deca","Lexend-Deca",sans-serif}
+#wmAs .lk p{margin:0 0 16px;color:#6b6b76;font-size:14px;line-height:1.5}
+#wmAs .lk input{width:100%;box-sizing:border-box;border:1px solid #d4d4da;border-radius:12px;padding:13px 14px;font:16px "Open Sans",sans-serif;margin:0 0 10px;text-align:center;letter-spacing:.08em}
+#wmAs .bt{border:0;border-radius:999px;padding:13px 20px;font:800 15px/1 "Open Sans",sans-serif;cursor:pointer;background:#f5d90a;color:#16161a;width:100%}
+#wmAs .bt.l{background:#fff;border:1px solid #d4d4da;width:auto;padding:10px 14px;font-size:13px}
+#wmAs .er{color:#b42318;font-size:13.5px;font-weight:700;min-height:18px;margin:6px 0 0}
+#wmAs .wn{background:#fff9e0;border:1px solid #f3dc6a;color:#7a5b00;border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;text-align:left;margin:12px 0 0}
+#wmAs .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+#wmAs .top h2{margin:0;font:600 24px/1.2 "Lexend Deca",sans-serif}
+#wmAs .top div{display:flex;gap:8px;flex-wrap:wrap}
+#wmAs .box{background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:18px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25)}
+#wmAs .emp{border:1px dashed #d4d4da;border-radius:14px;padding:26px;text-align:center;color:#6b6b76;font-size:14.5px;line-height:1.55}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var ROW=null,REC=null,KEY=null,DATA=null,TMR=null,CHECK='WATT-asociate-ok';
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p,o){o=o||{};return sess().then(function(at){return fetch(CFG.url+p,{method:o.m||'GET',headers:{'apikey':CFG.key,'Authorization':'Bearer '+at,'Content-Type':'application/json','Prefer':'return=representation'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)return r.text().then(function(t){throw {s:r.status,t:t}});return r.status===204?null:r.json()})})}
+var enc=new TextEncoder(),dec=new TextDecoder();
+function b64(u){var s='';new Uint8Array(u).forEach(function(c){s+=String.fromCharCode(c)});return btoa(s)}
+function ub(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function derive(pw,salt,it){return crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']).then(function(k){return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])})}
+function seal(key,obj){var iv=crypto.getRandomValues(new Uint8Array(12));return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,enc.encode(JSON.stringify(obj))).then(function(c){return {iv:b64(iv),c:b64(c)}})}
+function open_(key,box){return crypto.subtle.decrypt({name:'AES-GCM',iv:ub(box.iv)},key,ub(box.c)).then(function(p){return JSON.parse(dec.decode(p))})}
+function R(){return document.getElementById('wmAs')}
+function $(s){return R().querySelector(s)}
+function lock(){KEY=null;DATA=null;clearTimeout(TMR);view()}
+function arm(){clearTimeout(TMR);TMR=setTimeout(lock,15*60*1000)}
+function load(){return api('/rest/v1/offers?mode=eq.assoc&select=id,notes&limit=1').then(function(r){if(r&&r[0]){ROW=r[0].id;try{REC=JSON.parse(r[0].notes||'null')}catch(_){REC=null}}else{ROW=null;REC=null}})}
+function saveRec(){var b={notes:JSON.stringify(REC)};if(ROW)return api('/rest/v1/offers?id=eq.'+ROW,{m:'PATCH',b:b,pref:''});
+ var tk='as'+Math.random().toString(36).slice(2,12)+Date.now().toString(36);return api('/rest/v1/offers',{m:'POST',b:Object.assign({token:tk,bride:'Asociate (intern)',status:'cancelled',mode:'assoc',expires_at:'2099-12-31T00:00:00Z'},b)}).then(function(x){ROW=x&&x[0]&&x[0].id})}
+function view(){var r=R();if(!r)return;
+ if(!KEY){var first=!REC;
+  r.innerHTML='<div class="lk"><div class="ic">🔒</div><h2>'+(first?'Setează parola secțiunii':'Secțiune protejată')+'</h2><p>'+(first?'Alege o parolă doar pentru calculele dintre asociate. Separată de parola de admin.':'Calculele dintre asociate. Introdu parola ca să le vezi.')+'</p>'+
+  '<input type="password" class="p1" placeholder="Parola" autocomplete="new-password">'+(first?'<input type="password" class="p2" placeholder="Repetă parola" autocomplete="new-password">':'')+
+  '<button type="button" class="bt go">'+(first?'Setează parola':'Deschide')+'</button><div class="er"></div>'+(first?'<div class="wn">⚠️ Datele de aici se criptează cu parola asta. Dacă o uiți, nu se mai pot recupera, nici de mine. Notează-o undeva sigur. Minim 6 caractere.</div>':'')+'</div>';
+  var go=function(){var p=$('.p1').value,er=$('.er');er.textContent='';
+   if(first){if(p.length<6){er.textContent='Minim 6 caractere.';return}if(p!==$('.p2').value){er.textContent='Parolele nu coincid.';return}
+    var salt=crypto.getRandomValues(new Uint8Array(16)),it=250000;er.style.color='#6b6b76';er.textContent='Se pregătește…';
+    derive(p,salt,it).then(function(k){KEY=k;DATA={v:1,items:[]};return Promise.all([seal(k,CHECK),seal(k,DATA)])}).then(function(x){REC={salt:b64(salt),it:it,chk:x[0],data:x[1]};return saveRec()}).then(function(){arm();view()}).catch(function(e){KEY=null;er.style.color='';er.textContent='Nu s-a salvat'+(e&&e.s?' ('+e.s+')':'')})}
+   else{er.style.color='#6b6b76';er.textContent='Se verifică…';derive(p,ub(REC.salt),REC.it).then(function(k){return open_(k,REC.chk).then(function(c){if(c!==CHECK)throw 0;KEY=k;return open_(k,REC.data)})}).then(function(d){DATA=d;arm();view()}).catch(function(){KEY=null;er.style.color='';er.textContent='Parolă greșită.'})}};
+  $('.go').onclick=go;r.querySelectorAll('input').forEach(function(i){i.onkeydown=function(e){if(e.key==='Enter')go()}});setTimeout(function(){var i=$('.p1');if(i)i.focus()},50);return}
+ r.innerHTML='<div class="top"><h2>🤝 Calcule între asociate</h2><div><button type="button" class="bt l chg">Schimbă parola</button><button type="button" class="bt l lck">🔒 Blochează</button></div></div><div class="box"><div class="cnt"></div></div>';
+ $('.lck').onclick=lock;$('.chg').onclick=chg;
+ if(window.WM_ASOC_UI){window.WM_ASOC_UI($('.cnt'),DATA,function(d){return window.WM_ASOC.save(d)})}else $('.cnt').innerHTML=(DATA&&DATA.html)?DATA.html:'<div class="emp">Secțiunea e pregătită și protejată cu parola ta.<br>Aici vor apărea calculele dintre asociate, când îmi spui ce să pun.</div>';
+ r.onclick=arm}
+function chg(){var o=prompt('Parola actuală:');if(o===null)return;derive(o,ub(REC.salt),REC.it).then(function(k){return open_(k,REC.chk)}).then(function(c){if(c!==CHECK)throw 0;var n1=prompt('Parola nouă (minim 6 caractere):');if(!n1||n1.length<6){alert('Parola nouă trebuie să aibă minim 6 caractere.');return}var n2=prompt('Repetă parola nouă:');if(n1!==n2){alert('Parolele nu coincid.');return}
+ var salt=crypto.getRandomValues(new Uint8Array(16)),it=250000;return derive(n1,salt,it).then(function(k){KEY=k;return Promise.all([seal(k,CHECK),seal(k,DATA)])}).then(function(x){REC={salt:b64(salt),it:it,chk:x[0],data:x[1]};return saveRec()}).then(function(){alert('Parola a fost schimbată.')})}).catch(function(){alert('Parola actuală e greșită.')})}
+window.WM_ASOC={save:function(d){if(!KEY)return Promise.reject('locked');DATA=d;return seal(KEY,d).then(function(x){REC.data=x;return saveRec()})},get:function(){return DATA}};
+function init(){var r=R();if(!r)return setTimeout(init,500);r.innerHTML='<div class="lk"><div class="ic">🔒</div><p>Se încarcă…</p></div>';
+ var b=document.querySelector('.wm-ad .tabsA button[data-sec="as"]');if(b)b.addEventListener('click',function(){if(!KEY)load().then(view).catch(function(){r.innerHTML='<div class="lk"><p>Autentifică-te în admin.</p></div>'})});
+ document.querySelectorAll('.wm-ad .tabsA button').forEach(function(x){if(x.getAttribute('data-sec')!=='as')x.addEventListener('click',function(){if(KEY)lock()})});
+ var t=0,w=setInterval(function(){if(++t>40)return clearInterval(w);sess().then(function(){clearInterval(w);load().then(view)}).catch(function(){})},1500)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+

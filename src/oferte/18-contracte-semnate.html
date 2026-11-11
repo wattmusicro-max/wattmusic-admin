@@ -1,0 +1,73 @@
+<!-- WM CONTRACTE SEMNATE (11.11.2026) -->
+<style>
+#wmCs{font-size:14px;color:#16161a}
+#wmCs .top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:4px 0 14px}
+#wmCs .sum{display:flex;flex-wrap:wrap;gap:8px}
+#wmCs .pill{background:#f6f6f8;border:1px solid #e6e6ea;border-radius:999px;padding:6px 12px;font-weight:600;font-size:13px}
+#wmCs .pill.ok{background:#eaf6ea;border-color:#cfe8cf;color:#1d6b2a}
+#wmCs .pill.bad{background:#fdf0f0;border-color:#f1c4c4;color:#b42318}
+#wmCs .flt{display:flex;gap:6px}
+#wmCs .flt button{border:1px solid #ddd;background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:600;font-size:13px}
+#wmCs .flt button.on{background:#16161a;color:#fff;border-color:#16161a}
+#wmCs .card{border:1px solid #e6e6ea;border-radius:14px;background:#fff;padding:14px 16px;margin-bottom:12px}
+#wmCs .card.miss{border-color:#f1c4c4}
+#wmCs .h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;align-items:baseline}
+#wmCs .h b{font-size:15px}
+#wmCs .meta{color:#555;font-size:13px}
+#wmCs .docs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px}
+#wmCs .docs a,#wmCs .docs span{display:inline-block;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;text-decoration:none}
+#wmCs .docs a{background:#f3f6ff;border:1px solid #d8e1fb;color:#1f3c9c}
+#wmCs .docs a:hover{background:#e6edff}
+#wmCs .docs span.no{background:#fdf0f0;border:1px solid #f1c4c4;color:#b42318}
+#wmCs .docs span.wait{background:#fff8e6;border:1px solid #f3e0a8;color:#8a5a00}
+#wmCs .money{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:#333}
+#wmCs .money .nx{color:#8a5a00;font-weight:600}
+#wmCs .warn{margin-top:8px;font-size:13px;color:#b42318}
+#wmCs .empty{color:#888;padding:20px 0}
+</style>
+<div id="wmCs"><div class="empty">Se încarcă… (trebuie să fii logată în admin)</div></div>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var ITEMS=null,F='2l',BUSY=false;
+function at(){try{return JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}').at||''}catch(_){return ''}}
+function api(p){return fetch(CFG.url+p,{headers:{apikey:CFG.key,Authorization:'Bearer '+at()}}).then(function(r){if(!r.ok)throw r.status;return r.json()})}
+function esc(s){return s==null?'':String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function eur(n){return (Math.round((Number(n)||0)*100)/100).toLocaleString('ro-RO')+' €'}
+function dro(s){if(!s)return '';var p=String(s).slice(0,10).split('-');return p.length===3?p[2]+'.'+p[1]+'.'+p[0]:s}
+function lk(id){return 'https://drive.google.com/open?id='+encodeURIComponent(id)}
+function load(){if(!at()||BUSY)return;BUSY=true;api('/rest/v1/offers?mode=eq.events&select=notes&limit=1').then(function(r){var n={};try{n=JSON.parse((r&&r[0]&&r[0].notes)||'{}')}catch(_){}ITEMS=(n.items||[]).filter(function(e){return e.docs});BUSY=false;paint()}).catch(function(){BUSY=false;var b=document.getElementById('wmCs');if(b&&!ITEMS)b.innerHTML='<div class="empty">Sesiunea a expirat – loghează-te din nou în admin.</div>'})}
+function info(e){var d=e.docs||{},pays=e.payments||[],paid=0,tot=Number(e.total)||0,any=0;pays.forEach(function(p){if(p.paid){paid+=Number(p.amount)||0;any=1}});
+ var nx=pays.filter(function(p){return !p.paid}).sort(function(a,b){return (a.due||'9').localeCompare(b.due||'9')})[0];
+ var pr=(d.proofs||[]),miss=[];if(!d.folder)miss.push('folder');if(!d.contract)miss.push('contract semnat');if(!d.fisa)miss.push('fișa');if(any&&!pr.length)miss.push('dovada plății');
+ return{d:d,paid:paid,rest:Math.max(tot-paid,0),tot:tot,nx:nx,pr:pr,any:any,miss:miss}}
+function card(e){var x=info(e),d=x.d;
+ var docs=(d.folder?'<a target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/'+esc(d.folder)+'">📁 Folder Drive</a>':'<span class="no">❌ Folder</span>')
+ +(d.contract?'<a target="_blank" rel="noopener" href="'+lk(d.contract)+'">✅ Contract semnat</a>':'<span class="no">❌ Contract semnat</span>')
+ +(x.pr.length?x.pr.map(function(p){return '<a target="_blank" rel="noopener" href="'+lk(p.id)+'">✅ '+esc(p.t||'Dovadă plată')+'</a>'}).join(''):(x.any?'<span class="no">❌ Dovada plății</span>':'<span class="wait">⏳ Nicio plată încă</span>'))
+ +(d.fisa?'<a target="_blank" rel="noopener" href="https://docs.google.com/document/d/'+esc(d.fisa)+'/edit">✅ Fișa evenimentului</a>':'<span class="no">❌ Fișa</span>');
+ return '<div class="card'+(x.miss.length?' miss':'')+'"><div class="h"><b>'+esc(e.client)+'</b><span class="meta">Contract '+esc(e.contractNo||'')+' · semnat '+dro(d.signed)+'</span></div>'
+ +'<div class="meta">'+esc(e.artist)+' · eveniment '+dro(e.date)+(e.venue||e.city?' · '+esc(e.venue||e.city):'')+'</div>'
+ +'<div class="docs">'+docs+'</div>'
+ +'<div class="money"><span>Valoare: <b>'+eur(x.tot)+'</b></span><span>Încasat: <b>'+eur(x.paid)+'</b></span><span>Rămas: <b>'+eur(x.rest)+'</b></span>'+(x.nx?'<span class="nx">Următoarea: '+esc(x.nx.label||'Plată')+' · '+eur(x.nx.amount)+(x.nx.due?' · '+dro(x.nx.due):'')+'</span>':'')+'</div>'
+ +(d.warn?'<div class="warn">⚠️ '+esc(d.warn)+'</div>':'')+(x.miss.length?'<div class="warn">Lipsește: '+x.miss.join(', ')+'</div>':'')+'</div>'}
+function paint(){var b=document.getElementById('wmCs');if(!b||!ITEMS)return;
+ var lim=new Date();lim.setMonth(lim.getMonth()-2);var ls=lim.toISOString().slice(0,10);
+ var L=ITEMS.filter(function(e){return F==='all'||String(e.docs.signed||'')>=ls}).sort(function(a,c){return String(c.docs.signed||'').localeCompare(String(a.docs.signed||''))});
+ var inc=L.filter(function(e){return info(e).miss.length}).length,warn=L.filter(function(e){return e.docs.warn}).length,col=0,rest=0;L.forEach(function(e){var x=info(e);col+=x.paid;rest+=x.rest});
+ var H='<div class="top"><div class="sum"><span class="pill">'+L.length+' contracte</span><span class="pill ok">'+(L.length-inc)+' cu documente complete</span>'+(inc?'<span class="pill bad">'+inc+' cu documente lipsă</span>':'')+(warn?'<span class="pill bad">'+warn+' cu semnături de completat</span>':'')+'<span class="pill">Încasat '+eur(col)+' · rămas '+eur(rest)+'</span></div>'
+ +'<div class="flt"><button type="button" data-f="2l" class="'+(F==='2l'?'on':'')+'">Ultimele 2 luni</button><button type="button" data-f="all" class="'+(F==='all'?'on':'')+'">Toate</button></div></div>'
+ +(L.length?L.map(card).join(''):'<div class="empty">Niciun contract semnat în perioada aleasă.</div>');
+ if(b.__h!==H){b.__h=H;b.innerHTML=H}}
+function place(){var nav=document.querySelector('.tabsA'),st=document.querySelector('div.sec[data-sec="st"]');if(!nav||!st)return;
+ var bt=nav.querySelector('[data-sec="cs"]');if(!bt){bt=document.createElement('button');bt.type='button';bt.dataset.sec='cs';bt.textContent='✍️ Contracte semnate';var sb=nav.querySelector('[data-sec="st"]');nav.insertBefore(bt,sb?sb.nextSibling:null);
+  bt.addEventListener('click',function(){nav.querySelectorAll('button').forEach(function(y){y.classList.remove('on')});document.querySelectorAll('div.sec').forEach(function(y){y.classList.remove('on')});bt.classList.add('on');var s0=document.querySelector('div.sec[data-sec="cs"]');s0&&s0.classList.add('on');load()})}
+ var s=document.querySelector('div.sec[data-sec="cs"]');if(!s){s=document.createElement('div');s.className='sec';s.dataset.sec='cs';st.parentNode.insertBefore(s,st.nextSibling)}
+ var el=document.getElementById('wmCs');if(el&&el.parentNode!==s)s.appendChild(el);
+ if(!nav.__cs){nav.__cs=1;nav.addEventListener('click',function(e){var t=e.target.closest('button');if(t&&t.dataset.sec!=='cs'){bt.classList.remove('on');s.classList.remove('on')}},true)}}
+function start(){var w=document.getElementById('wmCs');if(w)w.addEventListener('click',function(e){var f=e.target.closest('[data-f]');if(f){F=f.getAttribute('data-f');paint()}});
+ setInterval(function(){place();if(!ITEMS&&at())load()},1500);place();load()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+

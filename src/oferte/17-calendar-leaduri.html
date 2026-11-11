@@ -1,0 +1,112 @@
+<!-- WM CALENDAR & LEADS (mutat din WattMusic Booking, 10.11.2026) -->
+<style>
+#wmCal,#wmLd{margin:18px 0;font-size:14px;color:#16161a}
+#wmCal details,#wmLd details{background:#fff;border:1px solid #e6e6ea;border-radius:16px;overflow:hidden}
+#wmCal summary,#wmLd summary{cursor:pointer;padding:14px 18px;font-weight:700;font-size:16px;background:#fafafa;list-style:none}
+#wmCal summary::-webkit-details-marker,#wmLd summary::-webkit-details-marker{display:none}
+.wc-b{padding:14px 18px;display:flex;flex-direction:column;gap:14px}
+.wc-card{border:1px solid #eee;border-radius:12px;padding:12px 14px;background:#fff}
+.wc-card h4{margin:0 0 8px;font-size:14px}
+.wc-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.wc-row input,.wc-row select{padding:7px 9px;border:1px solid #ddd;border-radius:8px;font-size:13px;background:#fff;color:#16161a}
+.wc-btn{border:1px solid #ddd;background:#fff;border-radius:999px;padding:6px 13px;font-weight:600;font-size:13px;cursor:pointer;color:#16161a}
+.wc-btn.on,.wc-btn.y{background:#FBE530;border-color:#e6cf1c}
+.wc-btn.r{color:#b42318;border-color:#f1c4c4}
+.wc-av{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:8px}
+.wc-av div{border-radius:8px;padding:7px 9px;font-size:13px}
+.wc-free{background:#e5f4e4}.wc-busy{background:#fbebeb}
+.wc-ev{border-top:1px solid #f1f1f1;padding:10px 0;display:flex;flex-direction:column;gap:4px}
+.wc-ev:first-child{border-top:0}
+.wc-ev .t{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.wc-ev .d{font-weight:700;min-width:130px}
+.wc-tag{font-size:11px;font-weight:700;border-radius:999px;padding:2px 8px;background:#f0efec}
+.wc-tag.ok{background:#e5f4e4;color:#1e6b2a}.wc-tag.bz{background:#f9eeda;color:#8a5a00}.wc-tag.old{background:#f0efec;color:#777}
+.wc-pay{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.wc-pay button{font-size:12px;border:1px solid #ddd;border-radius:8px;padding:4px 8px;background:#fff;cursor:pointer}
+.wc-pay button.paid{background:#e5f4e4;border-color:#bfe3bc}
+.wc-mut{color:#777;font-size:12px}
+.wl-it{border-top:1px solid #f1f1f1;padding:10px 0}
+.wl-it:first-child{border-top:0}
+.wl-it .t{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.wl-it textarea{width:100%;box-sizing:border-box;min-height:70px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:13px}
+.wl-new{background:#fff7d6}
+.wc-msg{font-size:12px;color:#1e6b2a;margin-left:8px;font-weight:600}
+</style>
+<div id="wmCal"></div><div id="wmLd"></div>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var BANDS=[['moves','Moves'],['overtime','Overtime'],['the-mood','The MOOD'],['timeout','TimeOut'],['hotstuff','Hotstuff'],['sirido','SIRIDO']];
+var LSTAT=['Nou','Contactat','Ofertă trimisă','Negociere','Contract semnat','Câștigat','Pierdut'];
+var EV={row:null,items:[]},LD={row:null,items:[]},F={ev:'viitoare',ld:'activ',q:''},MSG='';
+function at(){try{return JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}').at||''}catch(_){return ''}}
+function api(p,o){o=o||{};var h={apikey:CFG.key,'Content-Type':'application/json',Authorization:'Bearer '+at()};if(o.m)h.Prefer='return=representation';return fetch(CFG.url+p,{method:o.m||'GET',headers:h,body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)return r.text().then(function(x){throw x});return r.json()})}
+function esc(s){return s==null?'':String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fd(s){if(!s)return '—';var d=new Date(s+'T12:00:00');if(isNaN(d))return s;return d.toLocaleDateString('ro-RO',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'})}
+function eur(n){return n||n===0?Number(n).toLocaleString('ro-RO')+' €':''}
+function bandsOf(e){var a=((e.artist||'')+' ').toLowerCase(),x=(a+' '+(e.formula||'')+' '+(e.notes||'')+' '+(e.client||'')).toLowerCase(),r=[];
+ if(/mood/.test(a))r.push('the-mood');if(/timeout|time out/.test(a))r.push('timeout');if(/hot ?stuff/.test(a))r.push('hotstuff');if(/moves/.test(a))r.push('moves');if(/overtime/.test(a))r.push('overtime');if(/sirido/.test(a))r.push('sirido');if(/nicoleta/.test(a))r.push('nicoleta');
+ if(/georgiana/.test(x))r.push('georgiana');return r}
+function load(){if(!at())return Promise.resolve();return Promise.all([api('/rest/v1/offers?mode=eq.events&select=id,notes&limit=1'),api('/rest/v1/offers?mode=eq.leads&select=id,notes&limit=1')]).then(function(r){
+ if(r[0][0]){EV.row=r[0][0].id;try{EV.items=JSON.parse(r[0][0].notes).items||[]}catch(_){}}
+ if(r[1][0]){LD.row=r[1][0].id;try{LD.items=JSON.parse(r[1][0].notes).items||[]}catch(_){}}
+ busy();draw()})}
+// salvează o singură înregistrare: citește lista curentă, înlocuiește/adaugă/șterge după id, scrie la loc
+function saveItem(S,item,del){if(!S.row)return Promise.reject('fără rând');return api('/rest/v1/offers?id=eq.'+S.row+'&select=notes').then(function(r){var d={};try{d=JSON.parse(r[0].notes)}catch(_){d={items:[]}}var it=d.items||[],i=it.findIndex(function(x){return x.id===item.id});
+ if(del){if(i>=0)it.splice(i,1)}else if(i>=0)it[i]=item;else it.push(item);d.items=it;d.upd=new Date().toISOString();S.items=it;return api('/rest/v1/offers?id=eq.'+S.row,{m:'PATCH',b:{notes:JSON.stringify(d)}})}).then(function(){MSG='Salvat ✓';busy();draw();setTimeout(function(){MSG='';draw()},1800)})}
+function busy(){var W=window.WM_BUSY=window.WM_BUSY||{},t=today();EV.items.forEach(function(e){if(!e.date||e.date<t)return;bandsOf(e).forEach(function(b){W[e.date]=W[e.date]||{};W[e.date][b]=e.status==='Ocupat de trupă'?'eveniment propriu':((e.client||'')+(e.city?' · '+e.city:''))})})}
+function onDate(d){return EV.items.filter(function(e){return e.date===d})}
+function avail(d){if(!d)return '';var ev=onDate(d),bz={};ev.forEach(function(e){bandsOf(e).forEach(function(b){bz[b]=bz[b]||[];bz[b].push(e.status==='Ocupat de trupă'?'eveniment propriu':(e.client||'client'))})});
+ var wd=new Date(d+'T12:00:00').getDay(),h='<div class="wc-mut">'+fd(d)+(wd!==6?' · <b>nu e sâmbătă</b>':'')+'</div><div class="wc-av">';
+ BANDS.concat([['georgiana','Georgiana Neagu']]).forEach(function(b){var x=bz[b[0]];h+='<div class="'+(x?'wc-busy':'wc-free')+'"><b>'+b[1]+'</b><br>'+(x?esc(x.join(', ')):'liberă')+'</div>'});return h+'</div>'}
+function evRow(e){var paid=0,tot=0,isB=e.status==='Ocupat de trupă',past=e.date&&e.date<today(),tag=isB?'<span class="wc-tag bz">ocupat de trupă</span>':past?'<span class="wc-tag old">'+esc(e.status||'')+'</span>':'<span class="wc-tag ok">'+esc(e.status||'')+'</span>';
+ var pays=(e.payments||[]).map(function(p,i){tot+=Number(p.amount)||0;if(p.paid)paid+=Number(p.amount)||0;return '<button data-pay="'+i+'" data-id="'+esc(e.id)+'" class="'+(p.paid?'paid':'')+'" title="click = marchează achitat / neachitat">'+(p.paid?'✓ ':'○ ')+esc(p.label||'Plată')+' · '+eur(p.amount)+(p.due?' · '+esc(p.due):'')+(p.collectedBy?' · '+esc(p.collectedBy):'')+'</button>'}).join('');
+ return '<div class="wc-ev"><div class="t"><span class="d">'+fd(e.date)+'</span><b>'+esc(e.artist||'')+'</b>'+tag+(e.contractNo?'<span class="wc-mut">contract '+esc(e.contractNo)+'</span>':'')+'</div>'
+ +(isB?'<div class="wc-mut">'+esc(e.client||'')+(e.notes?' – '+esc(e.notes):'')+' <button class="wc-btn r" data-delb="'+esc(e.id)+'" style="padding:2px 9px;font-size:11px">șterge</button></div>'
+ :'<div>'+esc(e.client||'')+(e.phone?' · <a href="https://wa.me/'+String(e.phone).replace(/\D/g,'').replace(/^0/,'40')+'" target="_blank">'+esc(e.phone)+'</a>':'')+' · '+esc([e.venue,e.city].filter(Boolean).join(', '))+'</div>'
+ +'<div class="wc-mut">Total '+eur(e.total)+(e.artistFee?' · deal trupă '+eur(e.artistFee):'')+(tot?' · încasat '+eur(paid)+' din '+eur(tot):'')+'</div>'+(pays?'<div class="wc-pay">'+pays+'</div>':''))+'</div>'}
+function drawCal(){var box=document.getElementById('wmCal');if(!box)return;var open=box.querySelector('details')?box.querySelector('details').open:true,t=today();
+ if(!at()){box.innerHTML='';return}
+ var list=EV.items.slice().sort(function(a,b){return (a.date||'').localeCompare(b.date||'')});
+ list=list.filter(function(e){var p=e.date&&e.date<t,b=e.status==='Ocupat de trupă';if(F.ev==='viitoare')return !p;if(F.ev==='contracte')return !p&&!b;if(F.ev==='ocupate')return !p&&b;if(F.ev==='rate')return !p&&(e.payments||[]).some(function(x){return !x.paid&&x.due&&x.due<e.date});if(F.ev==='trecute')return p;return true});
+ if(F.ev==='trecute')list.reverse();
+ var D=box.__d||'';
+ box.innerHTML='<details'+(open?' open':'')+'><summary>📅 Calendar trupe & contracte <span class="wc-msg">'+esc(MSG)+'</span></summary><div class="wc-b">'
+ +'<div class="wc-card"><h4>Cine e liber la o dată?</h4><div class="wc-row"><input type="date" id="wcD" value="'+esc(D)+'"></div><div id="wcA">'+avail(D)+'</div></div>'
+ +'<div class="wc-card"><h4>+ Dată ocupată (eveniment propriu al trupei)</h4><div class="wc-row"><input type="date" id="wcBD"><select id="wcBB">'+BANDS.map(function(b){return '<option value="'+b[1]+'">'+b[1]+'</option>'}).join('')+'<option value="Georgiana Neagu">Georgiana Neagu</option></select><input id="wcBN" placeholder="Notă (opțional)"><button class="wc-btn y" id="wcBA">Adaugă</button></div></div>'
+ +'<div class="wc-card"><div class="wc-row" style="margin-bottom:6px">'+[['viitoare','Toate viitoare'],['contracte','Contracte'],['rate','Cu rate de încasat'],['ocupate','Ocupate de trupe'],['trecute','Trecute']].map(function(f){return '<button class="wc-btn'+(F.ev===f[0]?' on':'')+'" data-fe="'+f[0]+'">'+f[1]+'</button>'}).join('')+'<span class="wc-mut">'+list.length+' rezultate</span></div>'
+ +(list.length?list.map(evRow).join(''):'<div class="wc-mut">Nimic aici.</div>')+'</div></div></details>'}
+function ldSort(a,b){var pa=(a.status==='Nou'||a.awaitingReply)?0:1,pb=(b.status==='Nou'||b.awaitingReply)?0:1;if(pa!==pb)return pa-pb;return (b.createdAt||'').localeCompare(a.createdAt||'')}
+function drawLd(){var box=document.getElementById('wmLd');if(!box)return;var open=box.querySelector('details')?box.querySelector('details').open:true;if(!at()){box.innerHTML='';return}
+ var q=F.q.toLowerCase(),list=LD.items.filter(function(l){if(F.ld==='activ'&&(l.status==='Pierdut'||l.status==='Contract semnat'||l.status==='Câștigat'))return false;if(F.ld!=='activ'&&F.ld!=='toate'&&l.status!==F.ld)return false;if(q&&(l.name+' '+(l.phone||'')+' '+(l.city||'')+' '+(l.notes||'')).toLowerCase().indexOf(q)<0)return false;return true}).sort(ldSort);
+ var cnt={};LD.items.forEach(function(l){cnt[l.status]=(cnt[l.status]||0)+1});
+ box.innerHTML='<details'+(open?' open':'')+'><summary>👥 Lead-uri ('+LD.items.length+') <span class="wc-msg">'+esc(MSG)+'</span></summary><div class="wc-b"><div class="wc-row"><input id="wlQ" placeholder="Caută nume, telefon, oraș…" value="'+esc(F.q)+'" style="flex:1;min-width:200px">'
+ +[['activ','Active']].concat(LSTAT.map(function(s){return [s,s]})).concat([['toate','Toate']]).map(function(f){return '<button class="wc-btn'+(F.ld===f[0]?' on':'')+'" data-fl="'+esc(f[0])+'">'+esc(f[1])+(cnt[f[0]]?' ('+cnt[f[0]]+')':'')+'</button>'}).join('')+'</div><div class="wc-card">'
+ +(list.length?list.slice(0,150).map(function(l){var nw=l.status==='Nou'||l.awaitingReply;return '<div class="wl-it'+(nw?' wl-new':'')+'"><div class="t"><b>'+esc(l.name)+'</b>'+(l.phone?'<a href="https://wa.me/'+String(l.phone).replace(/\D/g,'').replace(/^0/,'40')+'" target="_blank">💬 '+esc(l.phone)+'</a>':'')+'<span class="wc-mut">'+esc([l.eventDate?fd(l.eventDate):'',l.city,l.guests?l.guests+' invitați':'',l.budgetRange||l.budget,l.source,l.createdAt?'intrat '+l.createdAt:''].filter(Boolean).join(' · '))+'</span>'
+ +'<select data-ls="'+esc(l.id)+'">'+LSTAT.map(function(s){return '<option'+(s===l.status?' selected':'')+'>'+s+'</option>'}).join('')+'</select>'+(l.awaitingReply?'<span class="wc-tag bz">așteaptă răspunsul tău</span>':'')+'<button class="wc-btn" data-ln="'+esc(l.id)+'" style="padding:3px 10px;font-size:12px">notițe</button></div>'
+ +'<div data-lb="'+esc(l.id)+'" hidden><textarea data-lt="'+esc(l.id)+'">'+esc(l.notes||'')+'</textarea><div class="wc-row" style="margin-top:6px"><label class="wc-mut"><input type="checkbox" data-la="'+esc(l.id)+'"'+(l.awaitingReply?' checked':'')+'> așteaptă răspunsul meu</label><button class="wc-btn y" data-lsv="'+esc(l.id)+'">Salvează notițele</button></div></div></div>'}).join('')+(list.length>150?'<div class="wc-mut">Se afișează primele 150 – folosește căutarea.</div>':''):'<div class="wc-mut">Niciun lead aici.</div>')+'</div></div></details>'}
+function draw(){drawCal();drawLd()}
+document.addEventListener('click',function(ev){var t=ev.target.closest('button');if(!t)return;
+ if(t.dataset.fe){F.ev=t.dataset.fe;drawCal();return}
+ if(t.dataset.fl){F.ld=t.dataset.fl;drawLd();return}
+ if(t.id==='wcBA'){var d=document.getElementById('wcBD').value,b=document.getElementById('wcBB').value,n=document.getElementById('wcBN').value.trim();if(!d){t.textContent='Alege data';return}
+  var id='busy-'+d+'-'+b.toLowerCase().replace(/[^a-z]/g,'');saveItem(EV,{id:id,artist:b,client:b+' · eveniment propriu',date:d,status:'Ocupat de trupă',notes:n||('Dată ocupată adăugată din admin '+today()),payments:[],checklist:[]});return}
+ if(t.dataset.delb){if(t.dataset.c!=='1'){t.dataset.c='1';t.textContent='sigur? apasă din nou';return}var e=EV.items.find(function(x){return x.id===t.dataset.delb});if(e)saveItem(EV,e,true);return}
+ if(t.dataset.pay){var e2=EV.items.find(function(x){return x.id===t.dataset.id});if(!e2)return;var c=JSON.parse(JSON.stringify(e2)),p=c.payments[+t.dataset.pay];p.paid=!p.paid;p.paidDate=p.paid?today():'';saveItem(EV,c);return}
+ if(t.dataset.ln){var bx=document.querySelector('[data-lb="'+t.dataset.ln+'"]');if(bx)bx.hidden=!bx.hidden;return}
+ if(t.dataset.lsv){var l=LD.items.find(function(x){return x.id===t.dataset.lsv});if(!l)return;var c2=JSON.parse(JSON.stringify(l));c2.notes=document.querySelector('[data-lt="'+l.id+'"]').value;c2.awaitingReply=document.querySelector('[data-la="'+l.id+'"]').checked;saveItem(LD,c2);return}
+});
+document.addEventListener('change',function(ev){var t=ev.target;
+ if(t.id==='wcD'){document.getElementById('wmCal').__d=t.value;document.getElementById('wcA').innerHTML=avail(t.value);return}
+ if(t.dataset&&t.dataset.ls){var l=LD.items.find(function(x){return x.id===t.dataset.ls});if(!l)return;var c=JSON.parse(JSON.stringify(l));c.status=t.value;if(t.value!=='Nou')c.awaitingReply=false;saveItem(LD,c)}});
+document.addEventListener('input',function(ev){if(ev.target.id==='wlQ'){F.q=ev.target.value;clearTimeout(window.__wlT);window.__wlT=setTimeout(function(){var pos=ev.target.selectionStart;drawLd();var i=document.getElementById('wlQ');if(i){i.focus();i.setSelectionRange(pos,pos)}},250)}});
+function place(){var nav=document.querySelector('.tabsA'),vz=document.querySelector('div.sec[data-sec="vz"]');if(!nav||!vz)return;var ref=vz;
+ [['cal','📅 Calendar & contracte','wmCal'],['ldx','👥 Lead-uri','wmLd']].forEach(function(x){var b=nav.querySelector('[data-sec="'+x[0]+'"]');if(!b){b=document.createElement('button');b.type='button';b.dataset.sec=x[0];b.textContent=x[1];nav.insertBefore(b,nav.querySelector('[data-sec="st"]'));b.addEventListener('click',function(){nav.querySelectorAll('button').forEach(function(y){y.classList.remove('on')});document.querySelectorAll('div.sec').forEach(function(y){y.classList.remove('on')});b.classList.add('on');var s0=document.querySelector('div.sec[data-sec="'+x[0]+'"]');s0&&s0.classList.add('on')})}
+ var s=document.querySelector('div.sec[data-sec="'+x[0]+'"]');if(!s){s=document.createElement('div');s.className='sec';s.dataset.sec=x[0];ref.parentNode.insertBefore(s,ref.nextSibling)}ref=s;var el=document.getElementById(x[2]);if(el&&el.parentNode!==s)s.appendChild(el)});
+ if(!nav.__wc){nav.__wc=1;nav.addEventListener('click',function(e){var t=e.target.closest('button');if(t&&t.dataset.sec!=='cal'&&t.dataset.sec!=='ldx'){['cal','ldx'].forEach(function(k){var a=nav.querySelector('[data-sec="'+k+'"]'),s1=document.querySelector('div.sec[data-sec="'+k+'"]');a&&a.classList.remove('on');s1&&s1.classList.remove('on')})}},true)}}
+var started=false;function start(){place();if(at()&&!started){started=true;load()}else if(!at())draw()}
+setInterval(start,2000);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+

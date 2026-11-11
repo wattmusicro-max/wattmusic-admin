@@ -1,0 +1,102 @@
+<!-- wm-pipeline (03.11.2026): discuții cu potențial mare de semnare -->
+<style>
+#wmPl{max-width:900px;margin:0 auto 14px;padding:0 16px;font-family:"Open Sans",sans-serif;color:#222}
+#wmPl details{background:#fff;border:1px solid #e6e3dc;border-radius:14px;padding:12px 14px}
+#wmPl summary{cursor:pointer;font:700 15px/1.3 "Lexend Deca",sans-serif;color:#111;list-style:none}
+#wmPl summary::-webkit-details-marker{display:none}
+#wmPl .kp{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+#wmPl .kp span{background:#f7f5f0;border-radius:10px;padding:6px 10px;font-size:13px}
+#wmPl .kp b{font-size:15px}
+#wmPl .flt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+#wmPl .flt button{border:1px solid #ddd;background:#fff;border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}
+#wmPl .flt button.on{background:#111;color:#fff;border-color:#111}
+#wmPl .it{border:1px solid #ece9e2;border-left:5px solid #f59e0b;border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+#wmPl .it.semnat{border-left-color:#16a34a;background:#f3fbf5}
+#wmPl .it.nu{border-left-color:#dc2626;background:#fdf4f4;opacity:.8}
+#wmPl .h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+#wmPl .nm{font-weight:700;font-size:15px}
+#wmPl .val{font-weight:700;color:#111;white-space:nowrap}
+#wmPl .meta{font-size:13px;color:#555;margin-top:3px}
+#wmPl .nt{font-size:13px;color:#333;margin-top:6px;white-space:pre-wrap}
+#wmPl .ac{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+#wmPl .ac button,#wmPl .ac a{border:1px solid #ddd;background:#fff;border-radius:8px;padding:5px 10px;font-size:13px;cursor:pointer;text-decoration:none;color:#222}
+#wmPl .ac .s.on{background:#16a34a;color:#fff;border-color:#16a34a}
+#wmPl .ac .n.on{background:#dc2626;color:#fff;border-color:#dc2626}
+#wmPl .ac .d.on{background:#f59e0b;color:#fff;border-color:#f59e0b}
+#wmPl textarea,#wmPl input{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8px;padding:7px 9px;font:14px "Open Sans",sans-serif}
+#wmPl .add{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:10px}
+#wmPl .add label{font-size:11px;color:#777;font-weight:700;letter-spacing:.04em}
+#wmPl .btn{background:#111;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+#wmPl .msg{font-size:12px;color:#999;margin-left:6px}
+#wmPl .ac .dr.on{background:#2563eb;color:#fff;border-color:#2563eb}
+</style>
+<div id="wmPl"><details id="wmPlD" open><summary>🔥 Discuții cu potențial mare de semnare <span class="msg" id="wmPlMsg"></span></summary>
+<div class="kp" id="wmPlKp"></div>
+<div class="flt" id="wmPlF"><button data-f="activ" class="on">În discuție</button><button data-f="semnat">✅ Semnate</button><button data-f="nu">❌ Nesemnate</button><button data-f="toate">Toate</button></div>
+<div id="wmPlL"></div>
+<details style="border:0;padding:0;margin-top:6px"><summary style="font-size:13px;color:#555">＋ Adaugă o discuție</summary>
+<div class="add">
+<div><label>NUME / CLIENT</label><input id="wmPlN"></div>
+<div><label>TELEFON</label><input id="wmPlT"></div>
+<div><label>TRUPĂ</label><input id="wmPlB"></div>
+<div><label>DATA EVENIMENT</label><input id="wmPlDt" placeholder="ex. 15.05.2027"></div>
+<div><label>LOCAȚIE</label><input id="wmPlLc"></div>
+<div><label>VALOARE (€)</label><input id="wmPlV" inputmode="numeric"></div>
+<div style="grid-column:1/-1"><label>NOTĂ</label><textarea id="wmPlNo" rows="2"></textarea></div>
+<div><button class="btn" type="button" id="wmPlAdd">Adaugă</button></div>
+</div></details>
+</details></div>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var SEED=[];
+var ROW=null,ITEMS=[],F='activ',BUSY=false;
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');
+ if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p,o){o=o||{};return sess().then(function(at){return fetch(CFG.url+p,{method:o.m||'GET',headers:{'apikey':CFG.key,'Authorization':'Bearer '+at,'Content-Type':'application/json','Prefer':'return=representation'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)throw r.status;return r.status===204?null:r.json()})})}
+function msg(t){var m=document.getElementById('wmPlMsg');if(m)m.textContent=t}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function wa(p){var d=String(p||'').replace(/\D/g,'');if(!d||d.length<9)return '';if(d.indexOf('0')===0)d='4'+d;return 'https://wa.me/'+d}
+function eur(n){return n?Number(n).toLocaleString('ro-RO')+' €':''}
+function load(){if(BUSY||ROW)return;BUSY=true;api('/rest/v1/offers?mode=eq.pipeline&select=id,notes&limit=1').then(function(r){
+ if(r&&r[0]){ROW=r[0].id;try{ITEMS=JSON.parse(r[0].notes||'[]')}catch(_){ITEMS=[]}snap();BUSY=false;draw();msg('');sync()}
+ else{var tk='pl'+Math.random().toString(36).slice(2,12)+Date.now().toString(36);
+  api('/rest/v1/offers',{m:'POST',b:{token:tk,bride:'Discuții potențial (intern)',status:'cancelled',mode:'pipeline',expires_at:'2099-12-31T00:00:00Z',notes:JSON.stringify(SEED)}}).then(function(x){ROW=x&&x[0]&&x[0].id;ITEMS=SEED.slice();BUSY=false;draw()}).catch(function(e){BUSY=false;msg('Nu s-a putut crea lista ('+e+')')})}
+}).catch(function(e){BUSY=false;msg(e==='login'?'Autentifică-te în admin ca să vezi lista':'Nu s-a încărcat ('+e+')')})}
+var SNAP={};function snap(){SNAP={};ITEMS.forEach(function(i){SNAP[i.id]=JSON.stringify(i)})}
+function localDiff(){return ITEMS.some(function(i){return SNAP[i.id]!==JSON.stringify(i)})||Object.keys(SNAP).some(function(k){return !ITEMS.some(function(i){return i.id===k})})}
+function merge(srv){var cur={};ITEMS.forEach(function(i){cur[i.id]=i});var out=[],seen={};
+ srv.forEach(function(s){if(SNAP[s.id]&&!cur[s.id])return;var c=cur[s.id];out.push(c&&JSON.stringify(c)!==SNAP[s.id]?c:s);seen[s.id]=1});
+ ITEMS.forEach(function(c,ix){if(!seen[c.id]&&!SNAP[c.id])out.splice(Math.min(ix,out.length),0,c)});return out}
+function save(){if(!ROW)return;msg('Se salvează…');api('/rest/v1/offers?id=eq.'+ROW+'&select=notes').then(function(r){var srv=[];try{srv=JSON.parse((r&&r[0]&&r[0].notes)||'[]')}catch(_){}ITEMS=merge(srv);return api('/rest/v1/offers?id=eq.'+ROW,{m:'PATCH',b:{notes:JSON.stringify(ITEMS)}})}).then(function(){snap();draw();msg('Salvat ✓');setTimeout(function(){msg('')},2000)}).catch(function(){msg('Nu s-a salvat – reîncarcă pagina')})}
+function refresh(){if(!ROW||localDiff()||document.querySelector('#wmPlL textarea'))return;api('/rest/v1/offers?id=eq.'+ROW+'&select=notes').then(function(r){var t=(r&&r[0]&&r[0].notes)||'[]';if(t!==JSON.stringify(ITEMS)){try{ITEMS=JSON.parse(t)}catch(_){return}snap();draw()}}).catch(function(){})}
+function draw(){window.WM_PL=ITEMS;try{window.dispatchEvent(new Event('wmpl'))}catch(_){}var L=document.getElementById('wmPlL');if(!L)return;
+ var VIS=ITEMS.filter(function(i){return !i.hid});var c={activ:0,semnat:0,nu:0},v={activ:0,semnat:0};VIS.forEach(function(i){c[i.st]=(c[i.st]||0)+1;if(i.st in v)v[i.st]+=Number(i.val)||0});
+ document.getElementById('wmPlKp').innerHTML='<span>În discuție: <b>'+c.activ+'</b>'+(v.activ?' · '+eur(v.activ):'')+'</span><span>✅ Semnate: <b>'+c.semnat+'</b>'+(v.semnat?' · '+eur(v.semnat):'')+'</span><span>❌ Nesemnate: <b>'+c.nu+'</b></span>';
+ var list=VIS.filter(function(i){return F==='toate'||i.st===F});
+ L.innerHTML=list.length?list.map(function(i){var w=wa(i.phone);
+  return '<div class="it '+i.st+'" data-id="'+esc(i.id)+'"><div class="h"><span class="nm">'+esc(i.name)+'</span><span class="val">'+eur(i.val)+'</span></div>'+
+  '<div class="meta">'+[i.band&&('🎵 '+esc(i.band)),i.date&&('📅 '+esc(i.date)),i.loc&&('📍 '+esc(i.loc)),i.phone&&('📞 '+esc(i.phone)),i.draft&&i.st==='activ'&&'📄 draft trimis',i.signed&&('✍️ semnat '+i.signed.split('-').reverse().join('.'))].filter(Boolean).join(' · ')+'</div>'+
+  (i.meet?'<div class="nt" style="background:#eef4ff">'+esc(i.meet)+'</div>':'')+(i.note?'<div class="nt">'+esc(i.note)+'</div>':'')+
+  '<div class="ac"><button class="s'+(i.st==='semnat'?' on':'')+'" data-a="semnat">✅ Semnat</button><button class="n'+(i.st==='nu'?' on':'')+'" data-a="nu">❌ Nu s-a semnat</button><button class="d'+(i.st==='activ'?' on':'')+'" data-a="activ">⏳ În discuție</button>'+
+  (w?'<a href="'+w+'" target="_blank" rel="noopener">💬 WhatsApp</a>':'')+'<button class="dr'+(i.draft?' on':'')+'" data-a="draft">📄 Draft trimis</button><button data-a="edit">✏️ Notă</button><button data-a="del">🗑</button></div></div>'}).join(''):'<div style="font-size:13px;color:#888;padding:6px 0">Nicio discuție aici.</div>'}
+function sync(){if(!ROW)return;api('/rest/v1/offers?or=(meet_at.not.is.null,meet_link.not.is.null,mode.eq.meet)&status=in.(open,chosen)&select=id,bride,groom,phone,event_date,venue,city,km,bands,chosen_band,meet_at,meet_platform,meet_link,meet_confirm').then(function(r){var ch=false,BN={'moves':'Moves','timeout':'TimeOut','the-mood':'The MOOD','hotstuff':'Hotstuff','overtime':'Overtime','sirido':'SIRIDO'},dg=function(p){return String(p||'').replace(/\D/g,'').slice(-9)};(r||[]).forEach(function(o){if(/^(mada|test)/i.test(o.bride||''))return;var ex=ITEMS.find(function(i){return i.offer===o.id})||ITEMS.find(function(i){return !i.offer&&dg(o.phone)&&dg(i.phone)===dg(o.phone)});var ml='📅 Întâlnire programată'+(o.meet_platform?' · '+o.meet_platform:'')+(o.meet_at?' · '+new Date(o.meet_at).toLocaleString('ro-RO',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):' · fără dată')+(Object.keys(o.meet_confirm||{}).length?' · ✅ au confirmat':' · ⏳ n-au confirmat')+(o.meet_link?' · '+o.meet_link:'');
+ if(ex){if(!ex.offer){ex.offer=o.id;ch=true}if(ex.meet!==ml){ex.meet=ml;ch=true}return}
+ var d=o.event_date?o.event_date.split('-').reverse().join('.'):'';ITEMS.unshift({id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),offer:o.id,auto:true,name:[o.bride,o.groom].filter(Boolean).join(' & '),phone:o.phone||'',band:o.chosen_band?(BN[o.chosen_band]||o.chosen_band):(o.bands||[]).map(function(b){return BN[b]||b}).join(', '),date:d,loc:[o.venue,o.city].filter(Boolean).join(', ')+(o.km?' ('+o.km+' km)':''),val:0,meet:ml,note:'Adăugat automat la programarea întâlnirii.',st:'activ',upd:new Date().toISOString().slice(0,10)});ch=true});if(ch){save();draw()}}).catch(function(){})}
+function init(){var box=document.getElementById('wmPl');if(!box)return;
+ document.getElementById('wmPlF').onclick=function(e){var b=e.target.closest('button');if(!b)return;F=b.dataset.f;[].forEach.call(this.children,function(x){x.classList.toggle('on',x===b)});draw()};
+ document.getElementById('wmPlL').onclick=function(e){var b=e.target.closest('button');if(!b)return;var card=b.closest('.it'),id=card.dataset.id,it=ITEMS.find(function(x){return x.id===id});if(!it)return;var a=b.dataset.a;if(!a)return;
+  if(a==='edit'){if(card.querySelector('textarea'))return;var t=document.createElement('textarea');t.rows=3;t.value=it.note||'';var s=document.createElement('button');s.className='btn';s.type='button';s.textContent='Salvează nota';s.style.marginTop='6px';s.onclick=function(){it.note=t.value.trim();save();draw()};card.appendChild(t);card.appendChild(s);t.focus();return}
+  if(a==='del'){if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Sigur? apasă din nou';setTimeout(function(){b.dataset.c='';b.textContent='🗑'},4000);return}if(it.offer){it.hid=true}else{ITEMS=ITEMS.filter(function(x){return x!==it})}save();draw();return}
+  if(a==='draft'){it.draft=!it.draft;save();draw();return}if(a==='semnat'&&!it.signed)it.signed=new Date().toISOString().slice(0,10);if(a!=='semnat')delete it.signed;it.st=a;it.upd=new Date().toISOString().slice(0,10);save();draw()};
+ document.getElementById('wmPlAdd').onclick=function(){var g=function(i){return document.getElementById(i).value.trim()};if(!g('wmPlN'))return msg('Scrie un nume');
+  ITEMS.unshift({id:'p'+Date.now().toString(36),name:g('wmPlN'),phone:g('wmPlT'),band:g('wmPlB'),date:g('wmPlDt'),loc:g('wmPlLc'),val:Number(g('wmPlV').replace(/\D/g,''))||0,note:g('wmPlNo'),st:'activ'});
+  ['wmPlN','wmPlT','wmPlB','wmPlDt','wmPlLc','wmPlV','wmPlNo'].forEach(function(i){document.getElementById(i).value=''});save();draw()};
+ function place(){var av=document.getElementById('wmAv'),adm=document.getElementById('ofrAdm'),ref=av||adm;if(ref&&ref.parentNode&&!(box.parentNode===ref.parentNode&&(box.compareDocumentPosition(ref)&4)))ref.parentNode.insertBefore(box,ref)}
+ place();setTimeout(place,3000);setTimeout(place,6000);
+ load();setInterval(function(){refresh();sync()},30000);var n=0,w=setInterval(function(){if(ROW||++n>60)return clearInterval(w);load()},3000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>

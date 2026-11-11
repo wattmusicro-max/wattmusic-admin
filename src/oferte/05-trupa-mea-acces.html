@@ -1,0 +1,32 @@
+<!-- ofr-tmacc (26.10.2026): retrimite accesul Trupa Mea (link + cod nou) pentru ofertele alese -->
+<style>
+.ofr-adm .tmacc{display:inline-flex;align-items:center;gap:6px;margin-top:8px;border:1px solid #ddd;background:#fffbe0;color:#111;border-radius:999px;padding:8px 12px;font:700 12px/1.2 "Open Sans",sans-serif;cursor:pointer;text-align:left}
+.ofr-adm .tmacc.arm{background:#fde8e9;border-color:#f5b5b9}
+.ofr-adm .tmbox{margin-top:8px;padding:10px 12px;border-radius:10px;background:#f6f6f8;font:400 12.5px/1.45 "Open Sans",sans-serif;color:#222;min-width:200px}
+.ofr-adm .tmbox b.pin{font-size:20px;letter-spacing:.18em}
+.ofr-adm .tmbox .row2{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ofr-adm .tmbox .cp{border:1px solid #ddd;background:#fff;border-radius:999px;padding:7px 12px;font:700 12px/1 "Open Sans",sans-serif;cursor:pointer}
+</style>
+<script>
+(function(){
+var CFG=window.WM_SB||{url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'},MAP={},busy=false,t=null;
+function at(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}return S.at||''}
+function api(path,opt){opt=opt||{};return fetch(CFG.url+path,{method:opt.m||'GET',headers:{'apikey':CFG.key,'Content-Type':'application/json','Authorization':'Bearer '+at()},body:opt.b?JSON.stringify(opt.b):undefined}).then(function(r){if(r.status===401)throw 'login';return r.json()})}
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''}
+function waNum(p){p=(p||'').replace(/\D/g,'');if(p.indexOf('00')===0)p=p.slice(2);else if(p.indexOf('0')===0)p='4'+p;if(p.indexOf('40')!==0&&p.length===9)p='40'+p;return p}
+function link(c){return 'https://wattmusic.ro/trupa-mea/?c='+c.token}
+function invite(c,pin){var n=[c.bride,c.groom].filter(Boolean).join(' și ');return 'Bună, '+(n||'dragii noștri')+'! 💛\n\nV-am pregătit aplicația voastră WATT Music · Trupa Mea. Aici vă construiți seara: povestea voastră, Wedding DNA, piesele pentru momentele importante, playlistul și programul serii. Puteți reveni oricând, totul se salvează automat.\n\n👉 '+link(c)+'\nCodul vostru: '+pin+'\n\nAbia așteptăm seara voastră! 🎶'}
+function paint(){document.querySelectorAll('#ofrTbody tr').forEach(function(tr){if(tr.querySelector('.tmacc'))return;var a=tr.querySelector('a.link[href*="/oferta/?o="]');if(!a)return;var tk=a.href.split('o=')[1],cid=MAP[tk];if(!cid)return;var td=tr.lastElementChild;if(!td)return;if(td.textContent.trim()==='—')td.textContent='';
+ var b=document.createElement('button');b.type='button';b.className='tmacc';b.textContent='🔑 Retrimite accesul Trupa Mea';var box=document.createElement('div');td.appendChild(b);td.appendChild(box);var arm=false;
+ b.addEventListener('click',function(){if(!arm){arm=true;b.classList.add('arm');b.textContent='Se generează un cod nou (cel vechi nu va mai merge). Apasă din nou';setTimeout(function(){if(arm&&!b.disabled){arm=false;b.classList.remove('arm');b.textContent='🔑 Retrimite accesul Trupa Mea'}},7000);return}
+  b.disabled=true;b.textContent='Se generează…';
+  api('/rest/v1/couples?id=eq.'+cid+'&select=id,token,bride,groom,phone').then(function(r){var c=r&&r[0];if(!c){b.textContent='Cuplul nu mai există în Trupa Mea';return}
+   return api('/rest/v1/rpc/reset_pin',{m:'POST',b:{p_couple:c.id}}).then(function(pin){if(!pin||typeof pin!=='string'&&typeof pin!=='number'){throw 'pin'}pin=String(pin);var msg=invite(c,pin),wn=waNum(c.phone);
+    b.style.display='none';box.className='tmbox';box.innerHTML='<div>Link: <a class="link" href="'+esc(link(c))+'" target="_blank">'+esc(link(c))+'</a></div><div>Cod nou: <b class="pin">'+esc(pin)+'</b></div><div class="row2"><a class="wa-btn" style="margin:0" target="_blank" rel="noopener" href="https://wa.me/'+(wn||'')+'?text='+encodeURIComponent(msg)+'">💬 Trimite pe WhatsApp</a><button type="button" class="cp">📋 Copiază mesajul</button></div>';
+    box.querySelector('.cp').addEventListener('click',function(){var me=this;navigator.clipboard&&navigator.clipboard.writeText(msg).then(function(){me.textContent='Copiat ✓'})})})})
+  .catch(function(e){b.disabled=false;arm=false;b.classList.remove('arm');b.textContent=e==='login'?'Sesiunea a expirat: reîncarcă pagina':'Nu s-a putut genera. Încearcă din nou'})})})}
+function refresh(){if(busy||!at())return;busy=true;api('/rest/v1/offers?select=token,couple_id&couple_id=not.is.null').then(function(r){MAP={};(r||[]).forEach(function(o){MAP[o.token]=o.couple_id});busy=false;paint()}).catch(function(){busy=false})}
+function hook(){var tb=document.getElementById('ofrTbody');if(!tb)return setTimeout(hook,400);new MutationObserver(function(){clearTimeout(t);t=setTimeout(refresh,300)}).observe(tb,{childList:true});refresh()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+</script>

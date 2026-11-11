@@ -1,0 +1,112 @@
+<!-- wm-stats (03.11.2026): statistici lunare reclame -> contracte -->
+<style>
+#wmSt{max-width:900px;margin:0 auto 14px;padding:0 16px;font-family:"Open Sans",sans-serif;color:#222}
+#wmSt>details{background:#fff;border:1px solid #e6e3dc;border-radius:14px;padding:12px 14px}
+#wmSt summary{cursor:pointer;font:700 15px/1.3 "Lexend Deca",sans-serif;color:#111;list-style:none}
+#wmSt summary::-webkit-details-marker{display:none}
+#wmSt .top{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:12px 0}
+#wmSt label{display:flex;flex-direction:column;font-size:11px;color:#777;font-weight:700;letter-spacing:.04em;gap:3px}
+#wmSt input,#wmSt select{border:1px solid #ddd;border-radius:8px;padding:7px 9px;font:14px "Open Sans",sans-serif;min-width:0;box-sizing:border-box}
+#wmSt .num{width:110px}
+#wmSt .btn{background:#111;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:13px}
+#wmSt .btn.l{background:#fff;color:#222;border:1px solid #ddd}
+#wmSt .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}
+#wmSt .k{background:#f7f5f0;border-radius:12px;padding:10px}
+#wmSt .k small{display:block;font-size:11px;color:#777;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+#wmSt .k b{display:block;font:700 19px/1.25 "Lexend Deca",sans-serif;color:#111;margin-top:3px}
+#wmSt .k i{font-style:normal;font-size:12px;color:#666}
+#wmSt .k.g{background:#eaf7ee}#wmSt .k.y{background:#fff6e5}
+#wmSt h4{font:700 13px "Lexend Deca",sans-serif;margin:14px 0 6px;color:#333}
+#wmSt .ct{border:1px solid #ece9e2;border-radius:10px;padding:8px 10px;margin-bottom:6px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}
+#wmSt .ct .x{border:0;background:none;cursor:pointer;color:#999}
+#wmSt .tag{font-size:11px;background:#eef2ff;color:#3730a3;border-radius:6px;padding:1px 6px;margin-left:4px}
+#wmSt .add{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;align-items:end}
+#wmSt .tw{overflow-x:auto}
+#wmSt table{border-collapse:collapse;width:100%;font-size:13px;min-width:560px}
+#wmSt th,#wmSt td{padding:6px 8px;border-bottom:1px solid #eee;text-align:right;white-space:nowrap}
+#wmSt th:first-child,#wmSt td:first-child{text-align:left}
+#wmSt th{font-size:11px;color:#777;letter-spacing:.03em}
+#wmSt .msg{font-size:12px;color:#999;margin-left:6px;font-weight:400}
+</style>
+<div id="wmSt"><details id="wmStD"><summary>📊 Statistici lunare · reclame → contracte <span class="msg" id="wmStMsg"></span></summary>
+<div class="top">
+<label>LUNA<select id="wmStM"></select></label>
+<label>BUGET RECLAME (LEI)<input class="num" id="wmStS" inputmode="decimal"></label>
+<label>CURS €<input class="num" id="wmStC" inputmode="decimal" style="width:80px"></label>
+<label>LEAD-URI<input class="num" id="wmStL" inputmode="numeric" style="width:80px"></label>
+<button class="btn l" type="button" id="wmStNew">＋ Lună nouă</button>
+</div>
+<div class="kpi" id="wmStK"></div>
+<h4>Contracte semnate în luna aceasta</h4>
+<div id="wmStCt"></div>
+<details style="margin-top:4px"><summary style="font-size:13px;color:#555;font-weight:400">＋ Adaugă un contract semnat</summary>
+<div class="add" style="margin-top:8px">
+<label>NUME ȘI PRENUME<input id="wmStAN"></label><label>NR. CONTRACT<input id="wmStANr" placeholder="AA1-005"></label><label>TELEFON<input id="wmStAP" inputmode="tel"></label><label>SURSA<select id="wmStASrc"><option value="reclame">📣 Reclame</option><option value="recomandare">🤝 Recomandare</option><option value="furnizor">🏷️ Furnizor (cu comision)</option><option value="trupa">🎵 De la trupă</option><option value="site">🌐 Site / organic</option><option value="altele">Altele</option></select></label><label>DE LA CINE<input id="wmStASn" placeholder="furnizor / recomandare"></label><label>COMISION DE DAT €<input id="wmStAF" inputmode="numeric"></label><label>TRUPĂ<input id="wmStAB"></label>
+<label>DATA EV.<input id="wmStAD" placeholder="18.09.2027"></label>
+<label>VALOARE €<input id="wmStAV" inputmode="numeric"></label><label>COMISION €<input id="wmStAC" inputmode="numeric"></label>
+<button class="btn" type="button" id="wmStAdd">Adaugă</button></div></details>
+<h4>Evoluție lunară</h4>
+<div class="tw"><table><thead><tr><th>LUNA</th><th>BUGET</th><th>LEAD-URI</th><th>CONTRACTE</th><th>COST/LEAD</th><th>COST/CONTRACT</th><th>CONVERSIE</th><th>VALOARE</th><th>COMISION</th></tr></thead><tbody id="wmStT"></tbody></table></div>
+<p style="font-size:12px;color:#888;margin:8px 0 0">Contractele bifate „✅ Semnat” în „Discuții cu potențial mare” intră automat la luna semnării. Drafturile și discuțiile active arată situația de acum.</p>
+</details></div>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var SEED={months:{}};
+var ROW=null,D=null,M=null,BUSY=false;
+var LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');
+ if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p,o){o=o||{};return sess().then(function(at){return fetch(CFG.url+p,{method:o.m||'GET',headers:{'apikey':CFG.key,'Authorization':'Bearer '+at,'Content-Type':'application/json','Prefer':'return=representation'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)throw r.status;return r.status===204?null:r.json()})})}
+function $(i){return document.getElementById(i)}
+function msg(t){$('wmStMsg').textContent=t}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function n(v){return Number(String(v==null?'':v).replace(',','.'))||0}
+function f0(v){return Math.round(v).toLocaleString('ro-RO')}
+function ml(k){var p=k.split('-');return LUNI[+p[1]-1]+' '+p[0]}
+function cur(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function pl(){return window.WM_PL||[]}
+function signedIn(k){return pl().filter(function(i){return i.st==='semnat'&&i.signed&&i.signed.slice(0,7)===k}).map(function(i){return {id:'pl-'+i.id,name:i.name,band:i.band,date:i.date,val:Number(i.val)||0,com:Number(i.com)||0,phone:i.phone||'',nr:i.nr||'',auto:1}})}
+function all(k){var m=D.months[k];if(!m)return signedIn(k);var cs=m.contracts=m.contracts||[],add=signedIn(k).filter(function(x){return !Object.keys(D.months).some(function(q){return (D.months[q].contracts||[]).some(function(y){return y.id===x.id})})});if(add.length){add.forEach(function(x){var y=Object.assign({},x);delete y.auto;y.disc=1;cs.push(y)});save()}return cs}
+var SRC=[['reclame','📣 Reclame'],['recomandare','🤝 Recomandare'],['furnizor','🏷️ Furnizor (cu comision)'],['trupa','🎵 De la trupă'],['site','🌐 Site / organic'],['altele','Altele']];
+function srcSel(x){return ' <select class="src" data-id="'+esc(x.id)+'" title="De unde a venit clientul" style="font-size:12px;padding:3px 6px;border-radius:8px;border:1px solid '+(x.src?'#ddd':'#f59e0b')+';background:'+(x.src==='reclame'?'#e8f5e9':x.src?'#f3f4f6':'#fff7e0')+'"><option value="">⚠️ Alege sursa</option>'+SRC.map(function(o){return '<option value="'+o[0]+'"'+(x.src===o[0]?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select>'+(x.srcName?' <small style="color:#666">'+esc(x.srcName)+'</small>':'')+(n(x.fee)?' <small style="color:#b45309">· comision '+f0(n(x.fee))+' €</small>':'')}
+function calc(k){var m=D.months[k]||{},c=all(k),s=n(m.spend),cu=n(m.curs)||5.35,l=n(m.leads),v=0,co=0,fe=0,ca=0,coa=0;c.forEach(function(x){var net=n(x.com)-n(x.fee);v+=n(x.val);co+=net;fe+=n(x.fee);if(x.src==='reclame'){ca++;coa+=net}});
+ return {s:s,cu:cu,l:l,c:c.length,ca:ca,v:v,co:co,coa:coa,fe:fe,cpl:l?s/l:0,cpc:ca?s/ca:0,conv:l?ca/l*100:0,roi:s?coa/(s/cu):0}}
+function load(){if(BUSY||ROW)return;BUSY=true;api('/rest/v1/offers?mode=eq.stats&select=id,notes&limit=1').then(function(r){
+ if(r&&r[0]){ROW=r[0].id;try{D=JSON.parse(r[0].notes||'{}')}catch(_){D={}}if(!D.months)D.months={};BUSY=false;start()}
+ else{var tk='st'+Math.random().toString(36).slice(2,12)+Date.now().toString(36);
+  api('/rest/v1/offers',{m:'POST',b:{token:tk,bride:'Statistici (intern)',status:'cancelled',mode:'stats',expires_at:'2099-12-31T00:00:00Z',notes:JSON.stringify(SEED)}}).then(function(x){ROW=x&&x[0]&&x[0].id;D=JSON.parse(JSON.stringify(SEED));BUSY=false;start()}).catch(function(e){BUSY=false;msg('Nu s-a putut crea ('+e+')')})}
+}).catch(function(e){BUSY=false;msg(e==='login'?'Autentifică-te în admin':'Nu s-a încărcat ('+e+')')})}
+var T;function save(){if(!ROW)return;clearTimeout(T);msg('Se salvează…');T=setTimeout(function(){api('/rest/v1/offers?id=eq.'+ROW,{m:'PATCH',b:{notes:JSON.stringify(D)}}).then(function(){msg('Salvat ✓');setTimeout(function(){msg('')},2000)}).catch(function(){msg('Nu s-a salvat – reîncarcă pagina')})},500)}
+function keys(){return Object.keys(D.months).sort().reverse()}
+function start(){if(!M){var ks=keys();M=D.months[cur()]?cur():(ks[0]||cur());if(!D.months[M])D.months[M]={spend:0,curs:5.35,leads:0,contracts:[]}}draw()}
+function draw(){if(!D)return;var sel=$('wmStM');sel.innerHTML=keys().map(function(k){return '<option value="'+k+'"'+(k===M?' selected':'')+'>'+ml(k)+'</option>'}).join('');
+ var m=D.months[M];[['wmStS','spend'],['wmStC','curs'],['wmStL','leads']].forEach(function(p){var el=$(p[0]);if(document.activeElement!==el)el.value=m[p[1]]||''});
+ var c=calc(M),dr=pl().filter(function(i){return i.draft&&i.st==='activ'}).length,ac=pl().filter(function(i){return i.st==='activ'}).length;
+ $('wmStK').innerHTML=[
+ ['Buget reclame',f0(c.s)+' lei','≈ '+f0(c.s/c.cu)+' €'],['Lead-uri',c.l,''],['Contracte semnate',c.c,'din reclame: '+c.ca,1],['Conversie lead → contract',c.conv.toFixed(1).replace('.',',')+'%','',1],
+ ['Cost / lead',f0(c.cpl)+' lei',''],['Cost / contract',f0(c.cpc)+' lei','≈ '+f0(c.cpc/c.cu)+' €'],['Valoare contracte',f0(c.v)+' €',''],['Comision agenție',f0(c.co)+' €',(c.fe?'net, după '+f0(c.fe)+' € comisioane date · ':'')+'din reclame: '+f0(c.coa)+' €',1],
+ ['Randament reclame',c.roi?c.roi.toFixed(1).replace('.',',')+' €':'–','comision la 1 € reclame',1],['Drafturi trimise',dr,'acum',2],['Discuții active',ac,'acum',2]]
+ .map(function(k){return '<div class="k'+(k[3]===1?' g':k[3]===2?' y':'')+'"><small>'+k[0]+'</small><b>'+k[1]+'</b>'+(k[2]?'<i>'+k[2]+'</i>':'')+'</div>'}).join('');
+ var L=all(M);$('wmStCt').innerHTML=L.length?L.map(function(x){return '<div class="ct"><span><b>'+esc(x.name)+'</b>'+(x.nr?' · <b>Nr. '+esc(x.nr)+'</b>':' · <i style="color:#b45309">fără nr. contract</i>')+(x.phone?' · <a href="tel:'+esc(String(x.phone).replace(/[^\d+]/g,''))+'" style="color:#1a73e8;text-decoration:none">📞 '+esc(x.phone)+'</a>':' · <i style="color:#b45309">fără telefon</i>')+' · '+esc(x.band||'')+(x.date?' · '+esc(x.date):'')+srcSel(x)+(x.disc?'<span class="tag">din discuții</span>':'')+(x.sm?'<span class="tag">semnat în '+esc(ml(x.sm))+'</span>':'')+' <button class="ed" type="button" data-id="'+esc(x.id)+'" title="Modifică nume, nr. contract, telefon" style="border:0;background:none;cursor:pointer;font-size:14px">✏️</button> <button class="mv" type="button" data-id="'+esc(x.id)+'" title="Mută la luna reclamelor din care a venit" style="border:0;background:none;cursor:pointer;font-size:14px">📅</button></span><span>'+f0(n(x.val))+' €'+(n(x.com)?' · comision '+f0(n(x.com))+' €':'')+(x.auto?'':' <button class="x" data-id="'+esc(x.id)+'" title="Șterge">✕</button>')+'</span></div>'}).join(''):'<div style="font-size:13px;color:#888">Niciun contract semnat încă în această lună.</div>';
+ $('wmStT').innerHTML=keys().map(function(k){var c=calc(k);return '<tr><td>'+ml(k)+'</td><td>'+f0(c.s)+' lei</td><td>'+c.l+'</td><td>'+c.c+(c.c!==c.ca?' <small style="color:#888">('+c.ca+' din reclame)</small>':'')+'</td><td>'+(c.cpl?f0(c.cpl)+' lei':'–')+'</td><td>'+(c.cpc?f0(c.cpc)+' lei':'–')+'</td><td>'+c.conv.toFixed(1).replace('.',',')+'%</td><td>'+f0(c.v)+' €</td><td>'+f0(c.co)+' €</td></tr>'}).join('')}
+function init(){var box=$('wmSt');if(!box)return;
+ $('wmStM').onchange=function(){M=this.value;draw()};
+ [['wmStS','spend'],['wmStC','curs'],['wmStL','leads']].forEach(function(p){$(p[0]).oninput=function(){if(!D)return;D.months[M][p[1]]=n(this.value);save();draw()}});
+ $('wmStNew').onclick=function(){if(!D)return;var k=cur();if(D.months[k]){var d=new Date(+M.slice(0,4),+M.slice(5,7),1);k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+  var ok=prompt('Luna nouă (AAAA-LL):',k);if(!ok||!/^\d{4}-\d{2}$/.test(ok))return;if(!D.months[ok])D.months[ok]={spend:0,curs:(D.months[M]||{}).curs||5.35,leads:0,contracts:[]};M=ok;save();draw()};
+ $('wmStCt').onclick=function(e){var mv=e.target.closest('.mv');if(mv){var m0=D.months[M],c1=((m0||{}).contracts||[]).filter(function(x){return x.id===mv.dataset.id})[0];if(!c1)return;var k1=prompt('Mută contractul la luna reclamelor din care a venit (AAAA-LL):',M);if(!k1||!/^[0-9]{4}-[0-9]{2}$/.test(k1)||k1===M)return;if(!D.months[k1])D.months[k1]={spend:0,curs:m0.curs||5.35,leads:0,contracts:[]};m0.contracts=m0.contracts.filter(function(x){return x!==c1});if(!c1.sm)c1.sm=M;(D.months[k1].contracts=D.months[k1].contracts||[]).push(c1);M=k1;save();draw();return}var ed=e.target.closest('.ed');if(ed){var c0=((D.months[M]||{}).contracts||[]).filter(function(x){return x.id===ed.dataset.id})[0];if(!c0)return;var nn=prompt('Nume și prenume:',c0.name||'');if(nn===null)return;var nr=prompt('Număr contract (ex. AA1-005):',c0.nr||'');if(nr===null)return;var ph=prompt('Telefon:',c0.phone||'');if(ph===null)return;c0.name=nn.trim()||c0.name;c0.nr=nr.trim();c0.phone=ph.trim();save();draw();return}var b=e.target.closest('.x');if(!b)return;if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Sigur?';setTimeout(function(){b.dataset.c='';b.textContent='✕'},4000);return}
+  var m=D.months[M];m.contracts=(m.contracts||[]).filter(function(x){return x.id!==b.dataset.id});save();draw()};
+ $('wmStCt').onchange=function(e){var s=e.target.closest('.src');if(!s)return;var c0=((D.months[M]||{}).contracts||[]).filter(function(x){return x.id===s.dataset.id})[0];if(!c0)return;c0.src=s.value||null;if(s.value==='furnizor'||s.value==='recomandare'||s.value==='trupa'){var nm=prompt(s.value==='furnizor'?'Numele furnizorului:':s.value==='trupa'?'De la ce trupă / de la cine a venit?':'Cine a recomandat?',c0.srcName||'');if(nm!==null)c0.srcName=nm.trim()}else c0.srcName='';if(s.value==='furnizor'||s.value==='recomandare'){var fe=prompt('Comision de dat (€), lasă gol dacă nu e cazul:',c0.fee||'');if(fe!==null)c0.fee=n(fe)}else c0.fee=0;save();draw()};
+ $('wmStAdd').onclick=function(){if(!D)return;var g=function(i){return $(i).value.trim()};if(!g('wmStAN'))return msg('Scrie numele clientului');
+  var m=D.months[M];(m.contracts=m.contracts||[]).push({id:'c'+Date.now().toString(36),name:g('wmStAN'),nr:g('wmStANr'),phone:g('wmStAP'),src:$('wmStASrc').value,srcName:g('wmStASn'),fee:n(g('wmStAF')),band:g('wmStAB'),date:g('wmStAD'),val:n(g('wmStAV')),com:n(g('wmStAC'))});
+  ['wmStAN','wmStANr','wmStAP','wmStASn','wmStAF','wmStAB','wmStAD','wmStAV','wmStAC'].forEach(function(i){$(i).value=''});save();draw()};
+ window.addEventListener('wmpl',function(){draw()});
+ function place(){var pl=$('wmPl'),av=$('wmAv'),adm=$('ofrAdm');var ref=av||adm;if(pl&&pl.parentNode){if(pl.nextSibling!==box)pl.parentNode.insertBefore(box,pl.nextSibling)}else if(ref&&ref.parentNode&&box.nextSibling!==ref)ref.parentNode.insertBefore(box,ref)}
+ place();setTimeout(place,3500);setTimeout(place,6500);
+ load();var k=0,w=setInterval(function(){if(ROW||++k>60)return clearInterval(w);load()},3000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>

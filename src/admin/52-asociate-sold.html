@@ -1,0 +1,51 @@
+<style>
+#wmAs .sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 14px}
+#wmAs .sum div{background:#fff;border:1px solid #e6e6ea;border-radius:14px;padding:12px 14px}
+#wmAs .sum b{display:block;font:700 20px/1.2 "Lexend Deca",sans-serif;margin-top:2px}
+#wmAs .sum span{font-size:12px;color:#6b6b76;text-transform:uppercase;letter-spacing:.05em}
+#wmAs .bal{background:#16161a;color:#fff;border-radius:16px;padding:16px 18px;margin:0 0 14px}
+#wmAs .bal b{display:block;font:700 28px/1.2 "Lexend Deca",sans-serif}
+#wmAs .bal small{opacity:.75}
+#wmAs .tw{overflow-x:auto;border:1px solid #e6e6ea;border-radius:14px;background:#fff}
+#wmAs table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+#wmAs th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#6b6b76;text-align:left;padding:9px 10px;border-bottom:1px solid #e6e6ea;white-space:nowrap}
+#wmAs td{padding:9px 10px;border-top:1px solid #f0f0f3;vertical-align:top}
+#wmAs td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+#wmAs .up{color:#c2334d}#wmAs .dn{color:#1e7a4c}
+#wmAs .frm{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0;background:#fafafb;border:1px solid #e6e6ea;border-radius:14px;padding:12px}
+#wmAs .frm input,#wmAs .frm select{border:1px solid #d4d4da;border-radius:10px;padding:9px 10px;font:14px "Open Sans",sans-serif;width:100%;box-sizing:border-box}
+#wmAs .frm .w{grid-column:1/-1}
+#wmAs .x{background:none;border:0;color:#999;cursor:pointer;font-size:15px}
+#wmAs .hint{font-size:12px;color:#6b6b76;margin:6px 0}
+</style>
+<script>
+(function(){
+var T={incasare:'Încasare',cheltuiala:'Cheltuială firmă',plata:'Plată între asociate'};
+function eur(n){return (Math.round((+n||0)*100)/100).toLocaleString('ro-RO')+' €'}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function dmy(i){return i?i.split('-').reverse().join('.'):''}
+function delta(x){var a=+x.amount||0,s=x.who==='Mada'?1:x.who==='Elena'?-1:0;
+ if(x.type==='incasare'){var sh=(x.shared===''||x.shared==null)?a:+x.shared;return s*sh*0.5}
+ if(x.type==='cheltuiala')return -s*a*0.5;if(x.type==='plata')return -s*a;return 0}
+window.WM_ASOC_UI=function(el,DATA,save){
+ var D=DATA&&DATA.items?DATA:{v:1,items:[]};
+ function draw(){var it=D.items.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
+  var bal=it.reduce(function(s,x){return s+delta(x)},0),ab=Math.abs(bal);
+  var com=it.filter(function(x){return x.type==='incasare'}).reduce(function(s,x){return s+((x.shared===''||x.shared==null)?+x.amount||0:+x.shared)},0);
+  var byM=it.filter(function(x){return x.type==='incasare'&&x.who==='Mada'}).reduce(function(s,x){return s+(+x.amount||0)},0);
+  var byE=it.filter(function(x){return x.type==='incasare'&&x.who==='Elena'}).reduce(function(s,x){return s+(+x.amount||0)},0);
+  el.innerHTML='<div class="bal"><small>'+(ab<0.5?'Sunteți chit':bal>0?'Mada îi datorează Elenei':'Elena îi datorează Madei')+'</small><b>'+eur(ab)+'</b><small>Împărțire 50/50 din comision. Soldul ține cont de încasări, cheltuieli și ce v-ați dat deja una alteia.'+(D.upd?' · actualizat '+esc(D.upd):'')+'</small></div>'+
+  '<div class="sum"><div><span>Comision de împărțit</span><b>'+eur(com)+'</b></div><div><span>Încasat de Mada</span><b>'+eur(byM)+'</b></div><div><span>Încasat de Elena</span><b>'+eur(byE)+'</b></div><div><span>Partea fiecăreia</span><b>'+eur(com/2)+'</b></div></div>'+
+  '<div class="tw"><table><thead><tr><th>Data</th><th>Contract / notă</th><th>Tip</th><th>Cine</th><th>Sumă</th><th>De împărțit</th><th>Efect Mada→Elena</th><th></th></tr></thead><tbody>'+
+  (it.length?it.map(function(x){var d=delta(x);return '<tr><td>'+dmy(x.date)+'</td><td><b>'+esc(x.contract||'')+'</b>'+(x.note?'<div class="hint">'+esc(x.note)+'</div>':'')+'</td><td>'+esc(T[x.type]||x.type)+'</td><td>'+esc(x.who)+'</td><td class="n">'+eur(x.amount)+'</td><td class="n">'+(x.type==='incasare'?eur((x.shared===''||x.shared==null)?x.amount:x.shared):'–')+'</td><td class="n '+(d>0?'up':d<0?'dn':'')+'">'+(d>0?'+':d<0?'−':'')+eur(Math.abs(d))+'</td><td><button class="x" data-del="'+esc(x.id)+'" title="Șterge">×</button></td></tr>'}).join(''):'<tr><td colspan="8" class="hint">Nicio înregistrare încă.</td></tr>')+
+  '</tbody></table></div>'+
+  '<div class="frm"><select class="f_type"><option value="incasare">Încasare</option><option value="cheltuiala">Cheltuială firmă</option><option value="plata">Plată între asociate</option></select><input class="f_date" type="date"><select class="f_who"><option>Mada</option><option>Elena</option></select><input class="f_amt" type="number" step="any" placeholder="Sumă (€)"><input class="f_sh" type="number" step="any" placeholder="Din care de împărțit (€)"><input class="f_ct w" placeholder="Contract (ex. Moves 15.05.2027 – Nume client)"><input class="f_nt w" placeholder="Notă (ex. avans cash, la Elena în plic)"><button type="button" class="bt f_add w">+ Adaugă înregistrare</button><div class="hint w er"></div></div>'+
+  '<div class="hint">+ = Mada îi datorează Elenei · − = Elena îi datorează Madei. „Din care de împărțit” = comisionul agenției (fără partea trupei).</div>';
+  el.querySelector('.f_date').value=new Date().toISOString().slice(0,10);
+  el.querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Sigur?';return}D.items=D.items.filter(function(x){return x.id!==b.dataset.del});go()}});
+  el.querySelector('.f_add').onclick=function(){var q=function(c){return el.querySelector(c).value},er=el.querySelector('.er');var a=+q('.f_amt');if(!a){er.textContent='Completează suma.';return}
+   D.items.push({id:'a'+Date.now().toString(36),date:q('.f_date'),type:q('.f_type'),who:q('.f_who'),amount:a,shared:q('.f_type')==='incasare'?(q('.f_sh')===''?a:+q('.f_sh')):'',contract:q('.f_ct').trim(),note:q('.f_nt').trim()});go()}}
+ function go(){var n=new Date();D.upd=('0'+n.getDate()).slice(-2)+'.'+('0'+(n.getMonth()+1)).slice(-2)+'.'+n.getFullYear();save(D).then(draw).catch(function(){var e=el.querySelector('.er');if(e)e.textContent='Nu s-a salvat. Deblochează din nou secțiunea.'})}
+ draw()};
+})();
+</script>

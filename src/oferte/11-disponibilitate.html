@@ -1,0 +1,70 @@
+<!-- wm-avail-table (02.11.2026): disponibilitate trupe -->
+<style>
+#wmAv{max-width:900px;margin:0 auto 14px;padding:0 16px;font-family:"Open Sans",sans-serif;color:#222}
+#wmAv details{background:#fff;border:1px solid #e6e3dc;border-radius:14px;padding:12px 14px}
+#wmAv summary{cursor:pointer;font:700 15px/1.3 "Lexend Deca",sans-serif;color:#111;list-style:none}
+#wmAv summary::-webkit-details-marker{display:none}
+#wmAv .f{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:12px 0}
+#wmAv .f label{display:flex;flex-direction:column;font:700 11px/1.3 "Open Sans",sans-serif;color:#777;letter-spacing:.04em;gap:4px}
+#wmAv .f input,#wmAv .f select{border:1px solid #ddd;border-radius:10px;padding:8px 10px;font:400 14px "Open Sans",sans-serif;background:#fff;color:#222}
+#wmAv .one{background:#fffbe6;border:1px solid #f3e08a;border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:14px;display:none}
+#wmAv .one b{font-family:"Lexend Deca",sans-serif}
+#wmAv .ch{display:inline-block;margin:3px 4px 0 0;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
+#wmAv .ok{background:#e8f5e9;color:#2e7d32}#wmAv .no{background:#fdecea;color:#b42318}#wmAv .mb{background:#f1f1f1;color:#777}
+#wmAv .tw{overflow-x:auto;border:1px solid #eee;border-radius:10px}
+#wmAv table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:760px}
+#wmAv th{position:sticky;top:0;background:#fafafa;text-align:left;font:700 11px/1.2 "Open Sans",sans-serif;letter-spacing:.05em;color:#777;padding:8px;border-bottom:2px solid #eee;white-space:nowrap}
+#wmAv td{padding:6px 8px;border-bottom:1px solid #f2f2f2;vertical-align:top}
+#wmAv td.d{white-space:nowrap;font-weight:700}
+#wmAv td.ok{background:#f3fbf4;color:#2e7d32;font-weight:700}
+#wmAv td.no{background:#fdf1f0;color:#b42318}
+#wmAv td.mb{color:#999}
+#wmAv tr.mon td{background:#111;color:#FBE530;font:700 12px "Lexend Deca",sans-serif;letter-spacing:.05em}
+#wmAv .cnt{font-size:12px;color:#777;margin:6px 0}
+</style>
+<div id="wmAv"><details id="wmAvD"><summary>📅 Disponibilitate trupe <span style="font:400 12px 'Open Sans',sans-serif;color:#999" id="wmAvUpd"></span></summary>
+<div class="f">
+ <label>VERIFICĂ O DATĂ<input type="date" id="wmAvDate"></label>
+ <label>AN<select id="wmAvY"></select></label>
+ <label>LUNA<select id="wmAvM"><option value="">Toate</option></select></label>
+ <label>ARATĂ ZILELE<select id="wmAvW"><option value="sat">Doar sâmbete</option><option value="busy">Doar cu ocupări</option><option value="all">Sâmbete + ocupări</option></select></label>
+ <label>LIBERĂ TRUPA<select id="wmAvB"><option value="">Oricare</option></select></label>
+ <label>CAUTĂ CLIENT<input type="text" id="wmAvQ" placeholder="ex: Lazar"></label>
+</div>
+<div class="one" id="wmAvOne"></div>
+<div class="cnt" id="wmAvCnt"></div>
+<div class="tw"><table><thead><tr id="wmAvH"></tr></thead><tbody id="wmAvT"></tbody></table></div>
+</details></div>
+<script>
+(function(){
+var BANDS=[['moves','Moves'],['timeout','TimeOut'],['the-mood','The Mood'],['georgiana','Georgiana'],['hotstuff','Hot Stuff'],['overtime','Overtime'],['sirido','SIRIDO'],['nicoleta','Nicoleta']];
+var LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
+var ZILE=['dum.','lun.','mar.','mie.','joi','vin.','sâm.'];
+function B(){return window.WM_BUSY||{}}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function stat(ds,k){var b=B()[ds]||{},d=new Date(ds+'T12:00:00');if(b[k])return['no',b[k]];if(k==='nicoleta')return(d.getDay()===6&&d.getFullYear()===2027)?['no','toate sâmbetele 2027']:['mb','de verificat'];return['ok','liberă']}
+function place(){var box=document.getElementById('wmAv'),adm=document.getElementById('ofrAdm');if(box&&adm&&adm.parentNode&&box.nextSibling!==adm){var mp=document.getElementById('ofrMeetPanel');adm.parentNode.insertBefore(box,adm)}}
+function one(){var v=document.getElementById('wmAvDate').value,o=document.getElementById('wmAvOne');if(!v){o.style.display='none';return}var d=new Date(v+'T12:00:00');
+ o.style.display='';o.innerHTML='<b>'+ZILE[d.getDay()]+' '+d.getDate()+' '+LUNI[d.getMonth()]+' '+d.getFullYear()+'</b><br>'+BANDS.map(function(x){var s=stat(v,x[0]);return '<span class="ch '+s[0]+'">'+(s[0]==='ok'?'✓ ':s[0]==='no'?'✕ ':'? ')+e(x[1])+(s[0]==='no'?' – '+e(s[1]):s[0]==='mb'?' – de verificat':'')+'</span>'}).join('')}
+function rows(){var y=+document.getElementById('wmAvY').value,m=document.getElementById('wmAvM').value,w=document.getElementById('wmAvW').value,fb=document.getElementById('wmAvB').value,q=document.getElementById('wmAvQ').value.trim().toLowerCase();
+ var set={},d=new Date(y,0,1),today=iso(new Date());
+ if(w!=='busy'){while(d.getFullYear()===y){if(d.getDay()===6)set[iso(d)]=1;d.setDate(d.getDate()+1)}}
+ if(w!=='sat'||q){Object.keys(B()).forEach(function(k){if(+k.slice(0,4)===y)set[k]=1})}
+ var L=Object.keys(set).sort().filter(function(k){if(k<today)return false;if(m!==''&&+k.slice(5,7)!==+m)return false;if(fb&&stat(k,fb)[0]!=='ok')return false;if(q){var t=JSON.stringify(B()[k]||{}).toLowerCase();if(t.indexOf(q)<0)return false}if(w==='sat'&&!q&&new Date(k+'T12:00:00').getDay()!==6)return false;return true});
+ var h='',cm=-1,nf=0;L.forEach(function(k){var dd=new Date(k+'T12:00:00');if(dd.getMonth()!==cm){cm=dd.getMonth();h+='<tr class="mon"><td colspan="'+(BANDS.length+1)+'">'+LUNI[cm].toUpperCase()+' '+y+'</td></tr>'}
+  var free=0;h+='<tr><td class="d">'+ZILE[dd.getDay()]+' '+String(dd.getDate()).padStart(2,'0')+'.'+String(dd.getMonth()+1).padStart(2,'0')+'</td>'+BANDS.map(function(x){var s=stat(k,x[0]);if(s[0]==='ok'&&x[0]!=='georgiana')free++;return '<td class="'+s[0]+'">'+(s[0]==='ok'?'✓ liberă':s[0]==='no'?'✕ '+e(s[1]):'? de verificat')+'</td>'}).join('')+'</tr>'});
+ document.getElementById('wmAvT').innerHTML=h||'<tr><td colspan="9" style="padding:14px;color:#999">Nicio zi pentru filtrele alese.</td></tr>';
+ document.getElementById('wmAvCnt').textContent=L.length+' zile afișate';}
+function init(){if(!document.getElementById('wmAvT'))return setTimeout(init,300);place();
+ document.getElementById('wmAvUpd').textContent=window.WM_BUSY_UPD?'· actualizat '+window.WM_BUSY_UPD:'';
+ document.getElementById('wmAvH').innerHTML='<th>DATA</th>'+BANDS.map(function(x){return '<th>'+e(x[1]).toUpperCase()+'</th>'}).join('');
+ var ny=new Date().getFullYear(),ys=document.getElementById('wmAvY');[ny,ny+1,ny+2].forEach(function(y){var o=document.createElement('option');o.value=y;o.textContent=y;ys.appendChild(o)});ys.value=ny+1;
+ var ms=document.getElementById('wmAvM');LUNI.forEach(function(l,i){var o=document.createElement('option');o.value=i+1;o.textContent=l;ms.appendChild(o)});
+ var bs=document.getElementById('wmAvB');BANDS.forEach(function(x){if(x[0]==='nicoleta')return;var o=document.createElement('option');o.value=x[0];o.textContent=x[1];bs.appendChild(o)});
+ ['wmAvY','wmAvM','wmAvW','wmAvB'].forEach(function(id){document.getElementById(id).onchange=rows});document.getElementById('wmAvQ').oninput=rows;
+ var dt=document.getElementById('wmAvDate');dt.onchange=function(){one();if(dt.value){ys.value=dt.value.slice(0,4);rows()}};
+ rows();setTimeout(place,2500)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>

@@ -1,0 +1,85 @@
+<!-- wm-kpi (06.11.2026) -->
+<style>
+#wmKpi{background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:18px;margin:0 0 18px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25);color:#16161a}
+#wmKpi .kh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+#wmKpi .kh h2{margin:0;font:600 22px/1.2 "Lexend Deca","Lexend-Deca",sans-serif}
+#wmKpi .kh select{border:1px solid #d4d4da;border-radius:12px;padding:10px 12px;font:700 14px "Open Sans",sans-serif;background:#fff}
+#wmKpi h3{margin:18px 0 10px;font:700 15px/1.3 "Lexend Deca",sans-serif;display:flex;align-items:center;gap:8px}
+#wmKpi h3 small{font:600 12px "Open Sans",sans-serif;color:#6b6b76}
+#wmKpi .kg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#wmKpi .kc{border:1px solid #e6e6ea;border-radius:14px;padding:12px 14px;background:#fafafa}
+#wmKpi .kc small{display:block;font:800 11.5px/1.3 "Open Sans",sans-serif;color:#6b6b76;text-transform:uppercase;letter-spacing:.03em}
+#wmKpi .kc b{display:block;font:800 24px/1.2 "Open Sans",sans-serif;margin:5px 0 2px}
+#wmKpi .kc i{display:block;font-style:normal;font-size:12.5px;color:#6b6b76}
+#wmKpi .kc.g{background:#eefaf0;border-color:#bfe5c7}
+#wmKpi .kc.y{background:#fff9e0;border-color:#f3dc6a}
+#wmKpi .kc.r{background:#fff4f4;border-color:#f3c0c0}
+#wmKpi .kc.big{grid-column:span 2;background:#16161a;color:#fff;border-color:#16161a}
+#wmKpi .kc.big small,#wmKpi .kc.big i{color:#d4d4da}
+#wmKpi .kc.big b{font-size:30px;color:#f5d90a}
+#wmKpi table{width:100%;border-collapse:collapse;font-size:13.5px}
+#wmKpi th,#wmKpi td{padding:9px 8px;border-bottom:1px solid #eee;text-align:left}
+#wmKpi th{font-size:11.5px;color:#6b6b76;text-transform:uppercase;letter-spacing:.03em}
+#wmKpi td.n,#wmKpi th.n{text-align:right;white-space:nowrap}
+#wmKpi .bar{height:8px;border-radius:99px;background:#f5d90a;display:block;margin-top:4px}
+#wmKpi .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#wmKpi .tr{display:flex;align-items:flex-end;gap:14px;min-height:150px;padding:8px 4px 0;border-bottom:1px solid #e6e6ea;overflow-x:auto}
+#wmKpi .tr div{flex:0 0 70px;text-align:center;font-size:11.5px;color:#6b6b76;font-weight:700}
+#wmKpi .tr .cols{display:flex;gap:4px;align-items:flex-end;justify-content:center;height:120px}
+#wmKpi .tr .cols span{width:16px;border-radius:5px 5px 0 0;display:block}
+#wmKpi .tr .cols span.a{background:#16161a}#wmKpi .tr .cols span.b{background:#f5d90a}
+#wmKpi .lg{display:flex;gap:14px;font-size:12px;color:#6b6b76;font-weight:700;margin:8px 0 0}
+#wmKpi .lg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--c)}
+#wmKpi .note{font-size:12.5px;color:#6b6b76;margin:10px 0 0;line-height:1.5}
+@media(max-width:760px){#wmKpi .kg{grid-template-columns:repeat(2,minmax(0,1fr))}#wmKpi .two{grid-template-columns:1fr}#wmKpi .kc.big{grid-column:span 2}}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var D=null,PER='all',LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
+var SRCN={reclame:'📣 Reclame',recomandare:'🤝 Recomandare',furnizor:'🏷️ Furnizor',trupa:'🎵 De la trupă',site:'🌐 Site / organic',altele:'Altele','':'⚠️ Fără sursă'};
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p){return sess().then(function(at){return fetch(CFG.url+p,{headers:{'apikey':CFG.key,'Authorization':'Bearer '+at}}).then(function(r){if(!r.ok)throw r.status;return r.json()})})}
+function n(v){return Number(String(v==null?'':v).replace(',','.'))||0}
+function f0(v){return Math.round(v).toLocaleString('ro-RO')}
+function f1(v){return (Math.round(v*10)/10).toLocaleString('ro-RO')}
+function e(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function ml(k){var p=k.split('-');return LUNI[+p[1]-1]+' '+p[0]}
+function bandOf(s){s=String(s||'').toLowerCase();return /moves/.test(s)?'MOVES':/time ?out/.test(s)?'TimeOut':/mood/.test(s)?'The MOOD':/hot ?stuff/.test(s)?'HOTSTUFF':/overtime/.test(s)?'OVERTIME':/sirido/.test(s)?'SIRIDO':/nicoleta/.test(s)?'Nicoleta Oancea':s?'Altele':'—'}
+function keys(){return Object.keys((D&&D.months)||{}).sort()}
+function sel(){var ks=keys();if(PER==='all')return ks;if(PER==='3')return ks.slice(-3);return ks.filter(function(k){return k===PER})}
+function card(t,v,s,c){return '<div class="kc'+(c?' '+c:'')+'"><small>'+t+'</small><b>'+v+'</b>'+(s?'<i>'+s+'</i>':'')+'</div>'}
+function draw(){var box=document.getElementById('wmKpi');if(!box||!D)return;var ks=sel();
+ var sp=0,spE=0,ld=0,C=[];ks.forEach(function(k){var m=D.months[k]||{},cu=n(m.curs)||5.35;sp+=n(m.spend);spE+=n(m.spend)/cu;ld+=n(m.leads);(m.contracts||[]).forEach(function(x){C.push(x)})});
+ var ca=C.filter(function(x){return x.src==='reclame'}),val=0,com=0,fee=0,vA=0,cA=0;C.forEach(function(x){val+=n(x.val);com+=n(x.com)-n(x.fee);fee+=n(x.fee)});ca.forEach(function(x){vA+=n(x.val);cA+=n(x.com)-n(x.fee)});
+ var cpl=ld?sp/ld:0,conv=ld?ca.length/ld*100:0,cpc=ca.length?sp/ca.length:0,roi=spE?cA/spE:0,roas=spE?vA/spE:0,avgV=C.length?val/C.length:0,avgC=C.length?com/C.length:0,marg=val?com/val*100:0;
+ var PLs=window.WM_PL||[],act=PLs.filter(function(i){return i.st==='activ'}),dr=act.filter(function(i){return i.draft}),won=PLs.filter(function(i){return i.st==='semnat'}).length,lost=PLs.filter(function(i){return i.st==='nu'}).length;
+ var vAct=act.reduce(function(a,i){return a+n(i.val)},0),vDr=dr.reduce(function(a,i){return a+n(i.val)},0),wr=(won+lost)?won/(won+lost)*100:0,estCom=avgV?vAct*(avgC/avgV):0;
+ var opts='<option value="all">Total · toate lunile</option><option value="3">Ultimele 3 luni</option>'+keys().slice().reverse().map(function(k){return '<option value="'+k+'">'+ml(k)+'</option>'}).join('');
+ var h='<div class="kh"><h2>📊 KPI · WATT Music</h2><select class="kper">'+opts+'</select></div>';
+ h+='<div class="kg">'+card('Comision agenție (net)',f0(com)+' €',(fee?'după '+f0(fee)+' € comisioane date · ':'')+C.length+' contracte','big')+card('Valoare contracte',f0(val)+' €','medie '+f0(avgV)+' € / contract')+card('Marjă agenție',f1(marg)+'%','comision mediu '+f0(avgC)+' € / contract',marg>=25?'g':marg>=18?'y':'r')+'</div>';
+ h+='<h3>📣 Reclame → contracte <small>(doar contractele cu sursa „Reclame”)</small></h3><div class="kg">'+
+  card('Buget reclame',f0(sp)+' lei','≈ '+f0(spE)+' €')+card('Lead-uri',f0(ld),'cost / lead: '+(cpl?f0(cpl)+' lei':'–'))+card('Contracte din reclame',ca.length,'din '+C.length+' total')+card('Conversie lead → contract',f1(conv)+'%','',conv>=4?'g':conv>=2?'y':ld?'r':'')+
+  card('Cost / contract',cpc?f0(cpc)+' lei':'–',cpc?'≈ '+f0(cpc/(sp/spE||5.35))+' €':'')+card('Comision din reclame',f0(cA)+' €','valoare '+f0(vA)+' €')+card('Randament (comision)',roi?f1(roi)+' €':'–','comision la 1 € reclame',roi>=5?'g':roi>=2?'y':roi?'r':'')+card('ROAS (valoare)',roas?f1(roas)+' €':'–','valoare contracte la 1 € reclame')+'</div>';
+ h+='<h3>🔥 Pipeline acum <small>(Discuții cu potențial mare)</small></h3><div class="kg">'+
+  card('Discuții active',act.length,f0(vAct)+' € în discuție')+card('Drafturi trimise',dr.length,f0(vDr)+' € aproape de semnare','y')+card('Rată de închidere',(won+lost)?f1(wr)+'%':'–',won+' semnate · '+lost+' nesemnate',wr>=50?'g':wr?'y':'')+card('Comision estimat din pipeline','≈ '+f0(estCom)+' €','dacă se semnează toate active, la marja medie')+'</div>';
+ var all=keys(),mx=1,mc=1,rows=all.map(function(k){var m=D.months[k],c=m.contracts||[],v=0,co=0;c.forEach(function(x){v+=n(x.val);co+=n(x.com)-n(x.fee)});mx=Math.max(mx,n(m.spend)/(n(m.curs)||5.35));mc=Math.max(mc,co);return {k:k,s:n(m.spend)/(n(m.curs)||5.35),co:co,c:c.length,l:n(m.leads)}});var top=Math.max(mx,mc);
+ h+='<h3>📈 Evoluție lunară</h3><div class="tr">'+rows.map(function(r){return '<div><div class="cols"><span class="a" style="height:'+Math.max(2,r.s/top*120)+'px" title="Reclame '+f0(r.s)+' €"></span><span class="b" style="height:'+Math.max(2,r.co/top*120)+'px" title="Comision '+f0(r.co)+' €"></span></div>'+ml(r.k).replace(/ \d+$/,'').slice(0,3)+'<br>'+r.c+' contr.</div>'}).join('')+'</div><div class="lg"><span style="--c:#16161a">Buget reclame (€)</span><span style="--c:#f5d90a">Comision agenție (€)</span></div>';
+ function grp(f){var g={};C.forEach(function(x){var k=f(x);g[k]=g[k]||{c:0,v:0,co:0};g[k].c++;g[k].v+=n(x.val);g[k].co+=n(x.com)-n(x.fee)});return Object.keys(g).map(function(k){return [k,g[k]]}).sort(function(a,b){return b[1].co-a[1].co})}
+ function tbl(t,rows){var m=Math.max.apply(null,rows.map(function(r){return r[1].co}).concat([1]));return '<div><h3>'+t+'</h3><table><thead><tr><th></th><th class="n">Contr.</th><th class="n">Valoare</th><th class="n">Comision</th></tr></thead><tbody>'+(rows.length?rows.map(function(r){return '<tr><td><b>'+e(r[0])+'</b><span class="bar" style="width:'+Math.max(4,r[1].co/m*100)+'%"></span></td><td class="n">'+r[1].c+'</td><td class="n">'+f0(r[1].v)+' €</td><td class="n">'+f0(r[1].co)+' €</td></tr>'}).join(''):'<tr><td colspan="4" style="color:#888">Niciun contract în perioada aleasă.</td></tr>')+'</tbody></table></div>'}
+ h+='<div class="two">'+tbl('🎵 Pe trupe',grp(function(x){return bandOf(x.band)}))+tbl('🧭 Pe sursă',grp(function(x){return SRCN[x.src||'']||x.src}))+'</div>';
+ h+='<p class="note">Cifrele vin din „Statistici lunare” de mai jos și din „Discuții cu potențial mare”. Contractele semnate dintr-o lună, dar venite din reclamele lunii anterioare, se mută cu 📅 la luna reclamelor, ca randamentul să fie corect. Verde = bine · galben = de urmărit · roșu = sub așteptări.</p>';
+ box.innerHTML=h;var s=box.querySelector('.kper');s.value=PER;s.onchange=function(){PER=this.value;draw()}}
+function load(){api('/rest/v1/offers?mode=eq.stats&select=notes&limit=1').then(function(r){try{D=JSON.parse((r&&r[0]&&r[0].notes)||'{}')}catch(_){D={}}if(!D.months)D.months={};draw()}).catch(function(){})}
+function place(){var sl=document.querySelector('.wm-ad .stslot');if(!sl)return;var k=document.getElementById('wmKpi');if(!k){k=document.createElement('div');k.id='wmKpi';k.innerHTML='<div style="color:#888;font-size:14px">Se încarcă KPI…</div>';sl.insertBefore(k,sl.firstChild)}
+ var st=document.getElementById('wmSt');if(st&&st.parentNode!==sl)sl.appendChild(st);if(k.parentNode===sl&&sl.firstChild!==k)sl.insertBefore(k,sl.firstChild)}
+setInterval(place,1200);
+function init(){place();var b=document.querySelector('.wm-ad .tabsA button[data-sec="st"]');if(b)b.addEventListener('click',function(){load()});window.addEventListener('wmpl',function(){draw()});
+ var t=0,w=setInterval(function(){if(++t>40)return clearInterval(w);sess().then(function(){clearInterval(w);load()}).catch(function(){})},1500);
+ setInterval(function(){var s=document.querySelector('.wm-ad .sec[data-sec="st"]');if(s&&s.classList.contains('on'))load()},20000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+

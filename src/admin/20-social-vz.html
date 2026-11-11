@@ -1,0 +1,179 @@
+<!-- wm-social + vz (05.11.2026) -->
+<style>
+#wmSoc{--y:#f5d90a;--ln:#e6e6ea;--mut:#6b6b76;color:#16161a}
+#wmSoc .shd{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
+#wmSoc .shd h2{font:600 24px/1.2 "Lexend Deca","Lexend-Deca",sans-serif;margin:0}
+#wmSoc .shd p{margin:4px 0 0;color:var(--mut);font-size:14px}
+#wmSoc .sb{border:0;border-radius:999px;padding:12px 18px;font:800 14px/1 "Open Sans",sans-serif;cursor:pointer;background:var(--y);color:#16161a}
+#wmSoc .sb.l{background:#fff;border:1px solid #d4d4da}
+#wmSoc .sb.s{padding:8px 12px;font-size:12.5px}
+#wmSoc .sc{background:#fff;border:1px solid var(--ln);border-radius:18px;padding:16px;margin:0 0 16px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25)}
+#wmSoc .sc h3{margin:0 0 10px;font:700 16px/1.3 "Lexend Deca",sans-serif}
+#wmSoc .bal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+#wmSoc .bal div{border:1px solid var(--ln);border-radius:14px;padding:10px;text-align:center;background:#fafafa}
+#wmSoc .bal b{display:block;font:800 13px/1.2 "Open Sans",sans-serif}
+#wmSoc .bal i{display:block;font-style:normal;font-size:22px;font-weight:800;margin:4px 0 2px}
+#wmSoc .bal small{color:var(--mut);font-size:11.5px}
+#wmSoc .bal .hot{background:#fff4f4;border-color:#f3c0c0}
+#wmSoc .bal .cold{background:#fff9e0;border-color:#f3dc6a}
+#wmSoc .pfc{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#wmSoc .pfc span{border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;background:#f3f3f5}
+#wmSoc .flt{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+#wmSoc .flt select,#wmSoc .flt input{border:1px solid #d4d4da;border-radius:12px;padding:10px 12px;font:14px "Open Sans",sans-serif;background:#fff}
+#wmSoc .flt input{flex:1;min-width:160px}
+#wmSoc .stabs{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+#wmSoc .stabs button{border:1px solid #d4d4da;background:#fff;border-radius:999px;padding:10px 16px;font:800 14px/1 "Open Sans",sans-serif;cursor:pointer}
+#wmSoc .stabs button.on{background:#16161a;color:#fff;border-color:#16161a}
+#wmSoc .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+#wmSoc .pc{border:1px solid var(--ln);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+#wmSoc .th{position:relative;aspect-ratio:9/16;background:#eee center/cover no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#fff;font:700 15px/1.3 "Lexend Deca",sans-serif}
+#wmSoc .th.ph{background:linear-gradient(160deg,#16161a,#3a3a46)}
+#wmSoc .th .pls{position:absolute;top:8px;left:8px;display:flex;gap:4px}
+#wmSoc .th .pls a,#wmSoc .th .pls span{background:rgba(0,0,0,.72);color:#fff;border-radius:999px;padding:4px 8px;font:800 11px/1 "Open Sans",sans-serif;text-decoration:none}
+#wmSoc .th .dt{position:absolute;bottom:8px;right:8px;background:var(--y);color:#16161a;border-radius:999px;padding:4px 9px;font:800 11.5px/1 "Open Sans",sans-serif}
+#wmSoc .th .wr{position:absolute;bottom:8px;left:8px;background:#d93025;color:#fff;border-radius:999px;padding:4px 8px;font:800 11px/1 "Open Sans",sans-serif}
+#wmSoc .pb{padding:10px 12px 12px;font-size:13px;line-height:1.4;flex:1;display:flex;flex-direction:column;gap:6px}
+#wmSoc .pb b{font-size:14px}
+#wmSoc .tags{display:flex;gap:4px;flex-wrap:wrap}
+#wmSoc .tags span{background:#f3f3f5;border-radius:8px;padding:3px 7px;font-size:11.5px;font-weight:700}
+#wmSoc .tags .bd{background:#16161a;color:#fff}
+#wmSoc .acts{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+#wmSoc .acts button{flex:1;border:1px solid #d4d4da;background:#fff;border-radius:10px;padding:7px 4px;font:700 12px "Open Sans",sans-serif;cursor:pointer}
+#wmSoc .acts .go{background:var(--y);border-color:var(--y)}
+#wmSoc .ilist{display:flex;flex-direction:column;gap:10px}
+#wmSoc .ii{display:flex;gap:12px;border:1px solid var(--ln);border-radius:14px;padding:12px;align-items:flex-start;background:#fff}
+#wmSoc .ii .mini{width:64px;flex:0 0 64px;aspect-ratio:9/16;border-radius:10px;background:#eee center/cover;display:flex;align-items:center;justify-content:center;font-size:22px}
+#wmSoc .ii .tx{flex:1;font-size:13.5px;line-height:1.45}
+#wmSoc .ii .tx b{font-size:15px}
+#wmSoc .warn{background:#fff4f4;border:1px solid #f3c0c0;color:#9b1c1c;border-radius:10px;padding:6px 9px;font-size:12.5px;font-weight:700}
+#wmSoc .warn.y{background:#fff9e0;border-color:#f3dc6a;color:#7a5b00}
+#wmSoc .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+#wmSoc .cal div{border:1px solid var(--ln);border-radius:12px;min-height:74px;padding:6px;font-size:11.5px;background:#fff}
+#wmSoc .cal div.td{border-color:#16161a;box-shadow:inset 0 0 0 1px #16161a}
+#wmSoc .cal div.ps{background:#fafafa}
+#wmSoc .cal small{display:block;color:var(--mut);font-weight:700;margin-bottom:4px}
+#wmSoc .cal span{display:block;border-radius:6px;padding:2px 5px;margin:2px 0;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#wmSoc .cal .p{background:#e8f5e9}#wmSoc .cal .q{background:#fff3c4}
+#wmSoc .frm{display:none}
+#wmSoc .frm.on{display:block}
+#wmSoc .fg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px}
+#wmSoc .fg label,#wmSoc .f1 label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:800;color:#3a3a46}
+#wmSoc .fg input,#wmSoc .fg select,#wmSoc .f1 textarea,#wmSoc .f1 input{border:1px solid #d4d4da;border-radius:12px;padding:10px 12px;font:14px "Open Sans",sans-serif;background:#fff;color:#16161a}
+#wmSoc .f1{margin-bottom:10px}
+#wmSoc .f1 textarea{min-height:64px;width:100%;box-sizing:border-box}
+#wmSoc .fprev{display:flex;gap:12px;align-items:flex-start;margin:0 0 10px}
+#wmSoc .fprev .th{width:110px;flex:0 0 110px;border-radius:12px;font-size:11px}
+#wmSoc .msg{font-size:13px;color:var(--mut);margin-left:8px}
+#wmSoc .emp{color:var(--mut);font-size:14px;padding:18px;text-align:center;border:1px dashed #d4d4da;border-radius:14px}
+#wmSoc .err{background:#fff4f4;border:1px solid #f3c0c0;color:#9b1c1c;border-radius:14px;padding:14px;font-size:14px}
+@media(max-width:760px){#wmSoc .bal{grid-template-columns:repeat(4,minmax(0,1fr))}#wmSoc .fg{grid-template-columns:1fr}#wmSoc .grid{grid-template-columns:repeat(2,minmax(0,1fr))}#wmSoc .cal{grid-template-columns:repeat(7,minmax(44px,1fr));overflow-x:auto}}
+.wm-ad .vzslot #wmPl,.wm-ad .vzslot #wmSt{margin-bottom:18px}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+/* ---- Discuții & statistici: tab separat ---- */
+function mvVz(){var sl=document.querySelector('.wm-ad .vzslot');if(!sl)return;['wmPl'].forEach(function(id){var e=document.getElementById(id);if(e&&e.parentNode!==sl)sl.appendChild(e)});var pl=document.getElementById('wmPl'),st=document.getElementById('wmSt');if(pl&&st&&pl.parentNode===sl&&st.parentNode===sl&&pl.nextSibling!==st)sl.insertBefore(st,pl.nextSibling)}
+setInterval(mvVz,1200);
+/* ---- Social media ---- */
+var BANDS=['MOVES','TimeOut','The MOOD','HOTSTUFF','OVERTIME','WATT (general)'];
+var KINDS=['Live pe ring','Talking-head Mada','Trend / audio','Behind the scenes','Miri / testimonial','Prezentare trupă','Folclor','Altele'];
+var ANGLES=['Ring plin','Raritate / date','Preț / valoare','Recomandare','Emoție','Umor','Educativ / sfaturi','Altele'];
+var PL={tiktok:'TikTok',instagram:'Instagram',youtube:'YouTube'};
+var P=[],TAB='postat',BUSY=false,EDIT=null,MISSING=false;
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p,o){o=o||{};return sess().then(function(at){return fetch(CFG.url+p,{method:o.m||'GET',headers:{'apikey':CFG.key,'Authorization':'Bearer '+at,'Content-Type':'application/json','Prefer':'return=representation'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok){return r.text().then(function(t){throw {s:r.status,t:t}})}return r.status===204?null:r.json()})})}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function today(){return iso(new Date())}
+function dd(a,b){return Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5)}
+function fd(s){if(!s)return '';var p=s.split('-');return p[2]+'.'+p[1]}
+function ago(s){var n=dd(s,today());return n<=0?'azi':n===1?'ieri':'acum '+n+' zile'}
+function $(s){return document.querySelector('#wmSoc '+s)}
+function ytId(u){var m=String(u||'').match(/(?:shorts\/|v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);return m?m[1]:''}
+function opts(a,v,ph){return (ph?'<option value="">'+ph+'</option>':'')+a.map(function(x){return '<option'+(x===v?' selected':'')+'>'+esc(x)+'</option>'}).join('')}
+function pls(p){return Object.keys(PL).filter(function(k){return p.urls&&p.urls[k]})}
+function thumbOf(p){var y=ytId(p.urls&&p.urls.youtube);if(p.thumb)return p.thumb;if(y)return 'https://i.ytimg.com/vi/'+y+'/hqdefault.jpg';return ''}
+function ttThumb(u){return fetch('https://www.tiktok.com/oembed?url='+encodeURIComponent(u)).then(function(r){return r.json()}).then(function(j){return j&&j.thumbnail_url||''}).catch(function(){return ''})}
+/* repetition check */
+function warns(p,list){var w=[],ref=p.status==='postat'?(p.posted_at||today()):(p.planned_at||today());(list||P).forEach(function(q){if(q.id===p.id||q.status!=='postat'||!q.posted_at)return;var n=Math.abs(dd(q.posted_at,ref));
+ if(p.song&&q.song&&p.song.trim().toLowerCase()===q.song.trim().toLowerCase()&&n<=21)w.push(['r','Aceeași piesă („'+q.song+'”) postată '+ago(q.posted_at)+(q.title?' · '+q.title:'')]);
+ else if(p.band&&q.band===p.band&&p.kind&&q.kind===p.kind&&n<=7)w.push(['y',q.band+' · '+q.kind+' postat '+ago(q.posted_at)]);
+ else if(p.angle&&q.angle===p.angle&&p.band&&q.band===p.band&&n<=5)w.push(['y','Același unghi („'+q.angle+'”) cu '+q.band+' '+ago(q.posted_at)])});return w}
+function shell(){var r=document.getElementById('wmSoc');if(!r||r._ok)return !!r;r._ok=1;
+ r.innerHTML='<div class="shd"><div><h2>Social media · WATT Music</h2><p>TikTok · Instagram · YouTube Shorts: ce am postat, ce urmează și ce să nu repetăm prea repede.</p></div><button type="button" class="sb sadd">+ Adaugă postare sau idee</button></div>'+
+ '<div class="sc frm"><h3 class="ftl">Postare nouă</h3><div class="fprev"><div class="th ph fth">Fără imagine</div><div style="flex:1"><div class="fg" style="grid-template-columns:1fr"><label>Link TikTok<input class="u_tiktok" placeholder="https://www.tiktok.com/@wattmusicofficial/video/…"></label><label>Link Instagram<input class="u_instagram" placeholder="https://www.instagram.com/reel/…"></label><label>Link YouTube Shorts<input class="u_youtube" placeholder="https://youtube.com/shorts/…"></label></div><label class="sb l s" style="display:inline-block">📷 Pune o captură (pentru Instagram)<input type="file" accept="image/*" class="fimg" style="display:none"></label> <button type="button" class="sb l s frm0">Scoate imaginea</button></div></div>'+
+ '<div class="f1"><label>Titlu / despre ce e<input class="f_title" placeholder="ex: The Mood – ring plin la Bokaa, „Dragostea din tei”"></label></div>'+
+ '<div class="fg"><label>Status<select class="f_status"><option value="postat">✅ Postat</option><option value="pregatit">🎬 Pregătit / programat</option><option value="idee">💡 Idee</option></select></label><label>Data postării<input type="date" class="f_posted"></label><label>Data planificată<input type="date" class="f_planned"></label></div>'+
+ '<div class="fg"><label>Trupa<select class="f_band">'+opts(BANDS,'','Alege trupa')+'</select></label><label>Tip de conținut<select class="f_kind">'+opts(KINDS,'','Alege tipul')+'</select></label><label>Unghi de mesaj<select class="f_angle">'+opts(ANGLES,'','Alege unghiul')+'</select></label></div>'+
+ '<div class="fg"><label>Piesa folosită<input class="f_song" placeholder="artist – titlu"></label><label>Vizualizări (opțional)<input class="f_views" inputmode="numeric"></label><label>&nbsp;<span></span></label></div>'+
+ '<div class="f1"><label>Note / idee completă<textarea class="f_notes" placeholder="Hook, text pe ecran, ce filmăm…"></textarea></label></div>'+
+ '<div class="fw"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><button type="button" class="sb fsave">Salvează</button><button type="button" class="sb l fcancel">Renunță</button><button type="button" class="sb l fdel" style="margin-left:auto;color:#b42318">Șterge</button><span class="msg fmsg"></span></div></div>'+
+ '<div class="sc"><h3>Echilibru pe trupe · ultimele 30 de zile</h3><div class="bal"></div><div class="pfc"></div></div>'+
+ '<div class="sc"><h3>Calendar · 2 săptămâni în urmă, 2 înainte</h3><div class="cal"></div></div>'+
+ '<div class="stabs"><button type="button" data-t="postat" class="on">✅ Postate</button><button type="button" data-t="pregatit">🎬 Pregătite</button><button type="button" data-t="idee">💡 Idei</button></div>'+
+ '<div class="flt"><select class="x_pl"><option value="">Toate platformele</option><option value="tiktok">TikTok</option><option value="instagram">Instagram</option><option value="youtube">YouTube</option></select><select class="x_band">'+opts(BANDS,'','Toate trupele')+'</select><select class="x_kind">'+opts(KINDS,'','Toate tipurile')+'</select><input class="x_q" placeholder="Caută titlu, piesă, notă…"></div>'+
+ '<div class="lst"></div>';
+ $('.sadd').onclick=function(){openF(null)};$('.fcancel').onclick=function(){$('.frm').classList.remove('on')};
+ [].forEach.call(r.querySelectorAll('.stabs button'),function(b){b.onclick=function(){TAB=b.getAttribute('data-t');[].forEach.call(r.querySelectorAll('.stabs button'),function(x){x.classList.toggle('on',x===b)});draw()}});
+ ['.x_pl','.x_band','.x_kind','.x_q'].forEach(function(s){$(s).oninput=draw;$(s).onchange=draw});
+ ['.u_tiktok','.u_youtube','.u_instagram'].forEach(function(s){$(s).onchange=prevThumb});
+ ['.f_band','.f_kind','.f_angle','.f_song','.f_status','.f_posted','.f_planned'].forEach(function(s){$(s).onchange=fw;$(s).oninput=fw});
+ $('.fimg').onchange=function(){var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var w=360,h=Math.round(im.height*w/im.width),c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);FT=c.toDataURL('image/jpeg',.72);setPrev()};im.src=rd.result};rd.readAsDataURL(f)};
+ $('.frm0').onclick=function(){FT='';setPrev()};
+ $('.fsave').onclick=saveF;$('.fdel').onclick=delF;
+ $('.lst').onclick=function(e){var b=e.target.closest('[data-a]');if(!b)return;var p=P.filter(function(x){return x.id===b.getAttribute('data-id')})[0];if(!p)return;var a=b.getAttribute('data-a');
+  if(a==='ed')openF(p);
+  if(a==='post'){var d=prompt('Data postării (ZZ.LL.AAAA):',fd(today())+'.'+today().slice(0,4));if(d===null)return;var m=d.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);var ds=m?m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2):today();upd(p,{status:'postat',posted_at:ds})}
+  if(a==='prep')upd(p,{status:'pregatit'})};
+ return true}
+var FT='';
+function setPrev(){var t=$('.fth');if(FT){t.style.backgroundImage='url("'+FT+'")';t.classList.remove('ph');t.textContent=''}else{t.style.backgroundImage='';t.classList.add('ph');t.textContent='Fără imagine'}}
+function prevThumb(){var y=ytId($('.u_youtube').value),tt=$('.u_tiktok').value.trim();if(FT&&FT.indexOf('data:')===0)return;if(y){FT='https://i.ytimg.com/vi/'+y+'/hqdefault.jpg';setPrev();return}if(tt){$('.fmsg').textContent='Caut imaginea TikTok…';ttThumb(tt).then(function(u){$('.fmsg').textContent=u?'':'Nu am găsit imaginea TikTok – poți pune o captură.';if(u){FT=u;setPrev()}})}}
+function val(s){return $(s).value.trim()}
+function cur(){var u={};Object.keys(PL).forEach(function(k){var v=val('.u_'+k);if(v)u[k]=v});return {id:EDIT&&EDIT.id,urls:u,platforms:Object.keys(u),thumb:FT||null,title:val('.f_title')||null,status:$('.f_status').value,posted_at:$('.f_posted').value||null,planned_at:$('.f_planned').value||null,band:$('.f_band').value||null,kind:$('.f_kind').value||null,angle:$('.f_angle').value||null,song:val('.f_song')||null,views:parseInt(val('.f_views'),10)||null,notes:val('.f_notes')||null}}
+function fw(){var w=warns(cur());$('.fw').innerHTML=w.map(function(x){return '<div class="warn'+(x[0]==='y'?' y':'')+'" style="margin:4px 0">⚠️ '+esc(x[1])+'</div>'}).join('')}
+function openF(p){EDIT=p;var f=$('.frm');f.classList.add('on');$('.ftl').textContent=p?'Modifică':'Postare sau idee nouă';
+ Object.keys(PL).forEach(function(k){$('.u_'+k).value=(p&&p.urls&&p.urls[k])||''});FT=(p&&p.thumb)||'';setPrev();
+ $('.f_title').value=(p&&p.title)||'';$('.f_status').value=(p&&p.status)||(TAB||'postat');$('.f_posted').value=(p&&p.posted_at)||(!p&&TAB==='postat'?today():'');$('.f_planned').value=(p&&p.planned_at)||'';
+ $('.f_band').value=(p&&p.band)||'';$('.f_kind').value=(p&&p.kind)||'';$('.f_angle').value=(p&&p.angle)||'';$('.f_song').value=(p&&p.song)||'';$('.f_views').value=(p&&p.views)||'';$('.f_notes').value=(p&&p.notes)||'';
+ $('.fdel').style.display=p?'':'none';$('.fmsg').textContent='';fw();f.scrollIntoView({behavior:'smooth',block:'start'})}
+function saveF(){var c=cur();if(!c.title&&!c.platforms.length&&!c.notes){$('.fmsg').textContent='Pune măcar un link sau un titlu.';return}if(c.status==='postat'&&!c.posted_at)c.posted_at=today();
+ var id=c.id;delete c.id;c.updated_at=new Date().toISOString();$('.fmsg').textContent='Se salvează…';
+ (id?api('/rest/v1/social_posts?id=eq.'+id,{m:'PATCH',b:c}):api('/rest/v1/social_posts',{m:'POST',b:c})).then(function(){$('.fmsg').textContent='';$('.frm').classList.remove('on');TAB=c.status;[].forEach.call(document.querySelectorAll('#wmSoc .stabs button'),function(x){x.classList.toggle('on',x.getAttribute('data-t')===TAB)});load()}).catch(function(e){$('.fmsg').textContent='Nu s-a salvat'+(e&&e.s?' ('+e.s+')':'')})}
+function delF(){if(!EDIT)return;var b=$('.fdel');if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Sigur? Apasă din nou';setTimeout(function(){b.dataset.c='';b.textContent='Șterge'},4000);return}
+ api('/rest/v1/social_posts?id=eq.'+EDIT.id,{m:'DELETE'}).then(function(){$('.frm').classList.remove('on');load()}).catch(function(e){$('.fmsg').textContent='Nu s-a șters'+(e&&e.s?' ('+e.s+')':'')})}
+function upd(p,b){b.updated_at=new Date().toISOString();api('/rest/v1/social_posts?id=eq.'+p.id,{m:'PATCH',b:b}).then(load)}
+function fixTT(img){var id=img.getAttribute('data-fix');var p=P.filter(function(x){return x.id===id})[0];if(!p||img._f)return;img._f=1;if(!(p.urls&&p.urls.tiktok)){img.style.backgroundImage='';return}ttThumb(p.urls.tiktok).then(function(u){if(!u)return;p.thumb=u;img.style.backgroundImage='url("'+u+'")';api('/rest/v1/social_posts?id=eq.'+p.id,{m:'PATCH',b:{thumb:u}}).catch(function(){})})}
+function card(p){var t=thumbOf(p),w=warns(p),ps=pls(p);
+ return '<div class="pc"><div class="th'+(t?'':' ph')+'" '+(t?'style="background-image:url(&quot;'+esc(t)+'&quot;)" data-fix="'+esc(p.id)+'" data-src="'+esc(t)+'"':'')+'>'+(t?'':esc(p.title||'Fără imagine'))+'<div class="pls">'+ps.map(function(k){return '<a href="'+esc(p.urls[k])+'" target="_blank" rel="noopener">'+PL[k]+'</a>'}).join('')+'</div>'+(p.posted_at?'<span class="dt">'+fd(p.posted_at)+'</span>':'')+(w.length?'<span class="wr" title="'+esc(w.map(function(x){return x[1]}).join(' · '))+'">⚠️ repetă</span>':'')+'</div>'+
+ '<div class="pb">'+(p.title?'<b>'+esc(p.title)+'</b>':'')+'<div class="tags">'+(p.band?'<span class="bd">'+esc(p.band)+'</span>':'')+(p.kind?'<span>'+esc(p.kind)+'</span>':'')+(p.angle?'<span>'+esc(p.angle)+'</span>':'')+'</div>'+(p.song?'<div>🎵 '+esc(p.song)+'</div>':'')+(p.views?'<div>👁 '+Number(p.views).toLocaleString('ro-RO')+'</div>':'')+'<div class="acts"><button type="button" data-a="ed" data-id="'+esc(p.id)+'">Modifică</button></div></div></div>'}
+function item(p){var t=thumbOf(p),w=warns(p);
+ return '<div class="ii"><div class="mini" '+(t?'style="background-image:url(&quot;'+esc(t)+'&quot;)"':'')+'>'+(t?'':(p.status==='idee'?'💡':'🎬'))+'</div><div class="tx"><b>'+esc(p.title||'(fără titlu)')+'</b><div class="tags" style="margin:5px 0">'+(p.band?'<span class="bd">'+esc(p.band)+'</span>':'')+(p.kind?'<span>'+esc(p.kind)+'</span>':'')+(p.angle?'<span>'+esc(p.angle)+'</span>':'')+(p.planned_at?'<span>📅 '+fd(p.planned_at)+'</span>':'')+pls(p).map(function(k){return '<span>'+PL[k]+'</span>'}).join('')+'</div>'+(p.song?'<div>🎵 '+esc(p.song)+'</div>':'')+(p.notes?'<div style="color:#3a3a46;white-space:pre-wrap">'+esc(p.notes)+'</div>':'')+w.map(function(x){return '<div class="warn'+(x[0]==='y'?' y':'')+'" style="margin-top:6px">⚠️ '+esc(x[1])+'</div>'}).join('')+
+ '<div class="acts" style="max-width:420px"><button type="button" data-a="ed" data-id="'+esc(p.id)+'">Modifică</button>'+(p.status==='idee'?'<button type="button" data-a="prep" data-id="'+esc(p.id)+'">🎬 Pregătit</button>':'')+'<button type="button" class="go" data-a="post" data-id="'+esc(p.id)+'">✅ Am postat</button></div></div></div>'}
+function draw(){if(!shell())return;var r=document.getElementById('wmSoc');
+ if(MISSING){$('.lst').innerHTML='<div class="err">Secțiunea e gata, dar tabelul din baza de date nu e încă creat. Rulează scriptul SQL pregătit în Supabase (SQL Editor → Run), apoi reîncarcă pagina.</div>';return}
+ var T=today(),posted=P.filter(function(p){return p.status==='postat'&&p.posted_at});
+ $('.bal').innerHTML=BANDS.map(function(b){var l=posted.filter(function(p){return p.band===b}),n=l.filter(function(p){return dd(p.posted_at,T)<=30}).length,last=l.map(function(p){return p.posted_at}).sort().pop();var since=last?dd(last,T):null;var cls=since===null||since>14?'cold':since<=2?'hot':'';
+  return '<div class="'+cls+'"><b>'+esc(b)+'</b><i>'+n+'</i><small>'+(last?'ultima: '+ago(last):'nimic postat')+'</small></div>'}).join('');
+ var pc={};Object.keys(PL).forEach(function(k){pc[k]=posted.filter(function(p){return p.urls&&p.urls[k]&&dd(p.posted_at,T)<=30}).length});
+ $('.pfc').innerHTML=Object.keys(PL).map(function(k){return '<span>'+PL[k]+': '+pc[k]+' în 30 de zile</span>'}).join('')+'<span>💡 '+P.filter(function(p){return p.status==='idee'}).length+' idei · 🎬 '+P.filter(function(p){return p.status==='pregatit'}).length+' pregătite</span>';
+ var st=new Date();st.setDate(st.getDate()-14);st.setDate(st.getDate()-((st.getDay()+6)%7));var h=['L','Ma','Mi','J','V','S','D'].map(function(x){return '<div style="min-height:0;border:0;text-align:center;font-weight:800;color:#6b6b76;background:none">'+x+'</div>'}).join('');
+ for(var i=0;i<28;i++){var dt=new Date(st);dt.setDate(st.getDate()+i);var ds=iso(dt);var ev=P.filter(function(p){return (p.status==='postat'&&p.posted_at===ds)||(p.status!=='postat'&&p.planned_at===ds)});
+  h+='<div class="'+(ds===T?'td':ds<T?'ps':'')+'"><small>'+dt.getDate()+'.'+(dt.getMonth()+1)+'</small>'+ev.map(function(p){return '<span class="'+(p.status==='postat'?'p':'q')+'" title="'+esc(p.title||'')+'">'+esc(p.band||p.title||'•')+'</span>'}).join('')+'</div>'}
+ $('.cal').innerHTML=h;
+ var fp=$('.x_pl').value,fb=$('.x_band').value,fk=$('.x_kind').value,q=$('.x_q').value.trim().toLowerCase();
+ var L=P.filter(function(p){return p.status===TAB&&(!fp||(p.urls&&p.urls[fp]))&&(!fb||p.band===fb)&&(!fk||p.kind===fk)&&(!q||[p.title,p.song,p.notes,p.band,p.kind,p.angle].join(' ').toLowerCase().indexOf(q)>-1)});
+ if(TAB==='postat')L.sort(function(a,b){return (b.posted_at||'').localeCompare(a.posted_at||'')});else L.sort(function(a,b){return (a.planned_at||'9999').localeCompare(b.planned_at||'9999')});
+ $('.lst').innerHTML=L.length?(TAB==='postat'?'<div class="grid">'+L.map(card).join('')+'</div>':'<div class="ilist">'+L.map(item).join('')+'</div>'):'<div class="emp">'+(TAB==='postat'?'Nicio postare încă. Apasă „+ Adaugă postare sau idee” și lipește linkul.':TAB==='idee'?'Nicio idee încă.':'Nimic pregătit încă.')+'</div>';
+ [].forEach.call(r.querySelectorAll('.lst [data-src]'),function(el){var im=new Image();im.onerror=function(){fixTT(el)};im.src=el.getAttribute('data-src')})}
+function load(){if(BUSY)return;BUSY=true;api('/rest/v1/social_posts?select=*&order=created_at.desc').then(function(r){P=r||[];MISSING=false;BUSY=false;draw()}).catch(function(e){BUSY=false;if(e&&(e.s===404||/social_posts/.test(e.t||'')))MISSING=true;draw()})}
+function init(){var r=document.getElementById('wmSoc');if(!r)return setTimeout(init,500);shell();
+ var btn=document.querySelector('.wm-ad .tabsA button[data-sec="soc"]');if(btn)btn.addEventListener('click',function(){load()});
+ var t=0,w=setInterval(function(){if(++t>40)return clearInterval(w);sess().then(function(){clearInterval(w);load()}).catch(function(){})},1500)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+

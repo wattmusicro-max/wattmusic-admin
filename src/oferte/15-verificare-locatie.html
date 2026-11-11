@@ -1,0 +1,16 @@
+<script>
+/* wm-logicheck (10.11.2026): București/Ilfov = 0 km și fără cazare; în alt oraș km sunt obligatorii; numele orașului scris corect */
+(function(){
+var ILF=['bragadiru','buftea','chitila','magurele','otopeni','pantelimon','popesti-leordeni','popesti leordeni','voluntari','1 decembrie','afumati','balotesti','berceni','branesti','cernica','chiajna','ciolpani','ciorogarla','clinceni','copaceni','corbeanca','cornetu','darasti','dascalu','dobroesti','domnesti','dragomiresti','ganeasa','glina','gradistea','gruiu','jilava','moara vlasiei','mogosoaia','nuci','peris','petrachioaia','snagov','stefanestii de jos','tunari','vidra','pipera','tancabesti','saftica','dimieni','rosu','militari residence','bucurestii noi'];
+var RX=new RegExp('(^|[^a-z])('+ILF.join('|').replace(/ /g,'\\s+')+')([^a-z]|$)');
+function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+window.wmIsBI=function(city){var n=norm(city);return /bucuresti|ilfov/.test(n)||RX.test(n)};
+window.wmLogi=function(ci,ki,li){if(!ci||!ki)return '';var raw=(ci.value||'').trim(),n=norm(raw);
+ if(raw){if(/^(mun(icipiul)?\.?\s*)?bucuresti$/.test(n))ci.value='București';else if(raw===raw.toLowerCase()||raw===raw.toUpperCase())ci.value=raw.toLowerCase().replace(/(^|[\s\-])(\S)/g,function(m,a,b){return a+b.toUpperCase()})}
+ if(wmIsBI(raw)||ki.dataset.bi==='1'){ki.value='0';if(li)li.checked=false;return ''}
+ if(/^alt\s*oras$/.test(n))return 'Scrie numele localității în loc de „alt oraș”, ca mirii să vadă transportul corect.';
+ var k=parseInt(ki.value,10);
+ if(raw&&(ki.value===''||isNaN(k)||k<=0))return 'Completează km de la București (dus) pentru „'+ci.value+'”. Dacă scrii localitatea exactă, îi calculez singur.';
+ return ''};
+})();
+</script>

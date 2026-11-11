@@ -1,0 +1,33 @@
+<!-- ofr-avail + ofr-wa (25.10.2026): trupe libere după dată + trimitere pe WhatsApp -->
+<style>
+.ofr-adm .band-picks label.busy span{text-decoration:line-through;color:#aaa;border-color:#eee;background:#fafafa}
+.ofr-adm .band-picks label.busy small{display:block;font:400 11px/1.2 "Open Sans",sans-serif;color:#b45309;text-decoration:none;margin-top:4px}
+.ofr-adm .wa-btn{display:inline-flex;align-items:center;gap:6px;margin-top:6px;background:#25D366;color:#fff !important;border-radius:999px;padding:7px 12px;font:700 12px/1 "Open Sans",sans-serif;text-decoration:none;white-space:nowrap}
+</style>
+<script>
+(function(){
+var BUSY=window.WM_BUSY||{}; /* date: vezi wm-busy-data */
+var NAMES={moves:'MOVES',timeout:'TimeOut','the-mood':'The MOOD',hotstuff:'HOTSTUFF',overtime:'OVERTIME',sirido:'SIRIDO'};
+var MSG="Bună, {P}! 😊 Sunt Mada de la WATT Music.\n\nȘtim că perioada asta e plină de research, tabele și zeci de oferte de comparat 🙈 Așa că v-am pregătit ceva doar pentru voi: o pagină personală cu trupele noastre libere la data nunții voastre 💍\n\nAcolo puteți:\n🎶 vedea și asculta fiecare trupă\n💰 vedea transparent prețurile și tot ce include fiecare pachet\n⚖️ compara trupele una lângă alta\n❤️ salva la favorite trupa care vă face să dansați\n\nIntrați, jucați-vă puțin și spuneți-ne ce v-a plăcut 👇\n{L}\n\nOferta are valabilitate 10 zile de la primirea ei: după 10 zile, linkul devine inactiv ⏳";
+window.ofrWaUrl=function(phone,name,link,meet){var p=String(phone||'').replace(/\D/g,'');if(!p)return '';if(p.indexOf('00')===0)p=p.slice(2);else if(p.charAt(0)==='0')p='40'+p.slice(1);var first=String(name||'').trim().split(/\s+/)[0]||'';return 'https://wa.me/'+p+'?text='+encodeURIComponent((meet&&window.ofrMeetMsg?window.ofrMeetMsg(meet):MSG).replace('{P}',first).replace('{L}',link))};
+function order(){var box=document.getElementById('nBands');if(!box||box.dataset.ord)return;box.dataset.ord=1;['moves','timeout','the-mood','hotstuff','overtime','sirido'].forEach(function(v){var i=box.querySelector('input[value="'+v+'"]');if(i)box.appendChild(i.closest('label'))})}
+window.ofrAvail=function(manual){var d=document.getElementById('nDate'),box=document.getElementById('nBands');if(!d||!box)return;order();var v=d.value,B=BUSY[v]||{},note=document.getElementById('ofrAvailNote');
+ box.querySelectorAll('label').forEach(function(l){var i=l.querySelector('input'),s=l.querySelector('small');if(s)s.remove();l.classList.remove('busy');if(!v)return;
+  if(B[i.value]){l.classList.add('busy');i.checked=false;var t=document.createElement('small');t.textContent='ocupată – '+B[i.value];l.querySelector('span').appendChild(t)}else if(manual)i.checked=true});
+ if(!v){if(note)note.remove();return}
+ if(!note){note=document.createElement('div');note.id='ofrAvailNote';box.parentNode.insertBefore(note,box.nextSibling)}
+ var bz=Object.keys(B).filter(function(k){return NAMES[k]}),dt=new Date(v+'T12:00:00'),sat=dt.getDay()===6,extra=[];
+ if(B['georgiana']&&!B['the-mood'])extra.push('Georgiana e ocupată (The MOOD fără Georgiana)');
+ if(sat&&dt.getFullYear()===2027)extra.push('Nicoleta: ocupată (toate sâmbetele 2027)');else extra.push('Nicoleta: de verificat');
+ note.style.cssText='font:400 13px/1.4 "Open Sans",sans-serif;margin:-8px 0 14px;padding:8px 12px;border-radius:10px;background:'+(bz.length?'#fff6c2;color:#7a5b00':'#e8f5e9;color:#2e7d32');
+ note.textContent=(bz.length?'Ocupate pe '+dt.toLocaleDateString('ro-RO')+': '+bz.map(function(k){return NAMES[k]}).join(', ')+'. Am bifat doar trupele libere.':'Toate trupele sunt libere pe '+dt.toLocaleDateString('ro-RO')+'.')+' '+extra.join(' · ')+'. (Calendar actualizat '+(window.WM_BUSY_UPD||'')+')';
+ var old=document.getElementById('ofrBusyNote');if(old)old.remove()};
+function hook(){var d=document.getElementById('nDate');if(!d){return setTimeout(hook,300)}order();d.addEventListener('change',function(){ofrAvail(true)});d.addEventListener('input',function(){ofrAvail(true)});if(d.value)ofrAvail(false);
+ var tb=document.getElementById('ofrTbody');if(tb)new MutationObserver(addWa).observe(tb,{childList:true});
+ var msg=document.getElementById('ofrMsg');if(msg)new MutationObserver(function(){var a=msg.querySelector('a[href*="/oferta/?o="]');if(a&&!msg.querySelector('.wa-btn')&&window.__lastOfr){var u=ofrWaUrl(window.__lastOfr.phone,window.__lastOfr.name,a.href,window.__lastOfr.meet);if(u){var w=document.createElement('a');w.className='wa-btn';w.href=u;w.target='_blank';w.textContent='💬 Trimite oferta pe WhatsApp';a.parentNode.appendChild(document.createElement('br'));a.parentNode.appendChild(w)}}}).observe(msg,{childList:true,subtree:true});
+ var f=document.getElementById('ofrForm');if(f)f.addEventListener('submit',function(){window.__lastOfr={phone:document.getElementById('nPhone').value,name:document.getElementById('nBride').value,meet:(document.getElementById('nMeet')&&document.getElementById('nMeet').checked)?{at:document.getElementById('nMeetAt').value?new Date(document.getElementById('nMeetAt').value).toISOString():null,p:document.getElementById('nMeetP').value}:null}},true)}
+function addWa(){document.querySelectorAll('#ofrTbody tr').forEach(function(tr){if(tr.querySelector('.wa-btn'))return;var lk=tr.querySelector('a.link[href*="/oferta/?o="]'),ph=tr.querySelector('a.link[href^="https://wa.me/"]');if(!lk||!ph)return;var name=(tr.querySelector('td b')||{}).textContent||'';name=name.split('&')[0];var u=ofrWaUrl(ph.textContent.replace('💬',''),name,lk.href);if(!u)return;var w=document.createElement('a');w.className='wa-btn';w.href=u;w.target='_blank';w.textContent='💬 Trimite pe WhatsApp';lk.parentNode.appendChild(document.createElement('br'));lk.parentNode.appendChild(w)})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+setTimeout(function(){var d=document.getElementById('nDate');if(d&&d.value)ofrAvail(true)},2500);
+})();
+</script>

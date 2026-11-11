@@ -1,0 +1,242 @@
+<!-- WATT Music · Offer Admin — paste inside adm2.html or as separate Elementor widget -->
+<!-- Admin panel for creating and managing offers -->
+<style>
+.ofr-adm{font-family:"Open Sans",sans-serif;color:#222;background:#fff;padding:20px 16px;max-width:900px;margin:0 auto}
+.ofr-adm *{box-sizing:border-box}
+.ofr-adm h2{font:600 22px/1.2 "Lexend Deca",sans-serif;margin:0 0 16px;display:flex;align-items:center;gap:10px}
+.ofr-adm h2 i{font-style:normal;font-size:24px}
+.ofr-adm .tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid #eee}
+.ofr-adm .tabs button{border:0;background:transparent;padding:10px 18px;font:700 14px/1 "Open Sans",sans-serif;color:#999;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.ofr-adm .tabs button.on{color:#111;border-bottom-color:#FBE530}
+.ofr-adm .pan{display:none}.ofr-adm .pan.on{display:block}
+/* Form */
+.ofr-adm label{display:block;margin:0 0 14px}
+.ofr-adm label span{display:block;font:700 13px/1.3 "Open Sans",sans-serif;color:#555;margin-bottom:4px}
+.ofr-adm input[type=text],.ofr-adm input[type=date],.ofr-adm input[type=tel],.ofr-adm input[type=email],.ofr-adm input[type=number],.ofr-adm select,.ofr-adm textarea{width:100%;border:1px solid #ddd;border-radius:10px;padding:10px 12px;font:400 15px/1.4 "Open Sans",sans-serif;outline:none}
+.ofr-adm input:focus,.ofr-adm select:focus,.ofr-adm textarea:focus{border-color:#FBE530}
+.ofr-adm .two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.ofr-adm .band-picks{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px}
+.ofr-adm .band-picks label{cursor:pointer}
+.ofr-adm .band-picks input{display:none}
+.ofr-adm .band-picks span{display:inline-block;padding:10px 16px;border-radius:999px;border:2px solid #ddd;font:700 13px/1 "Open Sans",sans-serif;transition:all .15s}
+.ofr-adm .band-picks input:checked+span{background:#FBE530;border-color:#FBE530;color:#111}
+.ofr-adm .abtn{border:0;cursor:pointer;border-radius:999px;font:800 14px/1 "Open Sans",sans-serif;padding:14px 24px;display:inline-flex;align-items:center;gap:6px}
+.ofr-adm .abtn.y{background:#FBE530;color:#111}
+.ofr-adm .abtn.r{background:#ff4444;color:#fff;font-size:12px;padding:8px 14px}
+.ofr-adm .abtn.g{background:#f5f5f5;color:#555;border:1px solid #ddd}
+/* Table */
+.ofr-adm table{width:100%;border-collapse:collapse;font-size:13.5px}
+.ofr-adm th{text-align:left;font:700 11px/1 "Open Sans",sans-serif;letter-spacing:.08em;color:#999;padding:8px 10px;border-bottom:2px solid #eee}
+.ofr-adm td{padding:8px 10px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+.ofr-adm .st{display:inline-block;padding:3px 10px;border-radius:999px;font:700 11px/1 "Open Sans",sans-serif;letter-spacing:.04em}
+.ofr-adm .st.open{background:#e8f5e9;color:#2e7d32}
+.ofr-adm .st.chosen{background:#e3f2fd;color:#1565c0}
+.ofr-adm .st.expired{background:#fce4ec;color:#c62828}
+.ofr-adm .st.cancelled{background:#f5f5f5;color:#999}
+.ofr-adm .link{color:#1a73e8;text-decoration:none;word-break:break-all;font-size:12px}
+.ofr-adm .views{color:#999;font-size:12px}
+.ofr-adm .msg{padding:12px 16px;border-radius:10px;margin:12px 0;font-size:14px}
+.ofr-adm .msg.ok{background:#e8f5e9;color:#2e7d32}
+.ofr-adm .msg.err{background:#fce4ec;color:#c62828}
+.ofr-adm .empty{text-align:center;color:#999;padding:40px 0;font-size:15px}
+</style>
+
+<div class="ofr-adm" id="ofrAdm">
+  <h2><i>📋</i> Oferte</h2>
+
+  <div class="tabs">
+    <button class="on" onclick="ofrTab('list')">Toate ofertele</button>
+    <button onclick="ofrTab('new')">+ Ofertă nouă</button>
+  </div>
+
+  <!-- ====== List panel ====== -->
+  <div class="pan on" id="panList">
+    <div id="ofrMsg"></div>
+    <table>
+      <thead><tr>
+        <th>CUPLU</th><th>DATĂ</th><th>TRUPE</th><th>STATUS</th><th>LINK</th><th>VIEWS</th><th>ACȚIUNI</th>
+      </tr></thead>
+      <tbody id="ofrTbody"></tbody>
+    </table>
+    <div class="empty" id="ofrEmpty" style="display:none">Nicio ofertă încă. Creează prima ofertă!</div>
+  </div>
+
+  <!-- ====== New offer panel ====== -->
+  <div class="pan" id="panNew">
+    <form id="ofrForm" onsubmit="return createOffer(event)">
+      <div class="two">
+        <label><span>Numele (unul dintre miri)</span><input type="text" id="nBride" required placeholder="ex: Andrei"></label>
+        <label><span>Partenerul / partenera (opțional)</span><input type="text" id="nGroom" placeholder="îl pot scrie și ei, în ofertă"></label>
+      </div>
+      <div class="two">
+        <label><span>Telefon</span><input type="tel" id="nPhone"></label>
+        <label><span>Email</span><input type="email" id="nEmail"></label>
+      </div>
+      <div class="two">
+        <label><span>Data evenimentului</span><input type="date" id="nDate" required></label>
+        <label><span>Locație</span><input type="text" id="nVenue"></label>
+      </div>
+      <div class="two">
+        <label><span>Localitatea nunții</span><input type="text" id="nCity" placeholder="ex: Brașov" onchange="ofrKm()"></label>
+        <label><span>Km de la București (dus)</span><input type="number" id="nKm" min="0" step="1" oninput="ofrLodge()"><small id="nKmMsg" style="color:#777;font-size:12px"></small></label>
+      </div>
+      <label style="display:flex;gap:8px;align-items:center;margin:-4px 0 14px"><input type="checkbox" id="nLodge" style="width:18px;height:18px"> <span style="margin:0">Trupa are nevoie de cazare (simplă, fără pretenții)</span></label>
+      <div style="background:#fff8d6;border:1px solid #f3e08a;border-radius:12px;padding:12px 14px;margin:0 0 14px"><label style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" id="nMeet" style="width:18px;height:18px" onchange="var on=this.checked;document.getElementById('nMeetF').style.display=on?'':'none'"> <span style="margin:0;color:#111">Invitație la întâlnire online (pagina fără prețuri, cu intervalul 6.000–10.000 €)</span></label><div id="nMeetF" style="display:none;margin-top:12px"><div class="two"><label><span>Data și ora întâlnirii</span><input type="datetime-local" id="nMeetAt" style="width:100%;border:1px solid #ddd;border-radius:10px;padding:10px 12px;font:400 15px/1.4 'Open Sans',sans-serif"></label><label><span>Platforma</span><select id="nMeetP"><option>Google Meet</option><option>Zoom</option></select></label></div><label style="margin:0"><span>Linkul întâlnirii (Meet / Zoom)</span><input type="text" id="nMeetLink" placeholder="https://meet.google.com/…"></label></div></div>
+      <label>
+        <span>Trupele disponibile pe această dată</span>
+        <div class="band-picks" id="nBands">
+          <label><input type="checkbox" value="overtime"><span>OVERTIME</span></label>
+          <label><input type="checkbox" value="the-mood"><span>The MOOD</span></label>
+          <label><input type="checkbox" value="hotstuff"><span>HOTSTUFF</span></label>
+          <label><input type="checkbox" value="moves"><span>MOVES</span></label>
+          <label><input type="checkbox" value="timeout"><span>TimeOut</span></label>
+          <label><input type="checkbox" value="sirido"><span>SIRIDO</span></label>
+        </div>
+      </label>
+      <div class="two">
+        <label><span>Expiră în (ore)</span><input type="number" id="nExpHours" value="240" min="0" step="1"><small style="color:#999;font-size:12px">0 = fără countdown</small></label>
+        <label><span>Note interne</span><textarea id="nNotes" rows="2" style="min-height:60px"></textarea></label>
+      </div>
+      <div style="margin-top:10px">
+        <button type="submit" class="abtn y">Creează oferta ✨</button>
+        <button type="button" class="abtn g" onclick="ofrTab('list')" style="margin-left:8px">Anulează</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+var CFG=window.WM_SB||{url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'},
+    BASE_URL='https://wattmusic.ro/oferta/?o=';
+
+// Acces doar pentru echipă: folosește sesiunea din „Trupa Mea · Admin” de pe aceeași pagină
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+  if(!S.at)return Promise.reject('login');
+  if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+  return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N={at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000};N.rem=!!S.rem;try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N));if(N.rem)localStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function sb(method,path,body){
+  return sess().then(function(at){
+    var h={'apikey':CFG.key,'Content-Type':'application/json','Authorization':'Bearer '+at};
+    if(method!=='GET') h['Prefer']='return=representation';
+    var opts={method:method,headers:h};
+    if(body) opts.body=JSON.stringify(body);
+    return fetch(CFG.url+'/rest/v1/'+path,opts).then(function(r){return r.json()});
+  }).catch(function(e){if(e==='login'){var t=document.getElementById('ofrEmpty');if(t){t.style.display='';t.textContent='Intrați mai întâi în „Trupa Mea · Admin” (sus pe pagină), apoi apăsați din nou pe Oferte.'}}throw e});
+}
+
+// Tab switching
+window.ofrTab=function(name){
+  document.querySelectorAll('.ofr-adm .tabs button').forEach(function(b,i){
+    b.classList.toggle('on',i===(name==='list'?0:1));
+  });
+  document.getElementById('panList').classList.toggle('on',name==='list');
+  document.getElementById('panNew').classList.toggle('on',name==='new');
+  if(name==='list') loadOffers();
+};
+
+// Distanța de la București: se calculează automat după localitate (OpenStreetMap), se poate corecta manual
+window.ofrLodge=function(){var k=parseInt(document.getElementById('nKm').value,10);document.getElementById('nLodge').checked=k>100};
+window.ofrKm=function(){var c=document.getElementById('nCity').value.trim(),m=document.getElementById('nKmMsg');if(!c){m.textContent='';return}m.textContent='Calculez distanța…';document.getElementById('nKm').dataset.bi='';
+ fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=ro&q='+encodeURIComponent(c)).then(function(r){return r.json()}).then(function(j){if(!j||!j[0])throw 0;var a=j[0].address||{},reg=[a.county,a.state,a.city].join(' ');
+  if(/Ilfov|Bucure/i.test(reg)){document.getElementById('nKm').value=0;document.getElementById('nKm').dataset.bi='1';ofrLodge();m.textContent='București / Ilfov: fără transport.';return}
+  return fetch('https://router.project-osrm.org/route/v1/driving/26.1025,44.4268;'+j[0].lon+','+j[0].lat+'?overview=false').then(function(r){return r.json()}).then(function(o){var km=Math.round(o.routes[0].distance/1000);document.getElementById('nKm').value=km;ofrLodge();m.textContent=km+' km pe drum, dus. Verifică și corectează dacă e nevoie.'})}).catch(function(){m.textContent='Nu am găsit automat. Scrie km manual.'})};
+
+// Load offers
+function loadOffers(){
+  sb('GET','offers?select=*&or=(mode.is.null,mode.in.(offer,meet))&order=created_at.desc').then(function(data){
+    var tbody=document.getElementById('ofrTbody');
+    var empty=document.getElementById('ofrEmpty');
+    if(!data||!data.length){tbody.innerHTML='';empty.style.display='';return;}
+    empty.style.display='none';
+    tbody.innerHTML='';
+    data.forEach(function(o){
+      var bands=[];
+      try{bands=typeof o.bands==='string'?JSON.parse(o.bands):o.bands||[]}catch(e){}
+      var bandNames=bands.map(function(s){return s.toUpperCase()}).join(', ');
+      var link=BASE_URL+o.token;
+      var tr=document.createElement('tr');
+      var W=o.wedding_dna||{},M=W.meeting||null,det='';if(M&&M.format)det+='<div style="margin-top:6px;font-size:12px;color:#7a5b00;background:#fff6c2;border-radius:8px;padding:6px 8px">📅 Întâlnire: <b>'+esc(M.format)+'</b>'+(M.when?' · '+esc(M.when):'')+(M.note?'<br>„'+esc(M.note)+'”':'')+'</div>';if(W.favorites_label)det+='<div style="margin-top:4px;font-size:12px;color:#555">♥ Favorite: '+esc(W.favorites_label)+'</div>';if(W.dna_profile)det+='<div style="margin-top:4px;font-size:12px;color:#555">🧬 '+esc(W.dna_profile)+'</div>';if(W.dream&&W.dream.length)det+='<div style="margin-top:4px;font-size:12px;color:#555">✨ Vor: '+esc(W.dream.join(', '))+'</div>';if(W.taste)det+='<div style="margin-top:4px;font-size:12px;color:#555">🎵 '+esc(W.taste)+'</div>';var PF=W.perfect||(W.live&&W.live.perfect);if(PF)det+='<div style="margin-top:6px;font-size:12.5px;color:#16161a;background:#f6f6f8;border-left:3px solid #FBE530;border-radius:6px;padding:6px 8px">💬 Petrecerea e perfectă dacă… <b>'+esc(PF)+'</b></div>';var L=W.live,SN={welcome:'Bun venit',who:'Cine suntem',dream:'Dream Party',taste:'Music Taste',dna:'Wedding DNA',bands:'Trupele',compare:'Comparația',perks:'Ce primiți',meet:'Întâlnirea',choose:'Alegerea'};if(L){var lc='margin-top:4px;font-size:12px;color:#555';det+='<div style="margin-top:8px;font-size:12px;color:#1a5fb4;background:#eaf2fd;border-radius:8px;padding:6px 8px">📍 Activitate: <b>'+esc(L.saved_at?new Date(L.saved_at).toLocaleString('ro-RO',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'')+'</b> · a ajuns până la <b>'+esc(SN[L.max_step]||L.max_step||'')+'</b>'+(L.pick?' · alegere: <b>'+esc(L.pick)+'</b>':'')+'</div>';var FRx=(W.fears&&W.fears.length?W.fears:L.fears)||[],DLx=(W.dislikes&&W.dislikes.length?W.dislikes:L.dislikes)||[],OTx=W.other||L.other||'';if(FRx.length)det+='<div style="'+lc+';background:#fdecec">😟 Frici: '+esc(FRx.join(', '))+'</div>';if(DLx.length)det+='<div style="'+lc+';background:#fdecec">🙅 Nu vor: '+esc(DLx.join(', '))+'</div>';if(OTx)det+='<div style="'+lc+'">💬 Cel mai rău văzut: '+esc(OTx)+'</div>';if(!(W.dream&&W.dream.length)&&L.dream&&L.dream.length)det+='<div style="'+lc+'">✨ Vor: '+esc(L.dream.join(', '))+'</div>';if(!W.taste&&L.taste)det+='<div style="'+lc+'">🎵 '+esc(L.taste)+'</div>';if(!W.dna_profile&&L.dna_profile)det+='<div style="'+lc+'">🧬 '+esc(L.dna_profile)+'</div>';if(!W.favorites_label&&L.favorites&&L.favorites.length)det+='<div style="'+lc+'">♥ Favorite: '+esc(L.favorites.join(', '))+'</div>';if(L.opened&&L.opened.length)det+='<div style="'+lc+'">👀 Au deschis: '+esc(L.opened.join(', '))+'</div>'}if(o.city)det+='<div style="margin-top:4px;font-size:12px;color:#555">📍 '+esc(o.city)+(o.km!=null?' · '+o.km+' km':'')+(o.lodging?' · cu cazare':'')+'</div>';if(o.phone)det+='<div style="margin-top:4px;font-size:12px"><a class="link" href="https://wa.me/'+String(o.phone).replace(/\D/g,'').replace(/^0/,'40')+'" target="_blank">💬 '+esc(o.phone)+'</a></div>';
+      tr.innerHTML='<td><b>'+esc(o.bride)+' & '+esc(o.groom)+'</b>'+det+'</td>'
+        +'<td>'+esc(o.event_date||'—')+'</td>'
+        +'<td style="font-size:12px">'+esc(bandNames)+'</td>'
+        +'<td><span class="st '+o.status+'">'+o.status.toUpperCase()+'</span>'+(o.chosen_band?' → '+esc(o.chosen_band):'')+'</td>'
+        +'<td><a class="link" href="'+link+'" target="_blank">Deschide ↗</a><br><span style="font-size:11px;color:#bbb;cursor:pointer" onclick="copyLink(\''+o.token+'\')">📋 Copiază link</span></td>'
+        +'<td class="views">👁 '+o.view_count+(o.viewed_at?'<br><small>Prima: '+new Date(o.viewed_at).toLocaleDateString('ro')+'</small>':'')+'</td>'
+        +'<td>'+(o.status==='open'?'<button class="abtn r" onclick="cancelOffer(\''+o.id+'\')">Anulează</button>':'—')+'</td>';
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function esc(s){return s?String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;'):'';}
+
+// Copy link
+window.copyLink=function(token){
+  navigator.clipboard.writeText(BASE_URL+token).then(function(){
+    showMsg('Link copiat!','ok');
+  });
+};
+
+// Create offer
+window.createOffer=function(e){
+  e.preventDefault();
+  var bands=[];
+  document.querySelectorAll('#nBands input:checked').forEach(function(c){bands.push(c.value)});
+  if(!bands.length){showMsg('Selectează cel puțin o trupă!','err');return false;}var wdE=window.wmDateErr?wmDateErr(document.getElementById('nDate').value):'';if(wdE){showMsg(wdE,'err');return false;}var wlE=window.wmLogi?wmLogi(document.getElementById('nCity'),document.getElementById('nKm'),document.getElementById('nLodge')):'';if(wlE){showMsg(wlE,'err');return false;}
+
+  var hours=parseInt(document.getElementById('nExpHours').value)||0;
+  var expires=hours>0?new Date(Date.now()+hours*36e5).toISOString():null;
+
+  var body={
+    bride:document.getElementById('nBride').value.trim(),
+    groom:document.getElementById('nGroom').value.trim()||null,
+    phone:document.getElementById('nPhone').value.trim()||null,
+    email:document.getElementById('nEmail').value.trim()||null,
+    event_date:document.getElementById('nDate').value||null,
+    venue:document.getElementById('nVenue').value.trim()||null,
+    city:document.getElementById('nCity').value.trim()||null,
+    km:document.getElementById('nKm').value!==''?parseInt(document.getElementById('nKm').value,10):null,
+    lodging:document.getElementById('nLodge').checked,
+    bands:bands,
+    expires_at:expires,
+    notes:document.getElementById('nNotes').value.trim()||null
+  };var mOn=document.getElementById('nMeet')&&document.getElementById('nMeet').checked;body.mode=mOn?'meet':'offer';if(mOn){var mv=document.getElementById('nMeetAt').value;body.meet_at=mv?new Date(mv).toISOString():null;body.meet_platform=document.getElementById('nMeetP').value;body.meet_link=document.getElementById('nMeetLink').value.trim()||null}
+
+  sb('POST','offers',body).then(function(data){
+    if(data&&data[0]&&data[0].token){
+      var link=BASE_URL+data[0].token;
+      showMsg('Ofertă creată! Link: <a href="'+link+'" target="_blank" style="color:#1a73e8">'+link+'</a>','ok');
+      document.getElementById('ofrForm').reset();
+      ofrTab('list');
+    } else {
+      showMsg('Eroare la creare: '+JSON.stringify(data),'err');
+    }
+  }).catch(function(err){
+    showMsg('Eroare de conexiune.','err');
+  });
+  return false;
+};
+
+// Cancel offer
+window.cancelOffer=function(id){
+  if(!confirm('Sigur anulezi această ofertă?')) return;
+  sb('PATCH','offers?id=eq.'+id,{status:'cancelled'}).then(function(){
+    showMsg('Ofertă anulată.','ok');
+    loadOffers();
+  });
+};
+
+function showMsg(txt,type){
+  var el=document.getElementById('ofrMsg');
+  el.innerHTML='<div class="msg '+type+'">'+txt+'</div>';
+  setTimeout(function(){el.innerHTML=''},5000);
+}
+
+// Init
+loadOffers();
+// după ce echipa intră în adminul de sus, lista ofertelor se încarcă singură
+var _w=setInterval(function(){try{var S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}');if(S&&S.at&&document.getElementById('ofrEmpty').textContent.indexOf('Intrați')===0){document.getElementById('ofrEmpty').textContent='Nicio ofertă încă. Creează prima ofertă!';loadOffers()}}catch(_){}},2000);
+})();
+</script>
+

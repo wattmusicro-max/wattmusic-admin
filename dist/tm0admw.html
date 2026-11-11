@@ -1,0 +1,723 @@
+<style>
+.wm-ad{--y:#FBE530;--p:#A2187B;--ink:#16161a;--mu:#6b6b76;--ln:#e6e6ea;font-family:"Open-Sans","Open Sans",sans-serif;color:var(--ink);background:#f6f6f8;padding:36px 16px 70px;min-height:85vh}
+.wm-ad *{box-sizing:border-box}
+.wm-ad .in{max-width:1100px;margin:0 auto}
+.wm-ad h1{font:600 28px/1.2 "Lexend-Deca","Lexend Deca",sans-serif;margin:0 0 4px}
+.wm-ad .sub{color:var(--mu);margin:0 0 22px;font-size:15px}
+.wm-ad .card{background:#fff;border:1px solid var(--ln);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 6px 20px -14px rgba(0,0,0,.25)}
+.wm-ad h2{font:600 19px/1.2 "Lexend-Deca","Lexend Deca",sans-serif;margin:0 0 14px}
+.wm-ad h3{font:700 15px/1.3 "Open-Sans",sans-serif;margin:18px 0 10px}
+.wm-ad label{display:block;margin-bottom:12px}
+.wm-ad label span{display:block;font:700 13px/1.3 "Open-Sans",sans-serif;margin-bottom:5px;color:#33333a}
+.wm-ad input,.wm-ad select,.wm-ad textarea{width:100%;border:1px solid #d4d4da;border-radius:10px;padding:11px 12px;font:400 15.5px/1.4 "Open-Sans",sans-serif;color:var(--ink);background:#fff}
+.wm-ad textarea{min-height:80px;resize:vertical}
+.wm-ad input[type=checkbox]{width:18px;height:18px;accent-color:#16161a}
+.wm-ad input:focus,.wm-ad select:focus,.wm-ad textarea:focus{outline:2px solid var(--y);border-color:#c9b400}
+.wm-ad .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 12px}
+.wm-ad .g2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.wm-ad .btn{border:0;cursor:pointer;border-radius:999px;font:800 14px/1 "Open-Sans",sans-serif;padding:13px 18px;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.wm-ad .btn.y{background:var(--y);color:#111}
+.wm-ad .btn.d{background:#16161a;color:#fff}
+.wm-ad .btn.l{background:#fff;color:#16161a;border:1px solid #d4d4da}
+.wm-ad .btn.wa{background:#25D366;color:#06210f}
+.wm-ad .btn.s{padding:9px 13px;font-size:13px}
+.wm-ad .err{color:#c0262d;font-weight:700;margin:8px 0}
+.wm-ad .okm{color:#137a3a;font-weight:700;margin:8px 0}
+.wm-ad .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.wm-ad .login{max-width:420px;margin:30px auto}
+.wm-ad .app{display:none}.wm-ad.ok .app{display:block}.wm-ad.ok .login{display:none}
+.wm-ad .new{display:none;background:#fffbe0;border:1px solid #f1e27a;border-radius:16px;padding:16px;margin-top:14px}
+.wm-ad .new.on{display:block}
+.wm-ad .new code{font:700 15px/1.4 monospace;background:#fff;border:1px solid #eee;border-radius:8px;padding:3px 7px;word-break:break-all}
+.wm-ad .new .pinbig{font:700 30px/1 "Lexend-Deca","Lexend Deca",monospace;letter-spacing:.2em}
+.wm-ad .flt{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.wm-ad .flt input{max-width:320px}
+.wm-ad table{width:100%;border-collapse:collapse}
+.wm-ad th{text-align:left;font:800 11px/1 "Open-Sans",sans-serif;letter-spacing:.12em;color:var(--mu);padding:10px 8px;border-bottom:1px solid var(--ln)}
+.wm-ad td{padding:12px 8px;border-bottom:1px solid var(--ln);font-size:14.5px;vertical-align:top}
+.wm-ad tr.c{cursor:pointer}.wm-ad tr.c:hover td{background:#fafafa}
+.wm-ad .tag{display:inline-block;font:700 11.5px/1 "Open-Sans",sans-serif;padding:5px 8px;border-radius:999px;margin:0 4px 4px 0}
+.wm-ad .t0{background:#f1f1f4;color:#55555f}.wm-ad .t1{background:#e9f8ee;color:#137a3a}.wm-ad .t2{background:#fff4d6;color:#8a6200}.wm-ad .t3{background:#fde8f5;color:#A2187B}
+.wm-ad .det td{background:#fcfcfd}
+.wm-ad pre{white-space:pre-wrap;font:400 14px/1.55 "Open-Sans",sans-serif;margin:0 0 12px;background:#fff;border:1px solid var(--ln);border-radius:12px;padding:14px;max-height:520px;overflow:auto}
+.wm-ad .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.wm-ad .empty{color:var(--mu);text-align:center;padding:20px 0}
+.wm-ad .alert{border-radius:16px;padding:16px 18px;margin-bottom:16px;border:1px solid}
+.wm-ad .alert.a1{background:#fde8f5;border-color:#f3bfe0}.wm-ad .alert.a2{background:#fff4d6;border-color:#f1e27a}
+.wm-ad .alert h2{margin-bottom:8px}
+.wm-ad .rqi{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:12px;margin-top:10px}
+.wm-ad .rqi p{margin:0 0 8px;white-space:pre-wrap}
+.wm-ad .rqi small{color:var(--mu)}
+.wm-ad .pht{width:72px;height:72px;border-radius:50%;background:#eee center/cover no-repeat;border:3px solid var(--y);flex:none}
+.wm-ad .box{border:1px solid var(--ln);border-radius:14px;padding:14px;margin-bottom:12px;background:#fff}
+.wm-ad .gbi{display:flex;gap:10px;align-items:flex-start;border-top:1px solid var(--ln);padding:8px 0;font-size:14px}
+.wm-ad .gbi p{flex:1;margin:0;white-space:pre-wrap}
+.wm-ad .fq{border-top:1px solid var(--ln);padding:12px 0}
+.wm-ad .fq .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.wm-ad .draft{background:#fff4d6;color:#8a6200;font:700 11px/1 "Open-Sans",sans-serif;padding:4px 7px;border-radius:999px}
+nav.wm-bar,.elementor-element-bb9699c,footer.elementor-location-footer{display:none!important}
+.elementor-element-tm0ofradm{display:none}
+.wm-ad .ofrslot .elementor-element-tm0ofradm{display:block!important;margin:0 0 22px}
+.wm-ad .ofrslot .ofr-adm{border:1px solid var(--ln);border-radius:18px;box-shadow:0 6px 20px -14px rgba(0,0,0,.25);max-width:none}
+.wm-ad .tabsA{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.wm-ad .tabsA button{border:1px solid #d4d4da;background:#fff;color:#16161a;border-radius:999px;padding:11px 16px;font:800 14px/1 "Open-Sans","Open Sans",sans-serif;cursor:pointer}
+.wm-ad .tabsA button.on{background:#16161a;border-color:#16161a;color:#fff}
+.wm-ad .sec{display:none}.wm-ad .sec.on{display:block}
+.wm-ad .tabsA .bdg{display:none;margin-left:6px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#A2187B;color:#fff;font:800 11px/20px "Open Sans",sans-serif;text-align:center}
+.wm-ad .sh{font:600 22px/1.2 "Lexend-Deca","Lexend Deca",sans-serif;margin:8px 0 12px}
+@media(max-width:760px){.wm-ad .g3,.wm-ad .g2{grid-template-columns:1fr}.wm-ad .hm{display:none}.wm-ad td,.wm-ad th{padding:10px 5px}}
+</style>
+<section class="wm-ad"><div class="in">
+<div class="login card"><h1>Trupa Mea · Admin</h1><p class="sub">Acces doar pentru echipa WATT Music.</p>
+<label><span>Email</span><input type="email" class="em" autocomplete="username"></label>
+<label><span>Parolă</span><input type="password" class="pw" autocomplete="current-password"></label>
+<label style="display:flex;gap:8px;align-items:center;margin:0 0 14px;cursor:pointer"><input type="checkbox" class="rm" checked> <span style="margin:0;display:inline">Ține-mă minte pe acest telefon</span></label>
+<div class="err le"></div><button type="button" class="btn d li" style="width:100%;justify-content:center">Intră</button></div>
+<div class="app">
+<div class="top"><div><h1>WATT Music · Admin</h1><p class="sub">Lead-uri, oferte și paginile mirilor, într-un singur loc.</p></div><button type="button" class="btn l lo">Ieșire</button></div>
+<div class="tabsA"><button type="button" class="on" data-sec="ofr">Lead-uri și oferte</button><button type="button" data-sec="main">Paginile mirilor<b class="bdg"></b></button><button type="button" data-sec="vz">🔥 Discuții cu potențial</button><button type="button" data-sec="st">📊 Statistici & KPI</button><button type="button" data-sec="soc">📱 Social media</button><button type="button" data-sec="as">🔒 Asociate</button><button type="button" data-sec="tm">Tour manageri</button><button type="button" data-sec="dl">🤝 Deal trupe</button></div>
+<div class="sec on" data-sec="ofr">
+<div class="ofrslot"></div>
+</div>
+<div class="sec" data-sec="main">
+<h2 class="sh">Paginile mirilor · Trupa Mea</h2>
+<div class="alerts"></div>
+<div class="card"><h2>Cuplu nou</h2>
+<div class="g3"><label><span>Mireasa</span><input class="nb" placeholder="Lăsați gol dacă nu o știți – o scriu mirii"></label><label><span>Mirele</span><input class="ng" placeholder="Lăsați gol dacă nu îl știți – îl scriu mirii"></label><label><span>Telefon WhatsApp</span><input class="np" inputmode="tel" placeholder="07xx xxx xxx"></label></div>
+<div class="g3"><label><span>Data nunții</span><input type="date" class="nd"></label><label><span>Locația</span><input class="nv"></label><label><span>Trupa</span><select class="nt"><option>Trupa MOVES</option><option>Trupa TimeOut</option><option>Trupa The MOOD</option><option>Trupa HOTSTUFF</option><option>Trupa OVERTIME</option><option>Andrei Bănuță</option><option>Nicoleta Oancea</option><option>Georgiana Neagu</option><option>SIRIDO</option><option>Altă formulă</option></select></label></div>
+<div class="err ne"></div><button type="button" class="btn y cr">Creează și generează linkul</button>
+<div class="new"></div></div>
+<div class="card"><div class="flt"><input class="q" placeholder="Caută după nume, trupă, locație…"><button type="button" class="btn l rf">Reîncarcă</button></div>
+<table><thead><tr><th>Nunta</th><th>Miri</th><th class="hm">Trupa</th><th>Stadiu</th></tr></thead><tbody class="tb"></tbody></table></div>
+</div>
+<div class="sec" data-sec="vz"><h2 class="sh">Discuții cu potențial mare</h2><div class="vzslot"></div></div>
+<div class="sec" data-sec="st"><div class="stslot"></div></div>
+<div class="sec" data-sec="soc"><div id="wmSoc"></div></div>
+<div class="sec" data-sec="as"><div id="wmAs"></div></div>
+<div class="sec" data-sec="dl"><div id="wmDl"></div></div>
+<div class="sec" data-sec="faq">
+<div class="card"><h2>Întrebări frecvente · aplicația mirilor</h2><p class="sub" style="margin:0 0 6px">Mirii văd doar întrebările bifate „Activ”. Cele marcate „Ciornă” sunt propuneri: citiți-le, modificați-le și activați-le când sunteți de acord.</p><div class="fqs"></div><button type="button" class="btn l fqa" style="margin-top:12px">+ Întrebare nouă</button></div>
+</div>
+<div class="sec" data-sec="tm">
+<div class="card"><h2>Tour manageri · programul serii</h2><p class="sub" style="margin:0 0 6px">Fiecare trupă are un link propriu pentru tour manager. Acolo vede nunțile trupei, dorințele mirilor și face programul serii, pe care mirii îl confirmă în aplicație.</p><div class="bds"></div></div>
+</div>
+</div></div></section>
+<script>
+(function(){try{var hd=document.head;function m(n,c){var e=document.createElement('meta');e.name=n;e.content=c;hd.appendChild(e)}m('apple-mobile-web-app-capable','yes');m('mobile-web-app-capable','yes');m('apple-mobile-web-app-title','WATT Admin');m('application-name','WATT Admin');m('apple-mobile-web-app-status-bar-style','default');m('theme-color','#16161a');
+var cv=document.createElement('canvas');cv.width=cv.height=512;var x=cv.getContext('2d');x.fillStyle='#0B0B0D';x.fillRect(0,0,512,512);x.fillStyle='#FBE530';x.beginPath();x.moveTo(290,58);x.lineTo(150,280);x.lineTo(250,280);x.lineTo(215,454);x.lineTo(362,214);x.lineTo(262,214);x.closePath();x.fill();x.fillStyle='#ffffff';x.font='bold 54px Arial';x.textAlign='center';x.fillText('ADMIN',256,500);var png=cv.toDataURL('image/png');
+document.querySelectorAll('link[rel="apple-touch-icon"],link[rel="manifest"]').forEach(function(e){e.parentNode.removeChild(e)});var l=document.createElement('link');l.rel='apple-touch-icon';l.setAttribute('sizes','180x180');l.href=png;hd.appendChild(l);
+var base=location.origin+'/trupa-mea-admin/',man={name:'WATT Admin',short_name:'WATT Admin',start_url:base,scope:base,display:'standalone',background_color:'#ffffff',theme_color:'#16161a',icons:[{src:png,sizes:'512x512',type:'image/png',purpose:'any'}]};var ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(new Blob([JSON.stringify(man)],{type:'application/manifest+json'}));hd.appendChild(ml)}catch(_){}})();
+(function(){var r=document.currentScript.previousElementSibling,C=window.WM_SB||{},S={},L=[],RQ=[],q=function(s){return r.querySelector(s)};
+var MO=[['intrare','Intrarea mirilor'],['dans1','Primul dans'],['tata','Dansul miresei cu tatăl'],['mama','Dansul mirelui cu mama'],['nasi','Dansul cu nașii'],['tort','Tortul'],['buchet','Aruncarea buchetului'],['djpl','Playlist pentru DJ']];
+var ST=[['Hituri internaționale','int'],['Pop românesc și RO-stalgia','ro'],['Muzică italiană și nostalgii','it'],['Balkan','bk'],['Folclor și hore','fo'],['Party / club','pa'],['Rock','rk'],['Muzică lentă / de dans în doi','sl']];
+var TL={sosire:'Sosirea invitaților',tortc:'Final petrecere'};MO.forEach(function(m){TL[m[0]]=m[1]});
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fd(d){return d?String(d).slice(0,10).split('-').reverse().join('.'):''}
+function nm(c){return [c.bride,c.groom].filter(Boolean).join(' & ')||'—'}
+function days(c){return c.event_date?Math.ceil((new Date(c.event_date+'T18:00:00')-new Date())/864e5):null}
+function sum(o){o=o||{};var L=[],has=function(k,v){return o[k+'|'+v]},ln=function(t,x){L.push('');L.push('— '+t+' —');L.push(x||'(nimic)')};
+L.push('— NUNTA —');L.push([o.mireasa,o.mire].filter(Boolean).join(' & ')||'-');if(o.data)L.push(fd(o.data)+(o.ora?' · ora '+o.ora:''));if(o.locatie)L.push(o.locatie);if(o.trupa)L.push(o.trupa);if(o.invitati)L.push('aprox. '+o.invitati+' invitați');
+if(o.final_ok)L.push('✅ Desfășurarea serii aprobată de miri pe '+fd(o.final_ok));
+if(o._dna){L.push('');L.push('— WEDDING DNA —');L.push('• '+o._dna);if(o._dnap)L.push('• '+o._dnap);var ans=Object.keys(o).filter(function(k){return /^q\d\|/.test(k)}).map(function(k){return k.split('|')[1]});if(ans.length)L.push('• Au ales: '+ans.join(', '))}
+var sv=[['cunoscut','Cum s-au cunoscut'],['cerere','Cererea'],['nasi_n','Nașii'],['parm','Părinții miresei'],['parg','Părinții mirelui'],['importanti','Persoane importante'],['fun','De folosit pe scenă']].filter(function(x){return o[x[0]]});if(sv.length){L.push('');L.push('— POVESTEA —');sv.forEach(function(x){L.push('• '+x[1]+': '+o[x[0]])})}
+L.push('');L.push('— MOMENTE —');var a=0;MO.forEach(function(m){if(has('m_'+m[0],'on')){a=1;var it=m[0]==='intrare'&&Object.keys(o).filter(function(k){return k.indexOf('in_tip|')===0&&o[k]}).map(function(k){return k.slice(7)})[0];L.push('• '+m[1]+': '+(it?it+' · ':'')+(has('l_'+m[0],'on')?(m[0]==='djpl'?'alege DJ-ul':'alege trupa'):(o['p_'+m[0]]||'de stabilit'))+(m[0]==='dans1'&&([Object.keys(o).filter(function(k){return k.indexOf('d1_tip|')===0&&o[k]}).map(function(k){return k.slice(7)})[0],o.d1_p2?'mashup cu '+o.d1_p2:'',o['d1_cor|on']?'cu coregrafie':'',o['d1_aud|on']?'audio editat de coregraf':''].filter(Boolean).join(', '))?' ('+([Object.keys(o).filter(function(k){return k.indexOf('d1_tip|')===0&&o[k]}).map(function(k){return k.slice(7)})[0],o.d1_p2?'mashup cu '+o.d1_p2:'',o['d1_cor|on']?'cu coregrafie':'',o['d1_aud|on']?'audio editat de coregraf':''].filter(Boolean).join(', '))+')':''))}});if(!a)L.push('• (încă nimic)');
+L.push('');L.push('— STIL (0–5) —');ST.forEach(function(s){if(o['s_'+s[1]]!=null)L.push('• '+s[0]+': '+o['s_'+s[1]])});Object.keys(o).forEach(function(k){if(k.indexOf('manele|')===0)L.push('• Manele: '+k.split('|')[1])});var g=Object.keys(o).filter(function(k){return k.indexOf('gen|')===0}).map(function(k){return k.split('|')[1]});if(g.length)L.push('• Invitați: '+g.join(', '));var AG=[['v_c','copii (sub 18)'],['v_18','18–30 ani'],['v_30','30–45 ani'],['v_45','45–60 ani'],['v_60','peste 60 de ani']];function agl(g){return AG.filter(function(a){return +g(a[0])>0}).map(function(a){return g(a[0])+' × '+a[1]}).join(', ')};var ag=agl(function(k){return o[k]||''});if(ag)L.push('• Vârste: '+ag);if(o.str_tari)L.push('• Invitați din: '+o.str_tari+(o.str_piesa?' · piesă: '+o.str_piesa:''));
+ln('OUR STORY',o.so_story);ln('MUST PLAY',o.must);ln('NEVER PLAY',o.ban);if(o.pz_mireasa)ln('PIESELE MIRESEI',o.pz_mireasa);if(o.pz_mire)ln('PIESELE MIRELUI',o.pz_mire);if(o.spl)L.push('Playlist: '+o.spl);var k1=function(p){return Object.keys(o).filter(function(k){return k.indexOf(p+'|')===0}).map(function(k){return k.split('|')[1]})[0]};var sg=k1('sg');if(sg&&sg!=='Nu'){L.push('');L.push('— INVITAT SPECIAL —');L.push('• '+sg+(o.sg_nume?': '+o.sg_nume:''));if(k1('sg_tip'))L.push('• Ce face: '+k1('sg_tip'));if(k1('sg_prog'))L.push('• '+k1('sg_prog')+(o.sg_dur?' · cca '+o.sg_dur+' min':''));if(o.sg_ora)L.push('• Când: '+o.sg_ora);if(k1('sg_mod'))L.push('• Cum cântă: '+k1('sg_mod'));if(o.sg_piese)L.push('• Piese: '+o.sg_piese);if(o.sg_teh)L.push('• Are nevoie de: '+o.sg_teh);if(o.sg_cn||o.sg_ct)L.push('• Contact: '+[o.sg_cn,o.sg_ct].filter(Boolean).join(', '))}
+var t=Object.keys(o).filter(function(k){return k.indexOf('t_')===0&&o[k]}).sort(function(a,b){return o[a]<o[b]?-1:1});if(t.length){L.push('');L.push('— PROGRAM —');t.forEach(function(k){L.push('• '+o[k]+' – '+(TL[k.slice(2)]||k))})}
+L.push('');L.push('— DETALII —');if(o.cnume||o.ctel)L.push('Contact: '+[o.cnume,o.ctel].filter(Boolean).join(', '));var lge=Object.keys(o).filter(function(k){return k.indexOf('lg_etaj|')===0}).map(function(k){return k.split('|')[1]})[0];var FZN={pl:'Wedding planner',fo:'Fotograf',vi:'Videograf',mc:'MC / prezentator',dj:'DJ',al:'Alt furnizor'};Object.keys(FZN).forEach(function(k){if(o['fz_'+k+'_n']||o['fz_'+k+'_t'])L.push(FZN[k]+': '+[o['fz_'+k+'_n'],o['fz_'+k+'_t']].filter(Boolean).join(', '))});if(o.lg_acc||o.lg_park||lge||o.lg_acc_n)L.push('Pentru trupă: '+[o.lg_acc?'acces în sală de la '+o.lg_acc:'',lge,o.lg_acc_n,o.lg_park?'parcare: '+o.lg_park:''].filter(Boolean).join(' · '));if(o.lg_rn||o.lg_rt)L.push('Contact restaurant: '+[o.lg_rn,o.lg_rt].filter(Boolean).join(', '));if(o.cz_link||o.cz_det)L.push('Cazare trupă: '+[o.cz_link,o.cz_det].filter(Boolean).join(' · '));if(o.ded)L.push('Dedicații: '+o.ded);if(o.alte)L.push('Altele: '+o.alte);return L.join('\n')}
+function api(path,opt){opt=opt||{};var h={'apikey':C.key,'Content-Type':'application/json'};if(S.at)h.Authorization='Bearer '+S.at;if(opt.pref)h.Prefer=opt.pref;return fetch(C.url+path,{method:opt.m||'GET',headers:h,body:opt.b?JSON.stringify(opt.b):undefined}).then(function(x){if(x.status===401&&!opt._r&&S.rt){return auth({refresh_token:S.rt},'refresh_token').then(function(j){if(!j||!j.access_token){logout('Sesiunea a expirat. Intrați din nou.');throw 0}setS(j,S.rem);opt._r=1;return api(path,opt)})}if(x.status===401){logout('Sesiunea a expirat. Intrați din nou.');throw 0}if(x.status===204)return null;return x.text().then(function(t){var j=t?JSON.parse(t):null;if(!x.ok)throw j;return j})})}
+function auth(body,grant){return fetch(C.url+'/auth/v1/token?grant_type='+grant,{method:'POST',headers:{'apikey':C.key,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(x){return x.json()})}
+function setS(j,rem){S={at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000,rem:!!rem};try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(S));if(rem)localStorage.setItem('wm-tm-adm',JSON.stringify(S));else localStorage.removeItem('wm-tm-adm')}catch(_){}}
+function logout(m){S={};try{sessionStorage.removeItem('wm-tm-adm');localStorage.removeItem('wm-tm-adm')}catch(_){}r.classList.remove('ok');q('.le').textContent=m||''}
+q('.li').addEventListener('click',function(){q('.le').textContent='';auth({email:q('.em').value.trim(),password:q('.pw').value},'password').then(function(j){if(!j.access_token){q('.le').textContent='Email sau parolă greșită.';return}setS(j,q('.rm')?q('.rm').checked:false);q('.pw').value='';start()}).catch(function(){q('.le').textContent='Nu ne-am putut conecta.'})});
+q('.pw').addEventListener('keydown',function(e){if(e.key==='Enter')q('.li').click()});
+q('.lo').addEventListener('click',function(){logout()});
+r.querySelectorAll('.tabsA button').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-sec');r.querySelectorAll('.tabsA button').forEach(function(x){x.classList.toggle('on',x===b)});r.querySelectorAll('.sec').forEach(function(s){s.classList.toggle('on',s.getAttribute('data-sec')===k)});window.scrollTo({top:0,behavior:'smooth'})})});
+function mvO(){var ow=document.getElementById('ofrAdm'),sl=q('.ofrslot');if(ow&&sl&&!sl.contains(ow)&&r.classList.contains('ok')){sl.appendChild(ow.closest('.elementor-element')||ow)}}
+function start(){r.classList.add('ok');mvO();setTimeout(mvO,200);setTimeout(mvO,1200);document.addEventListener('DOMContentLoaded',mvO);api('/rest/v1/rpc/is_team',{m:'POST',b:{}}).then(function(ok){if(ok!==true){logout('Contul nu are acces de echipă.');return}load();faqs();bands()})}
+function load(){Promise.all([api('/rest/v1/couples?select=id,token,guest_token,band_token,secret_token,run,run_ok,bride,groom,phone,event_date,venue,band,created_at,last_seen,band_message,video_url,memories,pin_plain,plans(data,updated_at)&order=event_date.asc.nullslast'),api('/rest/v1/requests?select=id,couple_id,msg,answer,created_at&order=created_at.desc')]).then(function(j){L=j[0];RQ=j[1]||[];try{(window.tmSyncNames||function(){})(L,api)}catch(_){}draw();alerts()})}
+function plan(c){return (c.plans&&(Array.isArray(c.plans)?c.plans[0]:c.plans))||{}}
+function stage(c){var p=plan(c),d=p.data||{},n=Object.keys(d).length,t='';if(!c.last_seen)t='<span class="tag t0">Nu a intrat încă</span>';else if(n<6)t='<span class="tag t2">A intrat, puțin completat</span>';else t='<span class="tag t1">Completează · '+(p.updated_at?new Date(p.updated_at).toLocaleString('ro-RO',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'')+'</span>';if(c.run_ok)t+='<span class="tag t1">🕒 Program confirmat</span>';else if(c.run)t+='<span class="tag t2">🕒 Program trimis</span>';if(d.final_ok)t+='<span class="tag t1">✅ Aprobat</span>';if(d._dna)t+='<span class="tag t3">'+esc(d._dna)+'</span>';var un=RQ.filter(function(x){return x.couple_id===c.id&&!x.answer}).length;if(un)t+='<span class="tag t3">'+un+' întrebări noi</span>';return t}
+function link(c){return 'https://wattmusic.ro/trupa-mea/?c='+c.token}
+function waNum(p){p=(p||'').replace(/\D/g,'');if(p.indexOf('0')===0)p='4'+p;if(p.indexOf('40')!==0&&p.length===9)p='40'+p;return p}
+function invite(c,pin){var n=[c.bride,c.groom].filter(Boolean).join(' și ');return 'Bună, '+(n||'dragii noștri')+'! 💛\n\nV-am pregătit aplicația voastră WATT Music · Trupa Mea. Aici vă construiți seara: povestea voastră, Wedding DNA, piesele pentru momentele importante, playlistul și programul serii. Puteți reveni oricând, totul se salvează automat.\n\n👉 '+link(c)+'\nCodul vostru: '+pin+'\n\nAbia așteptăm seara voastră! 🎶'}
+function alerts(){var h='',un=RQ.filter(function(x){return !x.answer});if(un.length){h+='<div class="alert a1"><h2>💬 Ask Mada · '+un.length+' întrebări fără răspuns</h2>';un.forEach(function(x){var c=L.find(function(y){return y.id===x.couple_id})||{};h+='<div class="rqi" data-id="'+x.id+'"><small><b>'+esc(nm(c))+'</b> · '+esc(fd(c.event_date))+' · '+new Date(x.created_at).toLocaleString('ro-RO',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+'</small><p>'+esc(x.msg)+'</p><textarea class="ra" placeholder="Răspunsul tău (apare în aplicația mirilor)"></textarea><div class="acts" style="margin-top:8px"><button type="button" class="btn d s rs">Trimite răspunsul</button><a class="btn wa s" target="_blank" rel="noopener" href="https://wa.me/'+waNum(c.phone)+'?text='+encodeURIComponent('Bună! V-am răspuns în aplicația Trupa Mea, la Ask Mada 💛 '+(c.token?link(c):''))+'">Anunță pe WhatsApp</a><span class="rm"></span></div></div>'});h+='</div>'}
+var vv=L.filter(function(c){var d=days(c);return d!=null&&d>=0&&d<=16&&!c.video_url});if(vv.length){h+='<div class="alert a2"><h2>🎬 Video de la soliști de pregătit</h2><p style="margin:0 0 6px">Nunți în următoarele 16 zile fără video personalizat:</p>'+vv.map(function(c){return '• <b>'+esc(nm(c))+'</b> · '+esc(fd(c.event_date))+' ('+days(c)+' zile) · '+esc(c.band||'')}).join('<br>')+'<p style="margin:8px 0 0;font-size:13.5px;color:#6b6b76">Puneți linkul video (YouTube nelistat sau fișier din Media) în fișa cuplului.</p></div>'}
+q('.alerts').innerHTML=h;var bg=r.querySelector('.tabsA .bdg'),nn=un.length+vv.length;if(bg){bg.textContent=nn?nn:'';bg.style.display=nn?'inline-block':'none'}r.querySelectorAll('.alerts .rqi').forEach(function(b){b.querySelector('.rs').addEventListener('click',function(){var a=b.querySelector('.ra').value.trim();if(!a)return;api('/rest/v1/requests?id=eq.'+b.getAttribute('data-id'),{m:'PATCH',b:{answer:a,status:'raspuns',answered_at:new Date().toISOString()}}).then(function(){b.querySelector('.rm').innerHTML='<span class="okm">Răspuns trimis ✓</span>';var x=RQ.find(function(y){return String(y.id)===b.getAttribute('data-id')});if(x)x.answer=a;setTimeout(function(){alerts();draw()},1200)}).catch(function(){b.querySelector('.rm').innerHTML='<span class="err">Eroare</span>'})})})}
+function lines(a){return (a||[]).join('\n')}
+function arr(t){return t.split('\n').map(function(x){return x.trim()}).filter(function(x){return /^https:\/\//.test(x)})}
+function draw(){var f=q('.q').value.toLowerCase(),tb=q('.tb');var rows=L.filter(function(c){return !f||[c.bride,c.groom,c.band,c.venue,c.event_date].join(' ').toLowerCase().indexOf(f)>-1});if(!rows.length){tb.innerHTML='<tr><td colspan="4" class="empty">Niciun cuplu încă. Creați primul cuplu mai sus.</td></tr>';return}
+tb.innerHTML='';rows.forEach(function(c){var p=plan(c),M=c.memories||{},tr=document.createElement('tr');tr.className='c';tr.innerHTML='<td><b>'+esc(fd(c.event_date)||'—')+'</b><br><span style="color:#6b6b76">'+esc(c.venue||'')+'</span></td><td>'+esc(nm(c))+'</td><td class="hm">'+esc(c.band||'')+'</td><td>'+stage(c)+'</td>';var dt=document.createElement('tr');dt.className='det';dt.style.display='none';
+var rq=RQ.filter(function(x){return x.couple_id===c.id});
+dt.innerHTML='<td colspan="4"><div class="acts" style="margin-bottom:14px"><div class="pht"></div><div style="flex:1;min-width:200px"><b style="font-size:17px" class="hN">'+esc(nm(c))+'</b><br><span style="color:#6b6b76" class="hS">'+esc([c.band,c.venue,fd(c.event_date)].filter(Boolean).join(' · '))+'</span></div><button type="button" class="btn l s ced">Modifică datele</button></div>'+'<div class="box cedb" style="display:none;margin-bottom:16px"><div class="g3"><label><span>Mireasa</span><input class="x_b"></label><label><span>Mirele</span><input class="x_g"></label><label><span>Telefon WhatsApp</span><input class="x_p" inputmode="tel"></label></div><div class="g3"><label><span>Data nunții</span><input type="date" class="x_d"></label><label><span>Locația</span><input class="x_v"></label><label><span>&nbsp;</span><button type="button" class="btn d x_s">Salvează</button></label></div><div class="x_m"></div></div>'+'<div class="box tacc" style="margin-bottom:16px"></div>'+
+'<div class="g2"><div><h3>Planul lor</h3><pre></pre><div class="acts"><a class="btn wa s wa1" target="_blank" rel="noopener">WhatsApp cuplului</a><button type="button" class="btn l s cpl">Copiază linkul</button><button type="button" class="btn l s rp">Cod nou + invitație</button><button type="button" class="btn l s cps">Copiază planul</button><button type="button" class="btn l s dl" style="color:#c0262d;border-color:#f0b4b7">Șterge cuplul</button></div><div class="acts" style="margin-top:8px"><a class="btn d s fsl" target="_blank" rel="noopener">📋 Fișa serii pentru trupă</a><a class="btn wa s fsw" target="_blank" rel="noopener">Trimite fișa trupei</a></div><div class="np2"></div>'+(rq.length?'<h3>Ask Mada</h3>'+rq.map(function(x){return '<div class="rqi"><small>'+new Date(x.created_at).toLocaleDateString('ro-RO')+'</small><p>'+esc(x.msg)+'</p>'+(x.answer?'<p style="margin:0"><b>Răspuns:</b> '+esc(x.answer)+'</p>':'<span class="tag t3">fără răspuns (vezi sus)</span>')+'</div>'}).join(''):'')+'</div>'+
+'<div><h3>Personalizare</h3><div class="box"><label><span>Mesajul trupei (apare în aplicația lor)</span><textarea class="e_bm" placeholder="Lăsați gol pentru mesajul standard"></textarea></label><label><span>Video de la soliști (link YouTube nelistat sau .mp4) · ideal cu 14 zile înainte</span><input class="e_vid" placeholder="https://"></label></div>'+
+'<h3>Amintiri (apar după nuntă)</h3><div class="box"><label><span>Rezumatul serii</span><textarea class="e_sum" placeholder="Câteva rânduri emoționante despre seara lor"></textarea></label><label><span>Video de mulțumire de la trupă</span><input class="e_tv" placeholder="https://"></label><label><span>Fotografii (câte un link pe rând)</span><textarea class="e_ph" placeholder="https://..."></textarea></label><label><span>Clipuri (câte un link pe rând)</span><textarea class="e_cl" placeholder="https://..."></textarea></label><label><span>Playlistul serii (Spotify / Apple Music)</span><input class="e_pl" placeholder="https://"></label></div>'+
+'<div class="acts"><button type="button" class="btn d sv">Salvează personalizarea</button><span class="svm"></span></div>'+
+'<h3>🤫 Surprize secrete</h3><p style="margin:0 0 6px;font-size:13.5px;color:#6b6b76">Link pentru nași / prieteni (mirii nu văd ce scriu): <code style="word-break:break-all">'+esc('https://wattmusic.ro/trupa-mea/?sp='+(c.secret_token||''))+'</code></p><div class="scs"></div>'+
+'<h3>Cartea de oaspeți</h3><p style="margin:0 0 6px;font-size:13.5px;color:#6b6b76">Link pentru invitați: <code style="word-break:break-all">'+esc('https://wattmusic.ro/trupa-mea/?g='+(c.guest_token||''))+'</code></p><div class="gbl"><span style="color:#6b6b76;font-size:13.5px">Se încarcă…</span></div></div></div></td>';
+dt.querySelector('pre').textContent=sum(p.data);dt.querySelector('.wa1').href='https://wa.me/'+waNum(c.phone);var fl='https://wattmusic.ro/trupa-mea/?f='+(c.band_token||'');dt.querySelector('.fsl').href=fl;dt.querySelector('.fsw').href='https://wa.me/?text='+encodeURIComponent('📋 Fișa serii pentru nunta '+nm(c)+' ('+fd(c.event_date)+', '+(c.venue||'')+'). Se actualizează automat cu tot ce completează mirii:\n'+fl);
+dt.querySelector('.e_bm').value=c.band_message||'';dt.querySelector('.e_vid').value=c.video_url||'';dt.querySelector('.e_sum').value=M.summary||'';dt.querySelector('.e_tv').value=M.thanks_video||'';dt.querySelector('.e_ph').value=lines(M.photos);dt.querySelector('.e_cl').value=lines(M.clips);dt.querySelector('.e_pl').value=M.playlist||'';
+dt.querySelector('.sv').addEventListener('click',function(){var g=function(s){return dt.querySelector(s).value.trim()},m={summary:g('.e_sum')||null,thanks_video:g('.e_tv')||null,photos:arr(g('.e_ph')),clips:arr(g('.e_cl')),playlist:g('.e_pl')||null},b={band_message:g('.e_bm')||null,video_url:g('.e_vid')||null,memories:m},sm=dt.querySelector('.svm');sm.innerHTML='';api('/rest/v1/couples?id=eq.'+c.id,{m:'PATCH',b:b,pref:'return=minimal'}).then(function(){c.band_message=b.band_message;c.video_url=b.video_url;c.memories=m;sm.innerHTML='<span class="okm">Salvat ✓</span>';alerts()}).catch(function(e){sm.innerHTML='<span class="err">Nu s-a salvat'+(e&&e.message?': '+esc(e.message):'')+'</span>'})});
+(function(){var ab=dt.querySelector('.tacc');if(!ab)return;dt._acc=function(){var pin=c.pin_plain,l=link(c);ab.innerHTML='<b style="display:block;margin-bottom:6px">Accesul mirilor în Trupa Mea</b><div style="word-break:break-all">Link: <a href="'+esc(l)+'" target="_blank" rel="noopener">'+esc(l)+'</a></div><div style="margin:4px 0 10px">Cod: '+(pin?'<b style="font-size:20px;letter-spacing:.18em">'+esc(pin)+'</b>':'<span style="color:#9a6b00">nesalvat încă. Apasă o dată „Cod nou + invitație” de mai jos; de atunci codul rămâne aici.</span>')+'</div><div class="acts">'+(pin?'<a class="btn wa s" target="_blank" rel="noopener" href="https://wa.me/'+waNum(c.phone)+'?text='+encodeURIComponent(invite(c,pin))+'">Trimite din nou pe WhatsApp</a><button type="button" class="btn l s aci">Copiază invitația</button>':'')+'<button type="button" class="btn l s acl">Copiază linkul</button>'+(pin?'<button type="button" class="btn l s acp">Copiază codul</button>':'')+'</div>';var cp=function(sel,txt){var b=ab.querySelector(sel);if(b)b.addEventListener('click',function(){navigator.clipboard&&navigator.clipboard.writeText(txt);b.textContent='Copiat ✓'})};cp('.acl',l);if(pin){cp('.acp',String(pin));cp('.aci',invite(c,pin))}};dt._acc()})();(function(){var bx=dt.querySelector('.cedb'),g=function(k){return dt.querySelector('.x_'+k)};dt.querySelector('.ced').addEventListener('click',function(){var op=bx.style.display==='none';bx.style.display=op?'':'none';if(op){g('b').value=c.bride||'';g('g').value=c.groom||'';g('p').value=c.phone||'';g('d').value=c.event_date?String(c.event_date).slice(0,10):'';g('v').value=c.venue||'';g('m').innerHTML=''}});g('s').addEventListener('click',function(){var b={bride:g('b').value.trim()||null,groom:g('g').value.trim()||null,phone:g('p').value.trim()||null,event_date:g('d').value||null,venue:g('v').value.trim()||null};if(!b.bride&&!b.groom){g('m').innerHTML='<span class="err">Completați măcar un nume.</span>';return}g('s').disabled=true;api('/rest/v1/couples?id=eq.'+c.id,{m:'PATCH',b:b,pref:'return=minimal'}).then(function(){Object.assign(c,b);g('s').disabled=false;dt.querySelector('.hN').textContent=nm(c);dt.querySelector('.hS').textContent=[c.band,c.venue,fd(c.event_date)].filter(Boolean).join(' · ');tr.cells[0].innerHTML='<b>'+esc(fd(c.event_date)||'—')+'</b><br><span style="color:#6b6b76">'+esc(c.venue||'')+'</span>';tr.cells[1].textContent=nm(c);g('m').innerHTML='<span class="okm">Salvat ✓ Mirii văd modificarea în aplicație.</span>'}).catch(function(e){g('s').disabled=false;g('m').innerHTML='<span class="err">Nu s-a salvat'+(e&&e.message?': '+esc(e.message):'')+'</span>'})})})();dt.querySelector('.cpl').addEventListener('click',function(){navigator.clipboard&&navigator.clipboard.writeText(link(c));this.textContent='Copiat ✓'});
+dt.querySelector('.cps').addEventListener('click',function(){navigator.clipboard&&navigator.clipboard.writeText(sum(p.data));this.textContent='Copiat ✓'});
+var rpb=dt.querySelector('.rp'),arm=false;rpb.addEventListener('click',function(){if(!arm){arm=true;rpb.textContent='Sigur? Codul vechi nu va mai merge. Apasă din nou';return}rpb.disabled=true;api('/rest/v1/rpc/reset_pin',{m:'POST',b:{p_couple:c.id}}).then(function(pin){c.pin_plain=pin;if(dt._acc)dt._acc();rpb.textContent='Cod nou generat';dt.querySelector('.np2').innerHTML='<p style="margin:12px 0 8px">Cod nou: <b style="font-size:22px;letter-spacing:.2em">'+esc(pin)+'</b></p><a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/'+waNum(c.phone)+'?text='+encodeURIComponent(invite(c,pin))+'">Trimite invitația cu noul cod</a>'})});
+var dlb=dt.querySelector('.dl'),darm=false;dlb.addEventListener('click',function(){if(!darm){darm=true;dlb.textContent='Sigur ștergi '+nm(c)+'? Apasă din nou';dlb.style.background='#fde8e9';setTimeout(function(){if(darm&&!dlb.disabled){darm=false;dlb.textContent='Șterge cuplul';dlb.style.background=''}},6000);return}dlb.disabled=true;dlb.textContent='Se șterge…';api('/rest/v1/rpc/delete_couple',{m:'POST',b:{p_couple:c.id}}).then(function(j){if(j&&j.error){dlb.disabled=false;darm=false;dlb.textContent=j.error;return}load()}).catch(function(){dlb.disabled=false;darm=false;dlb.textContent='Nu s-a putut șterge'})});
+var loaded=false;tr.addEventListener('click',function(){var op=dt.style.display==='none';dt.style.display=op?'':'none';if(op&&!loaded){loaded=true;api('/rest/v1/couples?id=eq.'+c.id+'&select=photo').then(function(j){var ph=j&&j[0]&&j[0].photo;if(ph)dt.querySelector('.pht').style.backgroundImage='url('+ph+')'});gb(c,dt);scs(c,dt)}});tb.appendChild(tr);tb.appendChild(dt)})}
+function scs(c,dt){api('/rest/v1/secrets?couple_id=eq.'+c.id+'&select=*&order=created_at').then(function(S){dt.querySelector('.scs').innerHTML=S.length?S.map(function(x){return '<div class="rqi"><small><b>'+esc(x.author)+'</b>'+(x.relation?' · '+esc(x.relation):'')+(x.phone?' · '+esc(x.phone):'')+'</small><p>'+esc(x.idea)+'</p>'+(x.song?'<p style="margin:0">🎵 '+esc(x.song)+'</p>':'')+(x.moment?'<p style="margin:0">🕒 '+esc(x.moment)+'</p>':'')+'</div>'}).join(''):'<span style="color:#6b6b76;font-size:13.5px">Nicio surpriză încă.</span>'})}
+function gb(c,dt){api('/rest/v1/guestbook?couple_id=eq.'+c.id+'&select=id,name,msg,hidden,created_at&order=created_at').then(function(G){var w=dt.querySelector('.gbl');if(!G.length){w.innerHTML='<span style="color:#6b6b76;font-size:13.5px">Niciun mesaj încă.</span>';return}w.innerHTML=G.map(function(x){return '<div class="gbi" data-id="'+x.id+'"><p style="'+(x.hidden?'opacity:.45;text-decoration:line-through':'')+'"><b>'+esc(x.name)+':</b> '+esc(x.msg)+'</p><button type="button" class="btn l s hd">'+(x.hidden?'Arată':'Ascunde')+'</button></div>'}).join('');w.querySelectorAll('.gbi').forEach(function(b,i){b.querySelector('.hd').addEventListener('click',function(){api('/rest/v1/guestbook?id=eq.'+G[i].id,{m:'PATCH',b:{hidden:!G[i].hidden},pref:'return=minimal'}).then(function(){gb(c,dt)})})})})}
+function bands(){api('/rest/v1/bands?select=*&order=sort,id').then(function(B){var w=q('.bds');w.innerHTML='';B.forEach(function(b){var l='https://wattmusic.ro/trupa-mea/?tm='+b.token,d=document.createElement('div');d.className='fq';d.innerHTML='<b style="display:block;font-size:15.5px;margin-bottom:8px">'+esc(b.name)+'</b><div class="g3"><label><span>Tour manager</span><input class="b_n"></label><label><span>Telefon</span><input class="b_p" inputmode="tel"></label><label><span>&nbsp;</span><button type="button" class="btn d s b_s">Salvează</button></label></div><div class="acts"><a class="btn l s" target="_blank" rel="noopener" href="'+l+'">Deschide pagina tour managerului</a><button type="button" class="btn l s b_c">Copiază linkul</button><a class="btn wa s b_w" target="_blank" rel="noopener">Trimite-i linkul pe WhatsApp</a><span class="b_m"></span></div>';d.querySelector('.b_n').value=b.tm_name||'';d.querySelector('.b_p').value=b.tm_phone||'';var wa=function(){var nn=d.querySelector('.b_n').value.trim();d.querySelector('.b_w').href='https://wa.me/'+waNum(d.querySelector('.b_p').value)+'?text='+encodeURIComponent('Salut'+(nn?', '+nn:'')+'! Aici faci programul serilor pentru '+b.name+' în Trupa Mea. Mirii îl văd și îl confirmă în aplicația lor:\n'+l)};wa();d.querySelector('.b_p').addEventListener('input',wa);d.querySelector('.b_n').addEventListener('input',wa);d.querySelector('.b_c').addEventListener('click',function(){navigator.clipboard&&navigator.clipboard.writeText(l);this.textContent='Copiat ✓'});d.querySelector('.b_s').addEventListener('click',function(){var m=d.querySelector('.b_m');api('/rest/v1/bands?id=eq.'+b.id,{m:'PATCH',b:{tm_name:d.querySelector('.b_n').value.trim()||null,tm_phone:d.querySelector('.b_p').value.trim()||null},pref:'return=minimal'}).then(function(){m.innerHTML='<span class="okm">Salvat ✓</span>'}).catch(function(){m.innerHTML='<span class="err">Eroare</span>'})});w.appendChild(d)})})}
+function faqs(){api('/rest/v1/faq?select=*&order=sort,id').then(function(F){var w=q('.fqs');w.innerHTML=F.length?'':'<p class="empty">Nicio întrebare încă.</p>';F.forEach(function(x){var d=document.createElement('div');d.className='fq';d.innerHTML='<label><span>Întrebare</span><input class="fq_q"></label><label><span>Răspuns</span><textarea class="fq_a"></textarea></label><div class="row"><label style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" class="fq_on"> Activ (văzut de miri)</label>'+(x.active?'':'<span class="draft">Ciornă</span>')+'<button type="button" class="btn d s fq_s">Salvează</button><span class="fq_m"></span></div>';d.querySelector('.fq_q').value=x.q;d.querySelector('.fq_a').value=x.a;d.querySelector('.fq_on').checked=!!x.active;d.querySelector('.fq_s').addEventListener('click',function(){var m=d.querySelector('.fq_m');api('/rest/v1/faq?id=eq.'+x.id,{m:'PATCH',b:{q:d.querySelector('.fq_q').value.trim(),a:d.querySelector('.fq_a').value.trim(),active:d.querySelector('.fq_on').checked,updated_at:new Date().toISOString()},pref:'return=minimal'}).then(function(){m.innerHTML='<span class="okm">Salvat ✓</span>';setTimeout(faqs,900)}).catch(function(){m.innerHTML='<span class="err">Eroare</span>'})});w.appendChild(d)})})}
+q('.fqa').addEventListener('click',function(){api('/rest/v1/faq',{m:'POST',b:{q:'Întrebare nouă',a:'Răspuns',active:false,sort:99},pref:'return=minimal'}).then(faqs)});
+q('.q').addEventListener('input',draw);q('.rf').addEventListener('click',function(){load();faqs()});
+q('.cr').addEventListener('click',function(){var b={p_bride:q('.nb').value.trim(),p_groom:q('.ng').value.trim(),p_phone:q('.np').value.trim(),p_date:q('.nd').value||null,p_venue:q('.nv').value.trim(),p_band:q('select.nt').value};if(!b.p_bride&&!b.p_groom){q('.ne').textContent='Completați măcar un nume.';return}q('.ne').textContent='';api('/rest/v1/rpc/create_couple',{m:'POST',b:b}).then(function(j){var x=j[0]||j,c={token:x.token,bride:b.p_bride,groom:b.p_groom},nw=q('.new');nw.innerHTML='<p style="margin:0 0 8px"><b>Gata! Cuplul a fost creat.</b></p><p style="margin:0 0 6px">Link: <code>'+esc(link(c))+'</code></p><p style="margin:0 0 12px">Cod: <span class="pinbig">'+esc(x.pin)+'</span></p><p style="margin:0 0 12px;color:#6b6b76;font-size:13.5px">Codul se vede doar acum. Dacă îl pierdeți, generați unul nou din listă.</p><a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/'+waNum(b.p_phone)+'?text='+encodeURIComponent(invite(c,x.pin))+'">Trimite invitația pe WhatsApp</a>';nw.classList.add('on');['.nb','.ng','.np','.nd','.nv'].forEach(function(s){q(s).value=''});load()}).catch(function(e){q('.ne').textContent='Nu s-a putut crea: '+((e&&e.message)||'eroare')})});
+if(!C.url||!C.key){q('.le').textContent='Configurarea nu este completă (lipsește cheia publică Supabase).';return}
+try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{};if(S.at)sessionStorage.setItem('wm-tm-adm',JSON.stringify(S))}catch(_){S={}}
+if(S.rt){if(Date.now()>S.exp){auth({refresh_token:S.rt},'refresh_token').then(function(j){if(j.access_token){setS(j,S.rem);start()}else logout()})}else start()}
+})();
+</script>
+
+<!-- tm-names (05.11.2026) -->
+<script>window.tmSyncNames=function(L,api){(L||[]).forEach(function(c){var p=c.plans&&(Array.isArray(c.plans)?c.plans[0]:c.plans),d=(p&&p.data)||{},b={},nb=String(d.mireasa||'').trim(),ng=String(d.mire||'').trim();if(!c.bride&&nb)b.bride=nb;if(!c.groom&&ng)b.groom=ng;if(Object.keys(b).length){if(b.bride)c.bride=b.bride;if(b.groom)c.groom=b.groom;try{api('/rest/v1/couples?id=eq.'+c.id,{m:'PATCH',b:b,pref:'return=minimal'})}catch(_){}}})};</script>
+<!-- wm-social + vz (05.11.2026) -->
+<style>
+#wmSoc{--y:#f5d90a;--ln:#e6e6ea;--mut:#6b6b76;color:#16161a}
+#wmSoc .shd{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
+#wmSoc .shd h2{font:600 24px/1.2 "Lexend Deca","Lexend-Deca",sans-serif;margin:0}
+#wmSoc .shd p{margin:4px 0 0;color:var(--mut);font-size:14px}
+#wmSoc .sb{border:0;border-radius:999px;padding:12px 18px;font:800 14px/1 "Open Sans",sans-serif;cursor:pointer;background:var(--y);color:#16161a}
+#wmSoc .sb.l{background:#fff;border:1px solid #d4d4da}
+#wmSoc .sb.s{padding:8px 12px;font-size:12.5px}
+#wmSoc .sc{background:#fff;border:1px solid var(--ln);border-radius:18px;padding:16px;margin:0 0 16px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25)}
+#wmSoc .sc h3{margin:0 0 10px;font:700 16px/1.3 "Lexend Deca",sans-serif}
+#wmSoc .bal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+#wmSoc .bal div{border:1px solid var(--ln);border-radius:14px;padding:10px;text-align:center;background:#fafafa}
+#wmSoc .bal b{display:block;font:800 13px/1.2 "Open Sans",sans-serif}
+#wmSoc .bal i{display:block;font-style:normal;font-size:22px;font-weight:800;margin:4px 0 2px}
+#wmSoc .bal small{color:var(--mut);font-size:11.5px}
+#wmSoc .bal .hot{background:#fff4f4;border-color:#f3c0c0}
+#wmSoc .bal .cold{background:#fff9e0;border-color:#f3dc6a}
+#wmSoc .pfc{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#wmSoc .pfc span{border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;background:#f3f3f5}
+#wmSoc .flt{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+#wmSoc .flt select,#wmSoc .flt input{border:1px solid #d4d4da;border-radius:12px;padding:10px 12px;font:14px "Open Sans",sans-serif;background:#fff}
+#wmSoc .flt input{flex:1;min-width:160px}
+#wmSoc .stabs{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+#wmSoc .stabs button{border:1px solid #d4d4da;background:#fff;border-radius:999px;padding:10px 16px;font:800 14px/1 "Open Sans",sans-serif;cursor:pointer}
+#wmSoc .stabs button.on{background:#16161a;color:#fff;border-color:#16161a}
+#wmSoc .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+#wmSoc .pc{border:1px solid var(--ln);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+#wmSoc .th{position:relative;aspect-ratio:9/16;background:#eee center/cover no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#fff;font:700 15px/1.3 "Lexend Deca",sans-serif}
+#wmSoc .th.ph{background:linear-gradient(160deg,#16161a,#3a3a46)}
+#wmSoc .th .pls{position:absolute;top:8px;left:8px;display:flex;gap:4px}
+#wmSoc .th .pls a,#wmSoc .th .pls span{background:rgba(0,0,0,.72);color:#fff;border-radius:999px;padding:4px 8px;font:800 11px/1 "Open Sans",sans-serif;text-decoration:none}
+#wmSoc .th .dt{position:absolute;bottom:8px;right:8px;background:var(--y);color:#16161a;border-radius:999px;padding:4px 9px;font:800 11.5px/1 "Open Sans",sans-serif}
+#wmSoc .th .wr{position:absolute;bottom:8px;left:8px;background:#d93025;color:#fff;border-radius:999px;padding:4px 8px;font:800 11px/1 "Open Sans",sans-serif}
+#wmSoc .pb{padding:10px 12px 12px;font-size:13px;line-height:1.4;flex:1;display:flex;flex-direction:column;gap:6px}
+#wmSoc .pb b{font-size:14px}
+#wmSoc .tags{display:flex;gap:4px;flex-wrap:wrap}
+#wmSoc .tags span{background:#f3f3f5;border-radius:8px;padding:3px 7px;font-size:11.5px;font-weight:700}
+#wmSoc .tags .bd{background:#16161a;color:#fff}
+#wmSoc .acts{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+#wmSoc .acts button{flex:1;border:1px solid #d4d4da;background:#fff;border-radius:10px;padding:7px 4px;font:700 12px "Open Sans",sans-serif;cursor:pointer}
+#wmSoc .acts .go{background:var(--y);border-color:var(--y)}
+#wmSoc .ilist{display:flex;flex-direction:column;gap:10px}
+#wmSoc .ii{display:flex;gap:12px;border:1px solid var(--ln);border-radius:14px;padding:12px;align-items:flex-start;background:#fff}
+#wmSoc .ii .mini{width:64px;flex:0 0 64px;aspect-ratio:9/16;border-radius:10px;background:#eee center/cover;display:flex;align-items:center;justify-content:center;font-size:22px}
+#wmSoc .ii .tx{flex:1;font-size:13.5px;line-height:1.45}
+#wmSoc .ii .tx b{font-size:15px}
+#wmSoc .warn{background:#fff4f4;border:1px solid #f3c0c0;color:#9b1c1c;border-radius:10px;padding:6px 9px;font-size:12.5px;font-weight:700}
+#wmSoc .warn.y{background:#fff9e0;border-color:#f3dc6a;color:#7a5b00}
+#wmSoc .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+#wmSoc .cal div{border:1px solid var(--ln);border-radius:12px;min-height:74px;padding:6px;font-size:11.5px;background:#fff}
+#wmSoc .cal div.td{border-color:#16161a;box-shadow:inset 0 0 0 1px #16161a}
+#wmSoc .cal div.ps{background:#fafafa}
+#wmSoc .cal small{display:block;color:var(--mut);font-weight:700;margin-bottom:4px}
+#wmSoc .cal span{display:block;border-radius:6px;padding:2px 5px;margin:2px 0;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#wmSoc .cal .p{background:#e8f5e9}#wmSoc .cal .q{background:#fff3c4}
+#wmSoc .frm{display:none}
+#wmSoc .frm.on{display:block}
+#wmSoc .fg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px}
+#wmSoc .fg label,#wmSoc .f1 label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:800;color:#3a3a46}
+#wmSoc .fg input,#wmSoc .fg select,#wmSoc .f1 textarea,#wmSoc .f1 input{border:1px solid #d4d4da;border-radius:12px;padding:10px 12px;font:14px "Open Sans",sans-serif;background:#fff;color:#16161a}
+#wmSoc .f1{margin-bottom:10px}
+#wmSoc .f1 textarea{min-height:64px;width:100%;box-sizing:border-box}
+#wmSoc .fprev{display:flex;gap:12px;align-items:flex-start;margin:0 0 10px}
+#wmSoc .fprev .th{width:110px;flex:0 0 110px;border-radius:12px;font-size:11px}
+#wmSoc .msg{font-size:13px;color:var(--mut);margin-left:8px}
+#wmSoc .emp{color:var(--mut);font-size:14px;padding:18px;text-align:center;border:1px dashed #d4d4da;border-radius:14px}
+#wmSoc .err{background:#fff4f4;border:1px solid #f3c0c0;color:#9b1c1c;border-radius:14px;padding:14px;font-size:14px}
+@media(max-width:760px){#wmSoc .bal{grid-template-columns:repeat(4,minmax(0,1fr))}#wmSoc .fg{grid-template-columns:1fr}#wmSoc .grid{grid-template-columns:repeat(2,minmax(0,1fr))}#wmSoc .cal{grid-template-columns:repeat(7,minmax(44px,1fr));overflow-x:auto}}
+.wm-ad .vzslot #wmPl,.wm-ad .vzslot #wmSt{margin-bottom:18px}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+/* ---- Discuții & statistici: tab separat ---- */
+function mvVz(){var sl=document.querySelector('.wm-ad .vzslot');if(!sl)return;['wmPl'].forEach(function(id){var e=document.getElementById(id);if(e&&e.parentNode!==sl)sl.appendChild(e)});var pl=document.getElementById('wmPl'),st=document.getElementById('wmSt');if(pl&&st&&pl.parentNode===sl&&st.parentNode===sl&&pl.nextSibling!==st)sl.insertBefore(st,pl.nextSibling)}
+setInterval(mvVz,1200);
+/* ---- Social media ---- */
+var BANDS=['MOVES','TimeOut','The MOOD','HOTSTUFF','OVERTIME','WATT (general)'];
+var KINDS=['Live pe ring','Talking-head Mada','Trend / audio','Behind the scenes','Miri / testimonial','Prezentare trupă','Folclor','Altele'];
+var ANGLES=['Ring plin','Raritate / date','Preț / valoare','Recomandare','Emoție','Umor','Educativ / sfaturi','Altele'];
+var PL={tiktok:'TikTok',instagram:'Instagram',youtube:'YouTube'};
+var P=[],TAB='postat',BUSY=false,EDIT=null,MISSING=false;
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p,o){o=o||{};return sess().then(function(at){return fetch(CFG.url+p,{method:o.m||'GET',headers:{'apikey':CFG.key,'Authorization':'Bearer '+at,'Content-Type':'application/json','Prefer':'return=representation'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok){return r.text().then(function(t){throw {s:r.status,t:t}})}return r.status===204?null:r.json()})})}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function today(){return iso(new Date())}
+function dd(a,b){return Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5)}
+function fd(s){if(!s)return '';var p=s.split('-');return p[2]+'.'+p[1]}
+function ago(s){var n=dd(s,today());return n<=0?'azi':n===1?'ieri':'acum '+n+' zile'}
+function $(s){return document.querySelector('#wmSoc '+s)}
+function ytId(u){var m=String(u||'').match(/(?:shorts\/|v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);return m?m[1]:''}
+function opts(a,v,ph){return (ph?'<option value="">'+ph+'</option>':'')+a.map(function(x){return '<option'+(x===v?' selected':'')+'>'+esc(x)+'</option>'}).join('')}
+function pls(p){return Object.keys(PL).filter(function(k){return p.urls&&p.urls[k]})}
+function thumbOf(p){var y=ytId(p.urls&&p.urls.youtube);if(p.thumb)return p.thumb;if(y)return 'https://i.ytimg.com/vi/'+y+'/hqdefault.jpg';return ''}
+function ttThumb(u){return fetch('https://www.tiktok.com/oembed?url='+encodeURIComponent(u)).then(function(r){return r.json()}).then(function(j){return j&&j.thumbnail_url||''}).catch(function(){return ''})}
+/* repetition check */
+function warns(p,list){var w=[],ref=p.status==='postat'?(p.posted_at||today()):(p.planned_at||today());(list||P).forEach(function(q){if(q.id===p.id||q.status!=='postat'||!q.posted_at)return;var n=Math.abs(dd(q.posted_at,ref));
+ if(p.song&&q.song&&p.song.trim().toLowerCase()===q.song.trim().toLowerCase()&&n<=21)w.push(['r','Aceeași piesă („'+q.song+'”) postată '+ago(q.posted_at)+(q.title?' · '+q.title:'')]);
+ else if(p.band&&q.band===p.band&&p.kind&&q.kind===p.kind&&n<=7)w.push(['y',q.band+' · '+q.kind+' postat '+ago(q.posted_at)]);
+ else if(p.angle&&q.angle===p.angle&&p.band&&q.band===p.band&&n<=5)w.push(['y','Același unghi („'+q.angle+'”) cu '+q.band+' '+ago(q.posted_at)])});return w}
+function shell(){var r=document.getElementById('wmSoc');if(!r||r._ok)return !!r;r._ok=1;
+ r.innerHTML='<div class="shd"><div><h2>Social media · WATT Music</h2><p>TikTok · Instagram · YouTube Shorts: ce am postat, ce urmează și ce să nu repetăm prea repede.</p></div><button type="button" class="sb sadd">+ Adaugă postare sau idee</button></div>'+
+ '<div class="sc frm"><h3 class="ftl">Postare nouă</h3><div class="fprev"><div class="th ph fth">Fără imagine</div><div style="flex:1"><div class="fg" style="grid-template-columns:1fr"><label>Link TikTok<input class="u_tiktok" placeholder="https://www.tiktok.com/@wattmusicofficial/video/…"></label><label>Link Instagram<input class="u_instagram" placeholder="https://www.instagram.com/reel/…"></label><label>Link YouTube Shorts<input class="u_youtube" placeholder="https://youtube.com/shorts/…"></label></div><label class="sb l s" style="display:inline-block">📷 Pune o captură (pentru Instagram)<input type="file" accept="image/*" class="fimg" style="display:none"></label> <button type="button" class="sb l s frm0">Scoate imaginea</button></div></div>'+
+ '<div class="f1"><label>Titlu / despre ce e<input class="f_title" placeholder="ex: The Mood – ring plin la Bokaa, „Dragostea din tei”"></label></div>'+
+ '<div class="fg"><label>Status<select class="f_status"><option value="postat">✅ Postat</option><option value="pregatit">🎬 Pregătit / programat</option><option value="idee">💡 Idee</option></select></label><label>Data postării<input type="date" class="f_posted"></label><label>Data planificată<input type="date" class="f_planned"></label></div>'+
+ '<div class="fg"><label>Trupa<select class="f_band">'+opts(BANDS,'','Alege trupa')+'</select></label><label>Tip de conținut<select class="f_kind">'+opts(KINDS,'','Alege tipul')+'</select></label><label>Unghi de mesaj<select class="f_angle">'+opts(ANGLES,'','Alege unghiul')+'</select></label></div>'+
+ '<div class="fg"><label>Piesa folosită<input class="f_song" placeholder="artist – titlu"></label><label>Vizualizări (opțional)<input class="f_views" inputmode="numeric"></label><label>&nbsp;<span></span></label></div>'+
+ '<div class="f1"><label>Note / idee completă<textarea class="f_notes" placeholder="Hook, text pe ecran, ce filmăm…"></textarea></label></div>'+
+ '<div class="fw"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><button type="button" class="sb fsave">Salvează</button><button type="button" class="sb l fcancel">Renunță</button><button type="button" class="sb l fdel" style="margin-left:auto;color:#b42318">Șterge</button><span class="msg fmsg"></span></div></div>'+
+ '<div class="sc"><h3>Echilibru pe trupe · ultimele 30 de zile</h3><div class="bal"></div><div class="pfc"></div></div>'+
+ '<div class="sc"><h3>Calendar · 2 săptămâni în urmă, 2 înainte</h3><div class="cal"></div></div>'+
+ '<div class="stabs"><button type="button" data-t="postat" class="on">✅ Postate</button><button type="button" data-t="pregatit">🎬 Pregătite</button><button type="button" data-t="idee">💡 Idei</button></div>'+
+ '<div class="flt"><select class="x_pl"><option value="">Toate platformele</option><option value="tiktok">TikTok</option><option value="instagram">Instagram</option><option value="youtube">YouTube</option></select><select class="x_band">'+opts(BANDS,'','Toate trupele')+'</select><select class="x_kind">'+opts(KINDS,'','Toate tipurile')+'</select><input class="x_q" placeholder="Caută titlu, piesă, notă…"></div>'+
+ '<div class="lst"></div>';
+ $('.sadd').onclick=function(){openF(null)};$('.fcancel').onclick=function(){$('.frm').classList.remove('on')};
+ [].forEach.call(r.querySelectorAll('.stabs button'),function(b){b.onclick=function(){TAB=b.getAttribute('data-t');[].forEach.call(r.querySelectorAll('.stabs button'),function(x){x.classList.toggle('on',x===b)});draw()}});
+ ['.x_pl','.x_band','.x_kind','.x_q'].forEach(function(s){$(s).oninput=draw;$(s).onchange=draw});
+ ['.u_tiktok','.u_youtube','.u_instagram'].forEach(function(s){$(s).onchange=prevThumb});
+ ['.f_band','.f_kind','.f_angle','.f_song','.f_status','.f_posted','.f_planned'].forEach(function(s){$(s).onchange=fw;$(s).oninput=fw});
+ $('.fimg').onchange=function(){var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var w=360,h=Math.round(im.height*w/im.width),c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);FT=c.toDataURL('image/jpeg',.72);setPrev()};im.src=rd.result};rd.readAsDataURL(f)};
+ $('.frm0').onclick=function(){FT='';setPrev()};
+ $('.fsave').onclick=saveF;$('.fdel').onclick=delF;
+ $('.lst').onclick=function(e){var b=e.target.closest('[data-a]');if(!b)return;var p=P.filter(function(x){return x.id===b.getAttribute('data-id')})[0];if(!p)return;var a=b.getAttribute('data-a');
+  if(a==='ed')openF(p);
+  if(a==='post'){var d=prompt('Data postării (ZZ.LL.AAAA):',fd(today())+'.'+today().slice(0,4));if(d===null)return;var m=d.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);var ds=m?m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2):today();upd(p,{status:'postat',posted_at:ds})}
+  if(a==='prep')upd(p,{status:'pregatit'})};
+ return true}
+var FT='';
+function setPrev(){var t=$('.fth');if(FT){t.style.backgroundImage='url("'+FT+'")';t.classList.remove('ph');t.textContent=''}else{t.style.backgroundImage='';t.classList.add('ph');t.textContent='Fără imagine'}}
+function prevThumb(){var y=ytId($('.u_youtube').value),tt=$('.u_tiktok').value.trim();if(FT&&FT.indexOf('data:')===0)return;if(y){FT='https://i.ytimg.com/vi/'+y+'/hqdefault.jpg';setPrev();return}if(tt){$('.fmsg').textContent='Caut imaginea TikTok…';ttThumb(tt).then(function(u){$('.fmsg').textContent=u?'':'Nu am găsit imaginea TikTok – poți pune o captură.';if(u){FT=u;setPrev()}})}}
+function val(s){return $(s).value.trim()}
+function cur(){var u={};Object.keys(PL).forEach(function(k){var v=val('.u_'+k);if(v)u[k]=v});return {id:EDIT&&EDIT.id,urls:u,platforms:Object.keys(u),thumb:FT||null,title:val('.f_title')||null,status:$('.f_status').value,posted_at:$('.f_posted').value||null,planned_at:$('.f_planned').value||null,band:$('.f_band').value||null,kind:$('.f_kind').value||null,angle:$('.f_angle').value||null,song:val('.f_song')||null,views:parseInt(val('.f_views'),10)||null,notes:val('.f_notes')||null}}
+function fw(){var w=warns(cur());$('.fw').innerHTML=w.map(function(x){return '<div class="warn'+(x[0]==='y'?' y':'')+'" style="margin:4px 0">⚠️ '+esc(x[1])+'</div>'}).join('')}
+function openF(p){EDIT=p;var f=$('.frm');f.classList.add('on');$('.ftl').textContent=p?'Modifică':'Postare sau idee nouă';
+ Object.keys(PL).forEach(function(k){$('.u_'+k).value=(p&&p.urls&&p.urls[k])||''});FT=(p&&p.thumb)||'';setPrev();
+ $('.f_title').value=(p&&p.title)||'';$('.f_status').value=(p&&p.status)||(TAB||'postat');$('.f_posted').value=(p&&p.posted_at)||(!p&&TAB==='postat'?today():'');$('.f_planned').value=(p&&p.planned_at)||'';
+ $('.f_band').value=(p&&p.band)||'';$('.f_kind').value=(p&&p.kind)||'';$('.f_angle').value=(p&&p.angle)||'';$('.f_song').value=(p&&p.song)||'';$('.f_views').value=(p&&p.views)||'';$('.f_notes').value=(p&&p.notes)||'';
+ $('.fdel').style.display=p?'':'none';$('.fmsg').textContent='';fw();f.scrollIntoView({behavior:'smooth',block:'start'})}
+function saveF(){var c=cur();if(!c.title&&!c.platforms.length&&!c.notes){$('.fmsg').textContent='Pune măcar un link sau un titlu.';return}if(c.status==='postat'&&!c.posted_at)c.posted_at=today();
+ var id=c.id;delete c.id;c.updated_at=new Date().toISOString();$('.fmsg').textContent='Se salvează…';
+ (id?api('/rest/v1/social_posts?id=eq.'+id,{m:'PATCH',b:c}):api('/rest/v1/social_posts',{m:'POST',b:c})).then(function(){$('.fmsg').textContent='';$('.frm').classList.remove('on');TAB=c.status;[].forEach.call(document.querySelectorAll('#wmSoc .stabs button'),function(x){x.classList.toggle('on',x.getAttribute('data-t')===TAB)});load()}).catch(function(e){$('.fmsg').textContent='Nu s-a salvat'+(e&&e.s?' ('+e.s+')':'')})}
+function delF(){if(!EDIT)return;var b=$('.fdel');if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Sigur? Apasă din nou';setTimeout(function(){b.dataset.c='';b.textContent='Șterge'},4000);return}
+ api('/rest/v1/social_posts?id=eq.'+EDIT.id,{m:'DELETE'}).then(function(){$('.frm').classList.remove('on');load()}).catch(function(e){$('.fmsg').textContent='Nu s-a șters'+(e&&e.s?' ('+e.s+')':'')})}
+function upd(p,b){b.updated_at=new Date().toISOString();api('/rest/v1/social_posts?id=eq.'+p.id,{m:'PATCH',b:b}).then(load)}
+function fixTT(img){var id=img.getAttribute('data-fix');var p=P.filter(function(x){return x.id===id})[0];if(!p||img._f)return;img._f=1;if(!(p.urls&&p.urls.tiktok)){img.style.backgroundImage='';return}ttThumb(p.urls.tiktok).then(function(u){if(!u)return;p.thumb=u;img.style.backgroundImage='url("'+u+'")';api('/rest/v1/social_posts?id=eq.'+p.id,{m:'PATCH',b:{thumb:u}}).catch(function(){})})}
+function card(p){var t=thumbOf(p),w=warns(p),ps=pls(p);
+ return '<div class="pc"><div class="th'+(t?'':' ph')+'" '+(t?'style="background-image:url(&quot;'+esc(t)+'&quot;)" data-fix="'+esc(p.id)+'" data-src="'+esc(t)+'"':'')+'>'+(t?'':esc(p.title||'Fără imagine'))+'<div class="pls">'+ps.map(function(k){return '<a href="'+esc(p.urls[k])+'" target="_blank" rel="noopener">'+PL[k]+'</a>'}).join('')+'</div>'+(p.posted_at?'<span class="dt">'+fd(p.posted_at)+'</span>':'')+(w.length?'<span class="wr" title="'+esc(w.map(function(x){return x[1]}).join(' · '))+'">⚠️ repetă</span>':'')+'</div>'+
+ '<div class="pb">'+(p.title?'<b>'+esc(p.title)+'</b>':'')+'<div class="tags">'+(p.band?'<span class="bd">'+esc(p.band)+'</span>':'')+(p.kind?'<span>'+esc(p.kind)+'</span>':'')+(p.angle?'<span>'+esc(p.angle)+'</span>':'')+'</div>'+(p.song?'<div>🎵 '+esc(p.song)+'</div>':'')+(p.views?'<div>👁 '+Number(p.views).toLocaleString('ro-RO')+'</div>':'')+'<div class="acts"><button type="button" data-a="ed" data-id="'+esc(p.id)+'">Modifică</button></div></div></div>'}
+function item(p){var t=thumbOf(p),w=warns(p);
+ return '<div class="ii"><div class="mini" '+(t?'style="background-image:url(&quot;'+esc(t)+'&quot;)"':'')+'>'+(t?'':(p.status==='idee'?'💡':'🎬'))+'</div><div class="tx"><b>'+esc(p.title||'(fără titlu)')+'</b><div class="tags" style="margin:5px 0">'+(p.band?'<span class="bd">'+esc(p.band)+'</span>':'')+(p.kind?'<span>'+esc(p.kind)+'</span>':'')+(p.angle?'<span>'+esc(p.angle)+'</span>':'')+(p.planned_at?'<span>📅 '+fd(p.planned_at)+'</span>':'')+pls(p).map(function(k){return '<span>'+PL[k]+'</span>'}).join('')+'</div>'+(p.song?'<div>🎵 '+esc(p.song)+'</div>':'')+(p.notes?'<div style="color:#3a3a46;white-space:pre-wrap">'+esc(p.notes)+'</div>':'')+w.map(function(x){return '<div class="warn'+(x[0]==='y'?' y':'')+'" style="margin-top:6px">⚠️ '+esc(x[1])+'</div>'}).join('')+
+ '<div class="acts" style="max-width:420px"><button type="button" data-a="ed" data-id="'+esc(p.id)+'">Modifică</button>'+(p.status==='idee'?'<button type="button" data-a="prep" data-id="'+esc(p.id)+'">🎬 Pregătit</button>':'')+'<button type="button" class="go" data-a="post" data-id="'+esc(p.id)+'">✅ Am postat</button></div></div></div>'}
+function draw(){if(!shell())return;var r=document.getElementById('wmSoc');
+ if(MISSING){$('.lst').innerHTML='<div class="err">Secțiunea e gata, dar tabelul din baza de date nu e încă creat. Rulează scriptul SQL pregătit în Supabase (SQL Editor → Run), apoi reîncarcă pagina.</div>';return}
+ var T=today(),posted=P.filter(function(p){return p.status==='postat'&&p.posted_at});
+ $('.bal').innerHTML=BANDS.map(function(b){var l=posted.filter(function(p){return p.band===b}),n=l.filter(function(p){return dd(p.posted_at,T)<=30}).length,last=l.map(function(p){return p.posted_at}).sort().pop();var since=last?dd(last,T):null;var cls=since===null||since>14?'cold':since<=2?'hot':'';
+  return '<div class="'+cls+'"><b>'+esc(b)+'</b><i>'+n+'</i><small>'+(last?'ultima: '+ago(last):'nimic postat')+'</small></div>'}).join('');
+ var pc={};Object.keys(PL).forEach(function(k){pc[k]=posted.filter(function(p){return p.urls&&p.urls[k]&&dd(p.posted_at,T)<=30}).length});
+ $('.pfc').innerHTML=Object.keys(PL).map(function(k){return '<span>'+PL[k]+': '+pc[k]+' în 30 de zile</span>'}).join('')+'<span>💡 '+P.filter(function(p){return p.status==='idee'}).length+' idei · 🎬 '+P.filter(function(p){return p.status==='pregatit'}).length+' pregătite</span>';
+ var st=new Date();st.setDate(st.getDate()-14);st.setDate(st.getDate()-((st.getDay()+6)%7));var h=['L','Ma','Mi','J','V','S','D'].map(function(x){return '<div style="min-height:0;border:0;text-align:center;font-weight:800;color:#6b6b76;background:none">'+x+'</div>'}).join('');
+ for(var i=0;i<28;i++){var dt=new Date(st);dt.setDate(st.getDate()+i);var ds=iso(dt);var ev=P.filter(function(p){return (p.status==='postat'&&p.posted_at===ds)||(p.status!=='postat'&&p.planned_at===ds)});
+  h+='<div class="'+(ds===T?'td':ds<T?'ps':'')+'"><small>'+dt.getDate()+'.'+(dt.getMonth()+1)+'</small>'+ev.map(function(p){return '<span class="'+(p.status==='postat'?'p':'q')+'" title="'+esc(p.title||'')+'">'+esc(p.band||p.title||'•')+'</span>'}).join('')+'</div>'}
+ $('.cal').innerHTML=h;
+ var fp=$('.x_pl').value,fb=$('.x_band').value,fk=$('.x_kind').value,q=$('.x_q').value.trim().toLowerCase();
+ var L=P.filter(function(p){return p.status===TAB&&(!fp||(p.urls&&p.urls[fp]))&&(!fb||p.band===fb)&&(!fk||p.kind===fk)&&(!q||[p.title,p.song,p.notes,p.band,p.kind,p.angle].join(' ').toLowerCase().indexOf(q)>-1)});
+ if(TAB==='postat')L.sort(function(a,b){return (b.posted_at||'').localeCompare(a.posted_at||'')});else L.sort(function(a,b){return (a.planned_at||'9999').localeCompare(b.planned_at||'9999')});
+ $('.lst').innerHTML=L.length?(TAB==='postat'?'<div class="grid">'+L.map(card).join('')+'</div>':'<div class="ilist">'+L.map(item).join('')+'</div>'):'<div class="emp">'+(TAB==='postat'?'Nicio postare încă. Apasă „+ Adaugă postare sau idee” și lipește linkul.':TAB==='idee'?'Nicio idee încă.':'Nimic pregătit încă.')+'</div>';
+ [].forEach.call(r.querySelectorAll('.lst [data-src]'),function(el){var im=new Image();im.onerror=function(){fixTT(el)};im.src=el.getAttribute('data-src')})}
+function load(){if(BUSY)return;BUSY=true;api('/rest/v1/social_posts?select=*&order=created_at.desc').then(function(r){P=r||[];MISSING=false;BUSY=false;draw()}).catch(function(e){BUSY=false;if(e&&(e.s===404||/social_posts/.test(e.t||'')))MISSING=true;draw()})}
+function init(){var r=document.getElementById('wmSoc');if(!r)return setTimeout(init,500);shell();
+ var btn=document.querySelector('.wm-ad .tabsA button[data-sec="soc"]');if(btn)btn.addEventListener('click',function(){load()});
+ var t=0,w=setInterval(function(){if(++t>40)return clearInterval(w);sess().then(function(){clearInterval(w);load()}).catch(function(){})},1500)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<!-- wm-social-snap (05.11.2026) -->
+<style>
+#wmSnap{margin:0 0 16px}
+#wmSnap .acc{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+#wmSnap .acc a{display:flex;align-items:center;gap:8px;border:1px solid #d4d4da;border-radius:999px;padding:11px 16px;font:800 14px/1 "Open Sans",sans-serif;color:#16161a;text-decoration:none;background:#fff}
+#wmSnap .acc a b{display:inline-block;width:10px;height:10px;border-radius:50%}
+#wmSnap .gap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 12px}
+#wmSnap .gap div{border:1px solid #e6e6ea;border-radius:14px;padding:12px;background:#fafafa}
+#wmSnap .gap b{display:block;font:800 13px/1.2 "Open Sans",sans-serif;margin-bottom:4px}
+#wmSnap .gap i{font-style:normal;font-size:24px;font-weight:800}
+#wmSnap .gap small{color:#6b6b76;font-size:12px;display:block;margin-top:2px}
+#wmSnap .gap .bad{background:#fff4f4;border-color:#f3c0c0}
+#wmSnap .gap .ok{background:#eefaf0;border-color:#bfe5c7}
+#wmSnap table{width:100%;border-collapse:collapse;font-size:13px;margin:0 0 6px}
+#wmSnap th,#wmSnap td{border-bottom:1px solid #eee;padding:8px 6px;text-align:left}
+#wmSnap th{font-size:11.5px;color:#6b6b76;text-transform:uppercase;letter-spacing:.03em}
+#wmSnap td.r{background:#fff4f4;color:#9b1c1c;font-weight:700}
+#wmSnap td.y{background:#fff9e0;color:#7a5b00;font-weight:700}
+#wmSnap td.g{color:#1e7b34;font-weight:700}
+#wmSnap .row{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x mandatory}
+#wmSnap .row a{flex:0 0 150px;scroll-snap-align:start;border:1px solid #e6e6ea;border-radius:14px;overflow:hidden;background:#fff;color:#16161a;text-decoration:none;display:flex;flex-direction:column}
+#wmSnap .row .im{aspect-ratio:9/16;background:#16161a center/cover no-repeat;position:relative}
+#wmSnap .row .im span{position:absolute;bottom:6px;left:6px;background:#f5d90a;border-radius:999px;padding:3px 8px;font:800 11px/1 "Open Sans",sans-serif}
+#wmSnap .row .im em{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.75);color:#fff;border-radius:999px;padding:3px 7px;font:800 10.5px/1 "Open Sans",sans-serif;font-style:normal}
+#wmSnap .row p{margin:0;padding:8px;font-size:12px;line-height:1.35;flex:1}
+#wmSnap .row small{display:block;padding:0 8px 8px;color:#6b6b76;font-size:11.5px;font-weight:700}
+#wmSnap h4{margin:14px 0 8px;font:700 15px/1.3 "Lexend Deca",sans-serif;display:flex;justify-content:space-between;align-items:center}
+#wmSnap h4 a{font:700 12.5px "Open Sans",sans-serif;color:#1a73e8;text-decoration:none}
+@media(max-width:760px){#wmSnap .gap{grid-template-columns:1fr}#wmSnap .row a{flex-basis:120px}}
+</style>
+<script>
+window.WM_SOC_SNAP={"upd":"05.11.2026","ig":[{"d":"2026-11-04","t":"Milioane de oameni, milioane de povești, și o piesă care le spune pe toate. @nicoletaoancea_band","u":"https://www.instagram.com/reel/DfVUFHBM-Ej/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.82787-15/891943979_17973469977189651_638312179135948118_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=lzK2HOVPgvAQ7kNvwF844h7&_nc_oc=Adov41JqICZz-M2LO90MJIKqUFr0kBSXGvxDu1MjU_wlnqleCEBMgUYp6s17tGUbTrY&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=j2j66zC76Gix16MhQ6LrKg&_nc_tpa=Q5bMBQIBCks2WufzpxEZWzlZa-7JdTuHCP04hCyPz9ZrAl0pNIY63wPiQ1fWmBt0EWA08gr5yt15M5wRdw&oh=00_AQQap2Yn0O62Ur2TS5izlOCakr2kwETCLFIG87UAgXSNpw&oe=6AF2CED6","v":420,"l":12,"b":"Nicoleta Oancea"},{"d":"2026-11-04","t":"O singură decizie poate schimba toată petrecerea nuntii tale. Tu ai ales trupa PERFECTĂ pentru nunta ta? @tru…","u":"https://www.instagram.com/reel/DfVB-F2sm44/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.82787-15/888285824_17973453420189651_4606447399360461093_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=7tRV4fw7S8UQ7kNvwFPQMyd&_nc_oc=Adrtt2n-Znr0ymt-Qr7NADUlJevrLunCIAVQBcp4_KY5iGSyFJoCSALMnB4jyfkdqOA&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=j2j66zC76Gix16MhQ6LrKg&_nc_tpa=Q5bMBQJVsL5iLQLCIN6bTaDcVa4Ba3Mlap_iPe-_yWTmsJzDh_fRcEQP5mcOzgjF1ky1R4yJiQSO2jS0BA&oh=00_AQSjVZ0Icm9kDb3AShnMa7iaRjfQIZIa9wJTTfX7nGKGaQ&oe=6AF2A73C","v":314,"l":11,"b":"TimeOut"},{"d":"2026-11-03","t":"Trupa MOVES - energie, sinergie, spontaneitate și…Ring de dans plin 🔥 Booking 2027/2028 - 0746 059 059","u":"https://www.instagram.com/reel/DfSlLstMBsB/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.82787-15/883374875_17973307392189651_7873769579600146752_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=4TBe4tv6xWAQ7kNvwF9T5FM&_nc_oc=AdqUfgWhr7PuYVJtZdMNYcizKV4wom8Y7O91B-Lq7Izhn39C8S2Fj4cVB_mIOLR4KAQ&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=j2j66zC76Gix16MhQ6LrKg&_nc_tpa=Q5bMBQLQMH3xJ_-uA8SNpfyhnnC8dmTZukVUeFR43s_AnkTX5_MaoIrLKb0N35Sj_GAIVnZA8jrVgMlkFw&oh=00_AQROurYv0wOgIKXsngFCDDGe7SJ7AkDZGh7b-kCazZxzzw&oe=6AF2DB3C","v":866,"l":45,"b":"MOVES"},{"d":"2026-10-31","t":"Daria, solista trupei OVERTIME ne-a surprins aseară cu prestația ei de la Vocea României. 4 scaune întoarse ș…","u":"https://www.instagram.com/reel/DfJkbo0ILv8/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.82787-15/879212817_2185342289084519_1196674004488261287_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=GPp5bDDkZRwQ7kNvwFStjNl&_nc_oc=AdoYiKxRSsJ-MsmDeWzq4kfx8BGLpm_hlMND4SaxylAAfWY41VM9FyEX4PDCzf1x7k0&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=j2j66zC76Gix16MhQ6LrKg&_nc_tpa=Q5bMBQJ2CW2lyKZKH2hpXWSE2lgs-VF3ONsmj11O2qtFLqP9piCmM1nsPXgqLDUyhLoNxGq6TdZE328CMg&oh=00_AQSaYqyEha-qflQVJekP7kaVcEUsIM_ue9GJI_KWO-d82A&oe=6AF2D75F","v":606,"l":15,"b":"OVERTIME"},{"d":"2026-10-28","t":"Trupa Moves- energia pe care nu o uiți prea ușor. 🔥","u":"https://www.instagram.com/reel/DfChxL-otTp/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.82787-15/867022123_17972161743189651_8455986659067671314_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=KvRCY0by1GkQ7kNvwEKEr4S&_nc_oc=AdrOOmJpKaGwwUid9HsIOiE1jgjMqSJr95mrs0goS2VezjaeOYvxJT8IaOuaypDQMOo&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=j2j66zC76Gix16MhQ6LrKg&_nc_tpa=Q5bMBQIhBlLwf28cb5THhR8ugFS0DXxL0eNe786NmvyiEs_RpkibJA2YPCndrHoIUwaOxMfgA1Uwzw_0RA&oh=00_AQTRDc528uHZ4OZ52tggGWI33tdb7mWLvrEQQwU2CI4sjw&oe=6AF2CF20","v":659,"l":18,"b":"MOVES"},{"d":"2026-10-27","t":"Nunta în România, vibe-ul din Italia. 🇮🇹🍷 Dolce vita, dar cu ring plin până dimineața. #dolcevita #nunta2027 …","u":"https://www.instagram.com/reel/DfApiMCIszQ/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.82787-15/867022115_17972032005189651_5687057885393550430_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=hI0iOsIqASMQ7kNvwF4MgaA&_nc_oc=AdrN0LxF6zN1eiKjWTXoI99lgIG0dCe8bMsxiMDqo3TNrjfYBZVCzmn2WHIdMrmwKZE&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=j2j66zC76Gix16MhQ6LrKg&_nc_tpa=Q5bMBQL3HscPWzva5PK87geYv1iZ-rYwGHmt1ohfGqi__fsxblib8vePNEYOAcFp5WyWf7okX8YPaL6Vqw&oh=00_AQRqMXcD3RQa30J2UAkqVKFefroLKxLRLJpaow2Ml1K5qg&oe=6AF2DCA7","v":1335,"l":42,"b":"MOVES"},{"d":"2026-10-27","t":"Am întrebat mirii cum a fost cu MOVES. Uitați-vă la răspuns. 💬 Voi ce piesă ați vrea la nunta voastră? 👇 #tes…","u":"https://www.instagram.com/reel/DfAn5UTohUk/","img":"https://scontent-fra3-1.cdninstagram.com/v/t51.82787-15/869220223_17972030376189651_8048760791375907558_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=EJXUNFF0hWEQ7kNvwE2dE5K&_nc_oc=AdqDACG0StXA0BdPuCS1w5vzcVsz0UkUdaCKOWqlLamjLRmcj0fCx3YHHTcRl36jszE&_nc_zt=23&_nc_ht=scontent-fra3-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=j2j66zC76Gix16MhQ6LrKg&_nc_tpa=Q5bMBQIoMYJqaKnrFTzFk1YRp5vrtiJCnwyngJKFbO1X0YTMk_jg9g-eBaDsuqoVYCt2W7hpfb5mozeq7g&oh=00_AQSJUHd4WCec2jQgPOv6F-0Hev5xs_MKz8UqobVvDdv95w&oe=6AF2D68B","v":1090,"l":29,"b":"MOVES"},{"d":"2026-08-07","t":"60 de secunde dintr-o seară pe care n-o uiți: Andrei Bănuță la NIBIRU. • • @andrei_banuta @mattmanbooking #ni…","u":"https://www.instagram.com/reel/DbuxBJ8oGzP/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.82787-15/764389234_17959046451189651_966292125691751169_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=F4kmKT-pM1QQ7kNvwG63fWJ&_nc_oc=AdoiGKeu6_AYucS0deBwq5RXzrwai7GpN_5BLcrnlapjZNvLWZf22J6alzeG6-fsw88&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=3PjAT6OpC3f79Hl5T6lcPA&_nc_tpa=Q5bMBQI3sx2K-VPQcBtRqgaAC65z0oJrv9ByOdxpdYrukdw_3L0Kwjy7Jolw25fHpsuaTrZiGh7JoL45ug&oh=00_AQSNAoqX8jdNtrs8ulcvEA4AbdjVQaMntK4GXLsTh8FDvg&oe=6AF2DD07","v":1464,"l":86,"b":"Andrei Bănuță"},{"d":"2026-07-02","t":"Căutăm TALENT, energie, show și voci faine, pentru următoarele proiecte WATTMUSIC. ⚡️ Dacă simți ca anunțul e…","u":"https://www.instagram.com/reel/DaRy_qyoHl2/","img":"https://scontent-fra3-1.cdninstagram.com/v/t51.82787-15/731541144_17953097850189651_9149682997308292933_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=AJCERD9HJ24Q7kNvwGBB7V9&_nc_oc=AdpSz0VvFZQynosk82CnJznQwpopyL9P7bh8hh1sB8pfGVdKc5pPJCnpRkaAvdN0lCo&_nc_zt=23&_nc_ht=scontent-fra3-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=87MY9Qq17a_FelaYFhvl_A&_nc_tpa=Q5bMBQIi9uJUBFezjGvt0LCBH2FgG673N4oqDgFzc-bDmu5DIlvJK4h27AJjhFYQQ_0gU13uvokwd17Faw&oh=00_AQQJh8hQFt8c_5Dumb8qvrqH4zpfu646ga4nsQwTinhVVg&oe=6AF2B321","v":1999,"l":23,"b":""},{"d":"2026-06-28","t":"Dacă vezi acest clip înseamnă ca: Fie îți place muzica bună Fie urmează să te căsătorești. 😅 📲 Booking: www.w…","u":"https://www.instagram.com/reel/DaI00mBKMrV/","img":"https://scontent-fra5-1.cdninstagram.com/v/t51.71878-15/731329835_2020596185483424_6641625759871129169_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=40SFnXMKe4YQ7kNvwGue2nA&_nc_oc=AdqrA7yWi1-Lm9w9iLBe2P-lqrsCUA0VO2mmr4RIwqF4uhkV8icWwXIpG2OS-I1SFbY&_nc_zt=23&_nc_ht=scontent-fra5-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=87MY9Qq17a_FelaYFhvl_A&_nc_tpa=Q5bMBQJcJBUELHbVPZxhPslpTes-YQ6ueYkObv23LoSlx72bUPyj-PLUFd4ULwp1etYX5HBIlrJWOPUdyw&oh=00_AQT5AfrNzD0yDKWYNE9CoeNZeSKcQig3pWTSzKH4AvzOBA&oe=6AF2BE1C","v":640,"l":7,"b":""}],"tt":[{"d":"2026-11-04","t":"Piesa asta nu se ascultă, se simte. Și fiecare dintre noi are un nume exact pentru ea. ♥️ @Nicoleta Oancea Ba…","u":"https://www.tiktok.com/@wattmusicofficial/video/7704413075654397206","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/osr4wdBDdI14iT6hJyfAIllQuymokcCgAiClUI~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=e448b809&x-expires=1793998800&x-signature=V0NQO%2Brx3VV5tfzLQo9Y3cviY30%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover","v":794,"l":24,"b":"Nicoleta Oancea"},{"d":"2026-11-04","t":"THEMOOD - când ringul de dans arata așa: știi ca ai ales PERFECT trupa pentru nunta ta. 🔥 @Trupa The Mood","u":"https://www.tiktok.com/@wattmusicofficial/video/7704189055109647638","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/o8fCq0DAFBBELEge1RDykqIy6EDY6xROsFqELm~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=ccad41f8&x-expires=1793998800&x-signature=CslPoHkP1zYYpUeEg2IcNHUg2ws%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&sc=cover&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER","v":903,"l":29,"b":"The MOOD"},{"d":"2026-11-04","t":"Timeout și energia ringul de dans MEREU plin. ⚡️","u":"https://www.tiktok.com/@wattmusicofficial/video/7704187735610805526","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/oMwWARGfQWGQHfWzO8faVQwZrfZiTMt1qOQAAW~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=c5780e10&x-expires=1793998800&x-signature=5T3SBh75cqkUTRYvXFzAqsWLIAo%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover","v":767,"l":8,"b":"TimeOut"},{"d":"2026-11-03","t":"Tu ce cuvânt crezi ca definește trupa MOVES? Booking 2027/2028 - 0746 059 059","u":"https://www.tiktok.com/@wattmusicofficial/video/7704021547320659222","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/o8IXKajIgLAeagfUJVlAb0nCIDL0rX1GFeTFcr~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=bb7508ef&x-expires=1793998800&x-signature=idqdkt1Vku8j1FQcCxx%2BpaSZAEs%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover","v":826,"l":12,"b":"MOVES"},{"d":"2026-10-29","t":"Trupa TIMEOUT - este despre invitați care dansează înăuntru, afară și chiar la coada de la bar. Despre un sho…","u":"https://www.tiktok.com/@wattmusicofficial/video/7701987450972900630","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/osA1CCN1yinFFITIpOifAi9czBqnYXIz0hoT0w~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=08cc3c39&x-expires=1793998800&x-signature=25BOvuplSyxGhHmW28EPmdHhubE%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover","v":368,"l":10,"b":"TimeOut"},{"d":"2026-10-28","t":"Trupa MOVES + toate generațiile pe ringul de dans 🔥 #nunta #mirese2027","u":"https://www.tiktok.com/@wattmusicofficial/video/7701783690497494294","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/oQiWBhOCII3A3y0f9LEBh7B1usxiiC5RAw92Oc~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=894efe93&x-expires=1793998800&x-signature=VlBpw1Il8oTlBsiSNxYs%2BRG%2Bq2Q%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&sc=cover&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER","v":376,"l":14,"b":"MOVES"},{"d":"2026-10-28","t":"Încă puțin și va arătăm formula completă OVERTIME BAND 🔥 @DARIA PELTEA","u":"https://www.tiktok.com/@wattmusicofficial/video/7701586487468412163","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/okYUF0fDkQ1NR0qEqiOGX4ZYhBCASEg5FCegQg~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=eb487ba7&x-expires=1793998800&x-signature=wfCYRyjGDq3Eiv4QbYixQ4hwiHM%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&sc=cover&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER","v":361,"l":17,"b":"OVERTIME"},{"d":"2026-10-27","t":"Am întrebat mirii cum a fost cu MOVES. Uitați-vă la răspuns. 💬 Voi ce piesă ați vrea la nunta voastră? 👇 #tes…","u":"https://www.tiktok.com/@wattmusicofficial/video/7701433392323153174","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/okVfN2KEgI8WdUhsffXiBGOMBgAZgrneAA5LfN~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=6ae21f3d&x-expires=1793998800&x-signature=L%2BQpprwPxdS4HFZCXTmoQLhVuxo%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover","v":326,"l":7,"b":"MOVES"},{"d":"2026-10-27","t":"Nu vă spunem noi cum e cu TimeOut. Vă spun mirii. 💬 200+ recenzii, toate de la cupluri care au dansat până di…","u":"https://www.tiktok.com/@wattmusicofficial/video/7701432641899334934","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/oQDEofPBrgsRDqKQFVnEA6BkfF4FQSK1qgtuIH~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=c19e5ac4&x-expires=1793998800&x-signature=Qr3jRH6nSHSBu98GDUk%2FfNcg2zw%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover","v":346,"l":6,"b":"TimeOut"},{"d":"2026-10-24","t":"Trupa MOVES vine cu energie fresh, party pe care EFECTIV nu îl uiți nici la 2 ani după nuntă, momente de foll…","u":"https://www.tiktok.com/@wattmusicofficial/video/7700195133874081046","img":"https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-p-0037-no/oQXgyh7YxrBIBiOWItsOEbviplHDBNaAAcAEA~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=dcd62419&x-expires=1793998800&x-signature=94AXN%2BnVCHTPTTUCe4OVkOoj6FA%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover","v":1254,"l":33,"b":"MOVES"}],"yt":[{"d":"2026-11-03","t":"MOVES: energia pe care nu o uitați | trupă nuntă","u":"https://youtube.com/shorts/a6YEGpr-_Oo","img":"https://i.ytimg.com/vi/a6YEGpr-_Oo/hqdefault.jpg","v":88,"l":1,"b":"MOVES"},{"d":"2026-10-28","t":"Cum arată o nuntă cu trupa MOVES? #trupanunta #music #wattmusic #cover","u":"https://youtube.com/shorts/y4JfAUppFRk","img":"https://i.ytimg.com/vi/y4JfAUppFRk/hqdefault.jpg","v":1290,"l":14,"b":"MOVES"},{"d":"2026-10-17","t":"recenzie MOVES","u":"https://youtube.com/shorts/7ztvOlMkJEo","img":"https://i.ytimg.com/vi/7ztvOlMkJEo/hqdefault.jpg","v":2,"l":0,"b":"MOVES"},{"d":"2026-10-15","t":"Daria Peltea & OVERTIME","u":"https://youtube.com/shorts/N_vtjd46RUY","img":"https://i.ytimg.com/vi/N_vtjd46RUY/hqdefault.jpg","v":1414,"l":14,"b":"OVERTIME"},{"d":"2026-10-15","t":"Overtime band & Daria","u":"https://youtube.com/shorts/KiKBEOQX_nk","img":"https://i.ytimg.com/vi/KiKBEOQX_nk/hqdefault.jpg","v":1224,"l":13,"b":"OVERTIME"},{"d":"2026-10-15","t":"Daria Peltea party","u":"https://youtube.com/shorts/5sHfnq8zXww","img":"https://i.ytimg.com/vi/5sHfnq8zXww/hqdefault.jpg","v":400,"l":4,"b":"OVERTIME"},{"d":"2026-09-18","t":"Alexandra- folclor","u":"https://youtube.com/shorts/1p1uXtvN-AY","img":"https://i.ytimg.com/vi/1p1uXtvN-AY/hqdefault.jpg","v":22,"l":0,"b":""},{"d":"2026-09-18","t":"Eduard Ivascu & Anne - solisti SIRIDO","u":"https://youtube.com/shorts/nedPBxVe0c8","img":"https://i.ytimg.com/vi/nedPBxVe0c8/hqdefault.jpg","v":3,"l":0,"b":"SIRIDO"},{"d":"2026-09-18","t":"Anne moment solo","u":"https://youtube.com/shorts/wiqRh6_YqM4","img":"https://i.ytimg.com/vi/wiqRh6_YqM4/hqdefault.jpg","v":5,"l":0,"b":"SIRIDO"},{"d":"2026-09-18","t":"Anne moment solo","u":"https://youtube.com/shorts/moNBkFGdLkw","img":"https://i.ytimg.com/vi/moNBkFGdLkw/hqdefault.jpg","v":3,"l":0,"b":"SIRIDO"}],"all":[["ig","2026-10-27","MOVES"],["ig","2026-10-27","MOVES"],["ig","2026-10-28","MOVES"],["ig","2026-10-31","OVERTIME"],["ig","2026-11-03","MOVES"],["ig","2026-11-04","Nicoleta Oancea"],["ig","2026-11-04","TimeOut"],["ig","2026-06-28",""],["ig","2026-06-28",""],["ig","2026-07-02",""],["ig","2026-08-07","Andrei Bănuță"],["tt","2026-08-19","Andrei Bănuță"],["tt","2026-08-21",""],["tt","2026-08-24","Nicoleta Oancea"],["tt","2026-09-12","SIRIDO"],["tt","2026-09-15","SIRIDO"],["tt","2026-09-16","Georgiana Neagu"],["tt","2026-09-16","SIRIDO"],["tt","2026-09-16","Nicoleta Oancea"],["tt","2026-09-16","OVERTIME"],["tt","2026-09-16","The MOOD"],["tt","2026-09-16","MOVES"],["tt","2026-09-16","Nicoleta Oancea"],["tt","2026-09-17",""],["tt","2026-09-17","Georgiana Neagu"],["tt","2026-09-17",""],["tt","2026-09-17",""],["tt","2026-09-17","Georgiana Neagu"],["tt","2026-09-17",""],["tt","2026-09-18","MOVES"],["tt","2026-09-18","The MOOD"],["tt","2026-09-19","Andrei Bănuță"],["tt","2026-09-25",""],["tt","2026-09-25","Georgiana Neagu"],["tt","2026-09-25",""],["tt","2026-09-25","HOTSTUFF"],["tt","2026-09-26","MOVES"],["tt","2026-09-27","MOVES"],["tt","2026-09-27","Nicoleta Oancea"],["tt","2026-10-22","TimeOut"],["tt","2026-10-24","MOVES"],["tt","2026-10-27","MOVES"],["tt","2026-10-27","TimeOut"],["tt","2026-10-28","MOVES"],["tt","2026-10-28","OVERTIME"],["tt","2026-10-29","TimeOut"],["tt","2026-11-03","MOVES"],["tt","2026-11-04","Nicoleta Oancea"],["tt","2026-11-04","The MOOD"],["tt","2026-11-04","TimeOut"],["yt","2026-04-16","Georgiana Neagu"],["yt","2026-06-09","Nicoleta Oancea"],["yt","2026-10-15","OVERTIME"],["yt","2026-04-16",""],["yt","2026-04-03",""],["yt","2026-06-02","The MOOD"],["yt","2026-09-18","SIRIDO"],["yt","2026-10-17","MOVES"],["yt","2026-10-15","OVERTIME"],["yt","2026-11-03","MOVES"],["yt","2026-06-27","Nicoleta Oancea"],["yt","2026-03-27","The MOOD"],["yt","2026-10-28","MOVES"],["yt","2026-04-15","Nicoleta Oancea"],["yt","2026-09-18","SIRIDO"],["yt","2026-09-18",""],["yt","2026-05-30",""],["yt","2026-03-27",""],["yt","2026-02-10",""],["yt","2026-04-23","The MOOD"],["yt","2026-03-25","The MOOD"],["yt","2026-10-15","OVERTIME"],["yt","2026-04-15",""],["yt","2026-06-02","Georgiana Neagu"],["yt","2026-06-27",""],["yt","2026-05-24","OVERTIME"],["yt","2026-03-25","The MOOD"],["yt","2026-09-18","SIRIDO"],["yt","2026-05-24","OVERTIME"]]};
+(function(){
+var S=window.WM_SOC_SNAP,PLN={tt:['TikTok','https://www.tiktok.com/@wattmusicofficial','#16161a',35,'5/zi'],ig:['Instagram','https://www.instagram.com/wattmusic.ro/','#c13584',14,'2/zi'],yt:['YouTube Shorts','https://www.youtube.com/@WattMusic-entertainment/shorts','#ff0000',14,'2/zi']};
+var BANDS=['MOVES','TimeOut','The MOOD','HOTSTUFF','OVERTIME'];
+function e(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function dd(a){return Math.round((new Date(iso(new Date())+'T12:00:00')-new Date(a+'T12:00:00'))/864e5)}
+function fd(s){var p=s.split('-');return p[2]+'.'+p[1]}
+function nf(n){return n==null?'':Number(n).toLocaleString('ro-RO')}
+function build(){var r=document.getElementById('wmSoc');if(!r)return setTimeout(build,500);var hd=r.querySelector('.shd');if(!hd)return setTimeout(build,500);if(document.getElementById('wmSnap'))return;
+ var w=document.createElement('div');w.id='wmSnap';w.className='sc';
+ var h='<h3 style="margin:0 0 10px;font:700 16px/1.3 Lexend Deca,sans-serif">Conturile noastre · ce s-a postat și ce lipsește <small style="font:600 12px Open Sans,sans-serif;color:#6b6b76">(actualizat '+e(S.upd)+')</small></h3>';
+ h+='<div class="acc">'+Object.keys(PLN).map(function(k){return '<a href="'+PLN[k][1]+'" target="_blank" rel="noopener"><b style="background:'+PLN[k][2]+'"></b>'+PLN[k][0]+' ↗</a>'}).join('')+'</div>';
+ h+='<div class="gap">'+Object.keys(PLN).map(function(k){var n=S.all.filter(function(p){return p[0]===k&&dd(p[1])<=7}).length,last=S.all.filter(function(p){return p[0]===k}).map(function(p){return p[1]}).sort().pop(),t=PLN[k][3];
+  return '<div class="'+(n>=t*.6?'ok':'bad')+'"><b>'+PLN[k][0]+'</b><i>'+n+'</i> <span style="color:#6b6b76;font-weight:700">/ '+t+' țintă</span><small>ultimele 7 zile (ținta '+PLN[k][4]+') · ultima: '+(last?fd(last)+' ('+(dd(last)===0?'azi':dd(last)===1?'ieri':'acum '+dd(last)+' zile')+')':'—')+'</small></div>'}).join('')+'</div>';
+ h+='<table><thead><tr><th>Trupa</th>'+Object.keys(PLN).map(function(k){return '<th>'+PLN[k][0]+'</th>'}).join('')+'</tr></thead><tbody>'+BANDS.map(function(b){return '<tr><td><b>'+b+'</b></td>'+Object.keys(PLN).map(function(k){var l=S.all.filter(function(p){return p[0]===k&&p[2]===b}).map(function(p){return p[1]}).sort().pop();if(!l)return '<td class="r">lipsește</td>';var n=dd(l);return '<td class="'+(n>14?'r':n>7?'y':'g')+'">'+fd(l)+' · '+(n===0?'azi':n===1?'ieri':'acum '+n+' zile')+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table><div style="font-size:12px;color:#6b6b76;margin:0 0 6px">Roșu = nimic de peste 14 zile sau deloc (în ultimele ~90 de zile) · galben = 8–14 zile · verde = ultima săptămână.</div>';
+ Object.keys(PLN).forEach(function(k){var L=S[k]||[];h+='<h4>Ultimele '+L.length+' pe '+PLN[k][0]+' <a href="'+PLN[k][1]+'" target="_blank" rel="noopener">deschide contul ↗</a></h4><div class="row">'+L.map(function(p){return '<a href="'+e(p.u)+'" target="_blank" rel="noopener"><div class="im" style="background-image:url(&quot;'+e(p.img)+'&quot;)">'+(p.b?'<em>'+e(p.b)+'</em>':'')+'<span>'+fd(p.d)+'</span></div><p>'+e(p.t)+'</p><small>👁 '+nf(p.v)+(p.l!=null?' · ♥ '+nf(p.l):'')+'</small></a>'}).join('')+'</div>'});
+ w.innerHTML=h;hd.parentNode.insertBefore(w,hd.nextSibling);
+ [].forEach.call(w.querySelectorAll('.im'),function(el){var m=(el.getAttribute('style')||'').match(/url\("([^"]+)"\)/);if(!m)return;var im=new Image();im.onerror=function(){el.style.backgroundImage='none'};im.src=m[1]})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+})();
+</script>
+
+<!-- wm-kpi (06.11.2026) -->
+<style>
+#wmKpi{background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:18px;margin:0 0 18px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25);color:#16161a}
+#wmKpi .kh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+#wmKpi .kh h2{margin:0;font:600 22px/1.2 "Lexend Deca","Lexend-Deca",sans-serif}
+#wmKpi .kh select{border:1px solid #d4d4da;border-radius:12px;padding:10px 12px;font:700 14px "Open Sans",sans-serif;background:#fff}
+#wmKpi h3{margin:18px 0 10px;font:700 15px/1.3 "Lexend Deca",sans-serif;display:flex;align-items:center;gap:8px}
+#wmKpi h3 small{font:600 12px "Open Sans",sans-serif;color:#6b6b76}
+#wmKpi .kg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#wmKpi .kc{border:1px solid #e6e6ea;border-radius:14px;padding:12px 14px;background:#fafafa}
+#wmKpi .kc small{display:block;font:800 11.5px/1.3 "Open Sans",sans-serif;color:#6b6b76;text-transform:uppercase;letter-spacing:.03em}
+#wmKpi .kc b{display:block;font:800 24px/1.2 "Open Sans",sans-serif;margin:5px 0 2px}
+#wmKpi .kc i{display:block;font-style:normal;font-size:12.5px;color:#6b6b76}
+#wmKpi .kc.g{background:#eefaf0;border-color:#bfe5c7}
+#wmKpi .kc.y{background:#fff9e0;border-color:#f3dc6a}
+#wmKpi .kc.r{background:#fff4f4;border-color:#f3c0c0}
+#wmKpi .kc.big{grid-column:span 2;background:#16161a;color:#fff;border-color:#16161a}
+#wmKpi .kc.big small,#wmKpi .kc.big i{color:#d4d4da}
+#wmKpi .kc.big b{font-size:30px;color:#f5d90a}
+#wmKpi table{width:100%;border-collapse:collapse;font-size:13.5px}
+#wmKpi th,#wmKpi td{padding:9px 8px;border-bottom:1px solid #eee;text-align:left}
+#wmKpi th{font-size:11.5px;color:#6b6b76;text-transform:uppercase;letter-spacing:.03em}
+#wmKpi td.n,#wmKpi th.n{text-align:right;white-space:nowrap}
+#wmKpi .bar{height:8px;border-radius:99px;background:#f5d90a;display:block;margin-top:4px}
+#wmKpi .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#wmKpi .tr{display:flex;align-items:flex-end;gap:14px;min-height:150px;padding:8px 4px 0;border-bottom:1px solid #e6e6ea;overflow-x:auto}
+#wmKpi .tr div{flex:0 0 70px;text-align:center;font-size:11.5px;color:#6b6b76;font-weight:700}
+#wmKpi .tr .cols{display:flex;gap:4px;align-items:flex-end;justify-content:center;height:120px}
+#wmKpi .tr .cols span{width:16px;border-radius:5px 5px 0 0;display:block}
+#wmKpi .tr .cols span.a{background:#16161a}#wmKpi .tr .cols span.b{background:#f5d90a}
+#wmKpi .lg{display:flex;gap:14px;font-size:12px;color:#6b6b76;font-weight:700;margin:8px 0 0}
+#wmKpi .lg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--c)}
+#wmKpi .note{font-size:12.5px;color:#6b6b76;margin:10px 0 0;line-height:1.5}
+@media(max-width:760px){#wmKpi .kg{grid-template-columns:repeat(2,minmax(0,1fr))}#wmKpi .two{grid-template-columns:1fr}#wmKpi .kc.big{grid-column:span 2}}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var D=null,PER='all',LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
+var SRCN={reclame:'📣 Reclame',recomandare:'🤝 Recomandare',furnizor:'🏷️ Furnizor',trupa:'🎵 De la trupă',site:'🌐 Site / organic',altele:'Altele','':'⚠️ Fără sursă'};
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p){return sess().then(function(at){return fetch(CFG.url+p,{headers:{'apikey':CFG.key,'Authorization':'Bearer '+at}}).then(function(r){if(!r.ok)throw r.status;return r.json()})})}
+function n(v){return Number(String(v==null?'':v).replace(',','.'))||0}
+function f0(v){return Math.round(v).toLocaleString('ro-RO')}
+function f1(v){return (Math.round(v*10)/10).toLocaleString('ro-RO')}
+function e(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function ml(k){var p=k.split('-');return LUNI[+p[1]-1]+' '+p[0]}
+function bandOf(s){s=String(s||'').toLowerCase();return /moves/.test(s)?'MOVES':/time ?out/.test(s)?'TimeOut':/mood/.test(s)?'The MOOD':/hot ?stuff/.test(s)?'HOTSTUFF':/overtime/.test(s)?'OVERTIME':/sirido/.test(s)?'SIRIDO':/nicoleta/.test(s)?'Nicoleta Oancea':s?'Altele':'—'}
+function keys(){return Object.keys((D&&D.months)||{}).sort()}
+function sel(){var ks=keys();if(PER==='all')return ks;if(PER==='3')return ks.slice(-3);return ks.filter(function(k){return k===PER})}
+function card(t,v,s,c){return '<div class="kc'+(c?' '+c:'')+'"><small>'+t+'</small><b>'+v+'</b>'+(s?'<i>'+s+'</i>':'')+'</div>'}
+function draw(){var box=document.getElementById('wmKpi');if(!box||!D)return;var ks=sel();
+ var sp=0,spE=0,ld=0,C=[];ks.forEach(function(k){var m=D.months[k]||{},cu=n(m.curs)||5.35;sp+=n(m.spend);spE+=n(m.spend)/cu;ld+=n(m.leads);(m.contracts||[]).forEach(function(x){C.push(x)})});
+ var ca=C.filter(function(x){return x.src==='reclame'}),val=0,com=0,fee=0,vA=0,cA=0;C.forEach(function(x){val+=n(x.val);com+=n(x.com)-n(x.fee);fee+=n(x.fee)});ca.forEach(function(x){vA+=n(x.val);cA+=n(x.com)-n(x.fee)});
+ var cpl=ld?sp/ld:0,conv=ld?ca.length/ld*100:0,cpc=ca.length?sp/ca.length:0,roi=spE?cA/spE:0,roas=spE?vA/spE:0,avgV=C.length?val/C.length:0,avgC=C.length?com/C.length:0,marg=val?com/val*100:0;
+ var PLs=window.WM_PL||[],act=PLs.filter(function(i){return i.st==='activ'}),dr=act.filter(function(i){return i.draft}),won=PLs.filter(function(i){return i.st==='semnat'}).length,lost=PLs.filter(function(i){return i.st==='nu'}).length;
+ var vAct=act.reduce(function(a,i){return a+n(i.val)},0),vDr=dr.reduce(function(a,i){return a+n(i.val)},0),wr=(won+lost)?won/(won+lost)*100:0,estCom=avgV?vAct*(avgC/avgV):0;
+ var opts='<option value="all">Total · toate lunile</option><option value="3">Ultimele 3 luni</option>'+keys().slice().reverse().map(function(k){return '<option value="'+k+'">'+ml(k)+'</option>'}).join('');
+ var h='<div class="kh"><h2>📊 KPI · WATT Music</h2><select class="kper">'+opts+'</select></div>';
+ h+='<div class="kg">'+card('Comision agenție (net)',f0(com)+' €',(fee?'după '+f0(fee)+' € comisioane date · ':'')+C.length+' contracte','big')+card('Valoare contracte',f0(val)+' €','medie '+f0(avgV)+' € / contract')+card('Marjă agenție',f1(marg)+'%','comision mediu '+f0(avgC)+' € / contract',marg>=25?'g':marg>=18?'y':'r')+'</div>';
+ h+='<h3>📣 Reclame → contracte <small>(doar contractele cu sursa „Reclame”)</small></h3><div class="kg">'+
+  card('Buget reclame',f0(sp)+' lei','≈ '+f0(spE)+' €')+card('Lead-uri',f0(ld),'cost / lead: '+(cpl?f0(cpl)+' lei':'–'))+card('Contracte din reclame',ca.length,'din '+C.length+' total')+card('Conversie lead → contract',f1(conv)+'%','',conv>=4?'g':conv>=2?'y':ld?'r':'')+
+  card('Cost / contract',cpc?f0(cpc)+' lei':'–',cpc?'≈ '+f0(cpc/(sp/spE||5.35))+' €':'')+card('Comision din reclame',f0(cA)+' €','valoare '+f0(vA)+' €')+card('Randament (comision)',roi?f1(roi)+' €':'–','comision la 1 € reclame',roi>=5?'g':roi>=2?'y':roi?'r':'')+card('ROAS (valoare)',roas?f1(roas)+' €':'–','valoare contracte la 1 € reclame')+'</div>';
+ h+='<h3>🔥 Pipeline acum <small>(Discuții cu potențial mare)</small></h3><div class="kg">'+
+  card('Discuții active',act.length,f0(vAct)+' € în discuție')+card('Drafturi trimise',dr.length,f0(vDr)+' € aproape de semnare','y')+card('Rată de închidere',(won+lost)?f1(wr)+'%':'–',won+' semnate · '+lost+' nesemnate',wr>=50?'g':wr?'y':'')+card('Comision estimat din pipeline','≈ '+f0(estCom)+' €','dacă se semnează toate active, la marja medie')+'</div>';
+ var all=keys(),mx=1,mc=1,rows=all.map(function(k){var m=D.months[k],c=m.contracts||[],v=0,co=0;c.forEach(function(x){v+=n(x.val);co+=n(x.com)-n(x.fee)});mx=Math.max(mx,n(m.spend)/(n(m.curs)||5.35));mc=Math.max(mc,co);return {k:k,s:n(m.spend)/(n(m.curs)||5.35),co:co,c:c.length,l:n(m.leads)}});var top=Math.max(mx,mc);
+ h+='<h3>📈 Evoluție lunară</h3><div class="tr">'+rows.map(function(r){return '<div><div class="cols"><span class="a" style="height:'+Math.max(2,r.s/top*120)+'px" title="Reclame '+f0(r.s)+' €"></span><span class="b" style="height:'+Math.max(2,r.co/top*120)+'px" title="Comision '+f0(r.co)+' €"></span></div>'+ml(r.k).replace(/ \d+$/,'').slice(0,3)+'<br>'+r.c+' contr.</div>'}).join('')+'</div><div class="lg"><span style="--c:#16161a">Buget reclame (€)</span><span style="--c:#f5d90a">Comision agenție (€)</span></div>';
+ function grp(f){var g={};C.forEach(function(x){var k=f(x);g[k]=g[k]||{c:0,v:0,co:0};g[k].c++;g[k].v+=n(x.val);g[k].co+=n(x.com)-n(x.fee)});return Object.keys(g).map(function(k){return [k,g[k]]}).sort(function(a,b){return b[1].co-a[1].co})}
+ function tbl(t,rows){var m=Math.max.apply(null,rows.map(function(r){return r[1].co}).concat([1]));return '<div><h3>'+t+'</h3><table><thead><tr><th></th><th class="n">Contr.</th><th class="n">Valoare</th><th class="n">Comision</th></tr></thead><tbody>'+(rows.length?rows.map(function(r){return '<tr><td><b>'+e(r[0])+'</b><span class="bar" style="width:'+Math.max(4,r[1].co/m*100)+'%"></span></td><td class="n">'+r[1].c+'</td><td class="n">'+f0(r[1].v)+' €</td><td class="n">'+f0(r[1].co)+' €</td></tr>'}).join(''):'<tr><td colspan="4" style="color:#888">Niciun contract în perioada aleasă.</td></tr>')+'</tbody></table></div>'}
+ h+='<div class="two">'+tbl('🎵 Pe trupe',grp(function(x){return bandOf(x.band)}))+tbl('🧭 Pe sursă',grp(function(x){return SRCN[x.src||'']||x.src}))+'</div>';
+ h+='<p class="note">Cifrele vin din „Statistici lunare” de mai jos și din „Discuții cu potențial mare”. Contractele semnate dintr-o lună, dar venite din reclamele lunii anterioare, se mută cu 📅 la luna reclamelor, ca randamentul să fie corect. Verde = bine · galben = de urmărit · roșu = sub așteptări.</p>';
+ box.innerHTML=h;var s=box.querySelector('.kper');s.value=PER;s.onchange=function(){PER=this.value;draw()}}
+function load(){api('/rest/v1/offers?mode=eq.stats&select=notes&limit=1').then(function(r){try{D=JSON.parse((r&&r[0]&&r[0].notes)||'{}')}catch(_){D={}}if(!D.months)D.months={};draw()}).catch(function(){})}
+function place(){var sl=document.querySelector('.wm-ad .stslot');if(!sl)return;var k=document.getElementById('wmKpi');if(!k){k=document.createElement('div');k.id='wmKpi';k.innerHTML='<div style="color:#888;font-size:14px">Se încarcă KPI…</div>';sl.insertBefore(k,sl.firstChild)}
+ var st=document.getElementById('wmSt');if(st&&st.parentNode!==sl)sl.appendChild(st);if(k.parentNode===sl&&sl.firstChild!==k)sl.insertBefore(k,sl.firstChild)}
+setInterval(place,1200);
+function init(){place();var b=document.querySelector('.wm-ad .tabsA button[data-sec="st"]');if(b)b.addEventListener('click',function(){load()});window.addEventListener('wmpl',function(){draw()});
+ var t=0,w=setInterval(function(){if(++t>40)return clearInterval(w);sess().then(function(){clearInterval(w);load()}).catch(function(){})},1500);
+ setInterval(function(){var s=document.querySelector('.wm-ad .sec[data-sec="st"]');if(s&&s.classList.contains('on'))load()},20000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<!-- wm-asoc (06.11.2026) -->
+<style>
+#wmAs{max-width:980px;color:#16161a}
+#wmAs .lk{max-width:420px;margin:30px auto;background:#fff;border:1px solid #e6e6ea;border-radius:20px;padding:26px;box-shadow:0 10px 30px -18px rgba(0,0,0,.3);text-align:center}
+#wmAs .lk .ic{font-size:40px;margin-bottom:6px}
+#wmAs .lk h2{margin:0 0 6px;font:600 22px/1.25 "Lexend Deca","Lexend-Deca",sans-serif}
+#wmAs .lk p{margin:0 0 16px;color:#6b6b76;font-size:14px;line-height:1.5}
+#wmAs .lk input{width:100%;box-sizing:border-box;border:1px solid #d4d4da;border-radius:12px;padding:13px 14px;font:16px "Open Sans",sans-serif;margin:0 0 10px;text-align:center;letter-spacing:.08em}
+#wmAs .bt{border:0;border-radius:999px;padding:13px 20px;font:800 15px/1 "Open Sans",sans-serif;cursor:pointer;background:#f5d90a;color:#16161a;width:100%}
+#wmAs .bt.l{background:#fff;border:1px solid #d4d4da;width:auto;padding:10px 14px;font-size:13px}
+#wmAs .er{color:#b42318;font-size:13.5px;font-weight:700;min-height:18px;margin:6px 0 0}
+#wmAs .wn{background:#fff9e0;border:1px solid #f3dc6a;color:#7a5b00;border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;text-align:left;margin:12px 0 0}
+#wmAs .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+#wmAs .top h2{margin:0;font:600 24px/1.2 "Lexend Deca",sans-serif}
+#wmAs .top div{display:flex;gap:8px;flex-wrap:wrap}
+#wmAs .box{background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:18px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25)}
+#wmAs .emp{border:1px dashed #d4d4da;border-radius:14px;padding:26px;text-align:center;color:#6b6b76;font-size:14.5px;line-height:1.55}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var ROW=null,REC=null,KEY=null,DATA=null,TMR=null,CHECK='WATT-asociate-ok';
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function api(p,o){o=o||{};return sess().then(function(at){return fetch(CFG.url+p,{method:o.m||'GET',headers:{'apikey':CFG.key,'Authorization':'Bearer '+at,'Content-Type':'application/json','Prefer':'return=representation'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)return r.text().then(function(t){throw {s:r.status,t:t}});return r.status===204?null:r.json()})})}
+var enc=new TextEncoder(),dec=new TextDecoder();
+function b64(u){var s='';new Uint8Array(u).forEach(function(c){s+=String.fromCharCode(c)});return btoa(s)}
+function ub(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function derive(pw,salt,it){return crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']).then(function(k){return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])})}
+function seal(key,obj){var iv=crypto.getRandomValues(new Uint8Array(12));return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,enc.encode(JSON.stringify(obj))).then(function(c){return {iv:b64(iv),c:b64(c)}})}
+function open_(key,box){return crypto.subtle.decrypt({name:'AES-GCM',iv:ub(box.iv)},key,ub(box.c)).then(function(p){return JSON.parse(dec.decode(p))})}
+function R(){return document.getElementById('wmAs')}
+function $(s){return R().querySelector(s)}
+function lock(){KEY=null;DATA=null;clearTimeout(TMR);view()}
+function arm(){clearTimeout(TMR);TMR=setTimeout(lock,15*60*1000)}
+function load(){return api('/rest/v1/offers?mode=eq.assoc&select=id,notes&limit=1').then(function(r){if(r&&r[0]){ROW=r[0].id;try{REC=JSON.parse(r[0].notes||'null')}catch(_){REC=null}}else{ROW=null;REC=null}})}
+function saveRec(){var b={notes:JSON.stringify(REC)};if(ROW)return api('/rest/v1/offers?id=eq.'+ROW,{m:'PATCH',b:b,pref:''});
+ var tk='as'+Math.random().toString(36).slice(2,12)+Date.now().toString(36);return api('/rest/v1/offers',{m:'POST',b:Object.assign({token:tk,bride:'Asociate (intern)',status:'cancelled',mode:'assoc',expires_at:'2099-12-31T00:00:00Z'},b)}).then(function(x){ROW=x&&x[0]&&x[0].id})}
+function view(){var r=R();if(!r)return;
+ if(!KEY){var first=!REC;
+  r.innerHTML='<div class="lk"><div class="ic">🔒</div><h2>'+(first?'Setează parola secțiunii':'Secțiune protejată')+'</h2><p>'+(first?'Alege o parolă doar pentru calculele dintre asociate. Separată de parola de admin.':'Calculele dintre asociate. Introdu parola ca să le vezi.')+'</p>'+
+  '<input type="password" class="p1" placeholder="Parola" autocomplete="new-password">'+(first?'<input type="password" class="p2" placeholder="Repetă parola" autocomplete="new-password">':'')+
+  '<button type="button" class="bt go">'+(first?'Setează parola':'Deschide')+'</button><div class="er"></div>'+(first?'<div class="wn">⚠️ Datele de aici se criptează cu parola asta. Dacă o uiți, nu se mai pot recupera, nici de mine. Notează-o undeva sigur. Minim 6 caractere.</div>':'')+'</div>';
+  var go=function(){var p=$('.p1').value,er=$('.er');er.textContent='';
+   if(first){if(p.length<6){er.textContent='Minim 6 caractere.';return}if(p!==$('.p2').value){er.textContent='Parolele nu coincid.';return}
+    var salt=crypto.getRandomValues(new Uint8Array(16)),it=250000;er.style.color='#6b6b76';er.textContent='Se pregătește…';
+    derive(p,salt,it).then(function(k){KEY=k;DATA={v:1,items:[]};return Promise.all([seal(k,CHECK),seal(k,DATA)])}).then(function(x){REC={salt:b64(salt),it:it,chk:x[0],data:x[1]};return saveRec()}).then(function(){arm();view()}).catch(function(e){KEY=null;er.style.color='';er.textContent='Nu s-a salvat'+(e&&e.s?' ('+e.s+')':'')})}
+   else{er.style.color='#6b6b76';er.textContent='Se verifică…';derive(p,ub(REC.salt),REC.it).then(function(k){return open_(k,REC.chk).then(function(c){if(c!==CHECK)throw 0;KEY=k;return open_(k,REC.data)})}).then(function(d){DATA=d;arm();view()}).catch(function(){KEY=null;er.style.color='';er.textContent='Parolă greșită.'})}};
+  $('.go').onclick=go;r.querySelectorAll('input').forEach(function(i){i.onkeydown=function(e){if(e.key==='Enter')go()}});setTimeout(function(){var i=$('.p1');if(i)i.focus()},50);return}
+ r.innerHTML='<div class="top"><h2>🤝 Calcule între asociate</h2><div><button type="button" class="bt l chg">Schimbă parola</button><button type="button" class="bt l lck">🔒 Blochează</button></div></div><div class="box"><div class="cnt"></div></div>';
+ $('.lck').onclick=lock;$('.chg').onclick=chg;
+ if(window.WM_ASOC_UI){window.WM_ASOC_UI($('.cnt'),DATA,function(d){return window.WM_ASOC.save(d)})}else $('.cnt').innerHTML=(DATA&&DATA.html)?DATA.html:'<div class="emp">Secțiunea e pregătită și protejată cu parola ta.<br>Aici vor apărea calculele dintre asociate, când îmi spui ce să pun.</div>';
+ r.onclick=arm}
+function chg(){var o=prompt('Parola actuală:');if(o===null)return;derive(o,ub(REC.salt),REC.it).then(function(k){return open_(k,REC.chk)}).then(function(c){if(c!==CHECK)throw 0;var n1=prompt('Parola nouă (minim 6 caractere):');if(!n1||n1.length<6){alert('Parola nouă trebuie să aibă minim 6 caractere.');return}var n2=prompt('Repetă parola nouă:');if(n1!==n2){alert('Parolele nu coincid.');return}
+ var salt=crypto.getRandomValues(new Uint8Array(16)),it=250000;return derive(n1,salt,it).then(function(k){KEY=k;return Promise.all([seal(k,CHECK),seal(k,DATA)])}).then(function(x){REC={salt:b64(salt),it:it,chk:x[0],data:x[1]};return saveRec()}).then(function(){alert('Parola a fost schimbată.')})}).catch(function(){alert('Parola actuală e greșită.')})}
+window.WM_ASOC={save:function(d){if(!KEY)return Promise.reject('locked');DATA=d;return seal(KEY,d).then(function(x){REC.data=x;return saveRec()})},get:function(){return DATA}};
+function init(){var r=R();if(!r)return setTimeout(init,500);r.innerHTML='<div class="lk"><div class="ic">🔒</div><p>Se încarcă…</p></div>';
+ var b=document.querySelector('.wm-ad .tabsA button[data-sec="as"]');if(b)b.addEventListener('click',function(){if(!KEY)load().then(view).catch(function(){r.innerHTML='<div class="lk"><p>Autentifică-te în admin.</p></div>'})});
+ document.querySelectorAll('.wm-ad .tabsA button').forEach(function(x){if(x.getAttribute('data-sec')!=='as')x.addEventListener('click',function(){if(KEY)lock()})});
+ var t=0,w=setInterval(function(){if(++t>40)return clearInterval(w);sess().then(function(){clearInterval(w);load().then(view)}).catch(function(){})},1500)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<!-- wm-asoc-ui (06.11.2026) -->
+<style>
+#wmAs .sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
+#wmAs .sum div{border:1px solid #e6e6ea;border-radius:14px;padding:12px 14px;background:#fafafa}
+#wmAs .sum small{display:block;font:800 11.5px/1.3 "Open Sans",sans-serif;color:#6b6b76;text-transform:uppercase;letter-spacing:.03em}
+#wmAs .sum b{display:block;font:800 22px/1.2 "Open Sans",sans-serif;margin-top:4px}
+#wmAs .sum .bal{background:#16161a;border-color:#16161a;color:#fff}
+#wmAs .sum .bal small{color:#d4d4da}#wmAs .sum .bal b{color:#f5d90a}
+#wmAs h3{margin:18px 0 8px;font:700 15px/1.3 "Lexend Deca",sans-serif}
+#wmAs .tw{overflow-x:auto}
+#wmAs table{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}
+#wmAs th,#wmAs td{padding:7px 6px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}
+#wmAs th{font-size:11px;color:#6b6b76;text-transform:uppercase;letter-spacing:.03em}
+#wmAs td input{width:100%;box-sizing:border-box;border:1px solid #e1e1e6;border-radius:8px;padding:6px 7px;font:13px "Open Sans",sans-serif;background:#fff}
+#wmAs td input.nm{text-align:right}
+#wmAs td.c{text-align:right;font-weight:800;white-space:nowrap}
+#wmAs td.pos{color:#1e7b34}#wmAs td.neg{color:#b42318}
+#wmAs .x{border:0;background:none;cursor:pointer;font-size:15px;color:#b42318}
+#wmAs .act{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0;align-items:center}
+#wmAs .act .bt{width:auto;padding:11px 16px;font-size:13.5px}
+#wmAs .ms{font-size:13px;color:#6b6b76;font-weight:700}
+#wmAs .todo{background:#fff9e0;border:1px solid #f3dc6a;border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.55;margin:14px 0 0}
+#wmAs .todo textarea{width:100%;box-sizing:border-box;min-height:90px;border:1px solid #e9d36b;border-radius:10px;padding:8px;font:13.5px "Open Sans",sans-serif;background:#fffdf3}
+@media(max-width:760px){#wmAs .sum{grid-template-columns:1fr}}
+</style>
+<script>
+window.WM_ASOC_UI=function(el,D,save){
+ D=D||{};D.v=2;D.split=D.split||50;D.items=D.items||[];D.pays=D.pays||[];D.todo=D.todo||'';
+ function n(v){return Number(String(v==null?'':v).replace(/\s/g,'').replace(',','.'))||0}
+ function f0(v){return Math.round(v).toLocaleString('ro-RO')}
+ function e(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ function uid(){return Math.random().toString(36).slice(2,9)}
+ function calc(){var M=0,E=0,P=0;D.items.forEach(function(i){M+=n(i.m);E+=n(i.e);P+=n(i.p)});var pm=D.split/100,tot=M+E,dueM=tot*pm,bal=M-dueM;
+  D.pays.forEach(function(p){if(p.dir==='me')bal-=n(p.a);else bal+=n(p.a)});return {M:M,E:E,P:P,tot:tot,bal:bal}}
+ function draw(){var c=calc();var who=Math.abs(c.bal)<1?'Sunteți chit ✓':c.bal>0?'Mada îi dă Elenei':'Elena îi dă Madei';
+  var h='<div class="sum"><div class="bal"><small>Sold acum</small><b>'+(Math.abs(c.bal)<1?'0 €':f0(Math.abs(c.bal))+' €')+'</b><small>'+who+'</small></div><div><small>Comision încasat · total</small><b>'+f0(c.tot)+' €</b><small>Mada '+f0(c.M)+' € · Elena '+f0(c.E)+' € · împărțire '+D.split+' / '+(100-D.split)+'</small></div><div><small>De încasat ulterior (agenție)</small><b>'+f0(c.P)+' €</b><small>avansuri viitoare + recuperări după evenimente</small></div></div>';
+  h+='<h3>Contracte · comisionul agenției și cine îl ține</h3><div class="tw"><table><thead><tr><th style="width:21%">Contract</th><th style="width:9%">Comision total</th><th style="width:9%">La Mada</th><th style="width:9%">La Elena</th><th style="width:9%">De încasat</th><th style="width:9%">Diferență</th><th>Notă</th><th></th></tr></thead><tbody>'+
+  D.items.map(function(i,ix){var d=n(i.m)-(n(i.m)+n(i.e))*D.split/100;return '<tr data-i="'+ix+'"><td><input data-k="t" value="'+e(i.t)+'"></td><td><input class="nm" data-k="c" value="'+e(i.c)+'"></td><td><input class="nm" data-k="m" value="'+e(i.m)+'"></td><td><input class="nm" data-k="e" value="'+e(i.e)+'"></td><td><input class="nm" data-k="p" value="'+e(i.p)+'"></td><td class="c '+(d>0.5?'neg':d<-0.5?'pos':'')+'">'+(Math.abs(d)<0.5?'0':(d>0?'M→E ':'E→M ')+f0(Math.abs(d)))+'</td><td><input data-k="n" value="'+e(i.n)+'"></td><td><button type="button" class="x" data-del="'+ix+'">✕</button></td></tr>'}).join('')+
+  '</tbody></table></div><div class="act"><button type="button" class="bt l addi">+ Contract</button></div>';
+  h+='<h3>Decontări între voi</h3><div class="tw"><table style="min-width:560px"><thead><tr><th style="width:16%">Data</th><th style="width:22%">Cine a dat</th><th style="width:14%">Suma €</th><th>Notă</th><th></th></tr></thead><tbody>'+
+  D.pays.map(function(p,ix){return '<tr data-p="'+ix+'"><td><input data-k="d" value="'+e(p.d)+'" placeholder="zz.ll.aaaa"></td><td><select data-k="dir" style="width:100%;border:1px solid #e1e1e6;border-radius:8px;padding:6px"><option value="me"'+(p.dir==='me'?' selected':'')+'>Mada → Elena</option><option value="em"'+(p.dir==='em'?' selected':'')+'>Elena → Mada</option></select></td><td><input class="nm" data-k="a" value="'+e(p.a)+'"></td><td><input data-k="n" value="'+e(p.n)+'"></td><td><button type="button" class="x" data-delp="'+ix+'">✕</button></td></tr>'}).join('')+
+  '</tbody></table></div><div class="act"><button type="button" class="bt l addp">+ Decontare</button></div>';
+  h+='<div class="todo"><b>📝 De lămurit / note</b><textarea class="td">'+e(D.todo)+'</textarea></div>';
+  h+='<div class="act"><button type="button" class="bt sv">💾 Salvează</button><span class="ms"></span><span style="margin-left:auto;font-size:12.5px;color:#6b6b76">Împărțire Mada / Elena: <input class="spl" value="'+D.split+'" style="width:52px;border:1px solid #d4d4da;border-radius:8px;padding:5px;text-align:center"> %</span></div>';
+  el.innerHTML=h;
+  el.querySelectorAll('tr[data-i] input').forEach(function(x){x.onchange=function(){var i=D.items[+x.closest('tr').getAttribute('data-i')];i[x.getAttribute('data-k')]=x.value;dirty();draw()}});
+  el.querySelectorAll('tr[data-p] input,tr[data-p] select').forEach(function(x){x.onchange=function(){var p=D.pays[+x.closest('tr').getAttribute('data-p')];p[x.getAttribute('data-k')]=x.value;dirty();draw()}});
+  el.querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){if(!confirm('Ștergi rândul?'))return;D.items.splice(+b.getAttribute('data-del'),1);dirty();draw()}});
+  el.querySelectorAll('[data-delp]').forEach(function(b){b.onclick=function(){D.pays.splice(+b.getAttribute('data-delp'),1);dirty();draw()}});
+  el.querySelector('.addi').onclick=function(){D.items.push({id:uid(),t:'',c:'',m:'',e:'',p:'',n:''});dirty();draw()};
+  el.querySelector('.addp').onclick=function(){var d=new Date();D.pays.push({d:('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+d.getFullYear(),dir:'me',a:'',n:''});dirty();draw()};
+  el.querySelector('.td').oninput=function(){D.todo=this.value;dirty()};
+  el.querySelector('.spl').onchange=function(){D.split=Math.max(0,Math.min(100,n(this.value)||50));dirty();draw()};
+  el.querySelector('.sv').onclick=function(){var m=el.querySelector('.ms');m.textContent='Se salvează…';save(D).then(function(){DIRTY=false;m.textContent='Salvat ✓ (criptat)'}).catch(function(){m.textContent='Nu s-a salvat – încearcă din nou'})};
+  if(DIRTY)el.querySelector('.ms').textContent='Modificări nesalvate';}
+ var DIRTY=false;function dirty(){DIRTY=true;var m=el.querySelector('.ms');if(m)m.textContent='Modificări nesalvate'}
+ draw()};
+</script>
+
+<!-- wm-deals (06.11.2026) -->
+<style>
+#wmDl{color:#16161a}
+#wmDl .dh{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+#wmDl .dh h2{margin:0;font:600 24px/1.2 "Lexend Deca","Lexend-Deca",sans-serif}
+#wmDl .dh p{margin:4px 0 0;color:#6b6b76;font-size:13.5px}
+#wmDl .sumt{background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:6px 16px;margin:0 0 16px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25)}
+#wmDl .sumt table{width:100%;border-collapse:collapse;font-size:14.5px}
+#wmDl .sumt td{padding:11px 4px;border-bottom:1px solid #eee}
+#wmDl .sumt tr:last-child td{border-bottom:0}
+#wmDl .sumt td.v{text-align:right;font-weight:800;white-space:nowrap}
+#wmDl .sumt td small{color:#6b6b76;font-weight:600}
+#wmDl .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#wmDl .bc{background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:16px 18px;box-shadow:0 6px 20px -16px rgba(0,0,0,.25)}
+#wmDl .bc .t{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin:0 0 4px}
+#wmDl .bc h3{margin:0;font:700 17px/1.25 "Lexend Deca",sans-serif}
+#wmDl .bc .tot{background:#16161a;color:#f5d90a;border-radius:999px;padding:7px 12px;font:800 15px/1 "Open Sans",sans-serif;white-space:nowrap}
+#wmDl .bc .tot.e{background:#fff9e0;color:#7a5b00;border:1px solid #f3dc6a}
+#wmDl .bc .s{color:#6b6b76;font-size:12.5px;font-weight:700;margin:0 0 10px}
+#wmDl .bc table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 10px}
+#wmDl .bc td{padding:6px 0;border-bottom:1px dashed #e6e6ea}
+#wmDl .bc td.v{text-align:right;font-weight:700;white-space:nowrap;padding-left:10px}
+#wmDl .bc ul{margin:0;padding:0 0 0 18px;font-size:13.5px;line-height:1.55;color:#3a3a46}
+#wmDl .bc .lb{font:800 11.5px/1 "Open Sans",sans-serif;color:#6b6b76;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 6px}
+#wmDl .rule{background:#fff9e0;border:1px solid #f3dc6a;border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.5;margin:16px 0 0;color:#5c4500}
+@media(max-width:760px){#wmDl .grid{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+function sess(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}
+ if(!S.at)return Promise.reject('login');if(S.exp&&Date.now()<S.exp)return Promise.resolve(S.at);
+ return fetch(CFG.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':CFG.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:S.rt})}).then(function(r){return r.json()}).then(function(j){if(!j.access_token)throw 'login';var N=Object.assign({},S,{at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000});try{sessionStorage.setItem('wm-tm-adm',JSON.stringify(N))}catch(_){}return N.at})}
+function e(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function draw(D){var r=document.getElementById('wmDl');if(!r)return;var B=D.bands||[];
+ var h='<div class="dh"><div><h2>🤝 Deal-uri standard trupe</h2><p>'+e(D.note||'')+' · actualizat '+e(D.upd||'')+'</p></div></div>';
+ h+='<div class="sumt"><table>'+B.map(function(b){return '<tr><td><b>'+e(b.n)+'</b>'+(b.sub?' <small>· '+e(b.sub)+'</small>':'')+'</td><td class="v">'+e(b.total)+'</td></tr>'}).join('')+'</table></div>';
+ h+='<div class="grid">'+B.map(function(b){var emp=/completat/.test(b.total);return '<div class="bc"><div class="t"><h3>'+e(b.n)+'</h3><span class="tot'+(emp?' e':'')+'">'+e(b.total)+'</span></div>'+(b.sub?'<div class="s">'+e(b.sub)+'</div>':'')+
+  (b.rows&&b.rows.length?'<table>'+b.rows.map(function(x){return '<tr><td>'+e(x[0])+'</td><td class="v">'+e(x[1])+'</td></tr>'}).join('')+'</table>':'')+
+  (b.inc&&b.inc.length?'<div class="lb">Ce include</div><ul>'+b.inc.map(function(x){return '<li>'+e(x)+'</li>'}).join('')+'</ul>':'')+(emp?'<div class="s">Spune-mi deal-ul și îl completez.</div>':'')+'</div>'}).join('')+'</div>';
+ h+='<div class="rule">💡 '+e(D.rule||'')+'</div>';r.innerHTML=h}
+function load(){sess().then(function(at){return fetch(CFG.url+'/rest/v1/offers?mode=eq.deals&select=notes&limit=1',{headers:{'apikey':CFG.key,'Authorization':'Bearer '+at}}).then(function(r){return r.json()})}).then(function(r){var D={};try{D=JSON.parse((r&&r[0]&&r[0].notes)||'{}')}catch(_){}draw(D)}).catch(function(){var x=document.getElementById('wmDl');if(x)x.innerHTML='<p style="color:#888">Autentifică-te în admin.</p>'})}
+function init(){var r=document.getElementById('wmDl');if(!r)return setTimeout(init,500);r.innerHTML='<p style="color:#888">Se încarcă…</p>';
+ var b=document.querySelector('.wm-ad .tabsA button[data-sec="dl"]');if(b)b.addEventListener('click',load);
+ var t=0,w=setInterval(function(){if(++t>40)return clearInterval(w);sess().then(function(){clearInterval(w);load()}).catch(function(){})},1500)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<style>
+#wmAs .sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 14px}
+#wmAs .sum div{background:#fff;border:1px solid #e6e6ea;border-radius:14px;padding:12px 14px}
+#wmAs .sum b{display:block;font:700 20px/1.2 "Lexend Deca",sans-serif;margin-top:2px}
+#wmAs .sum span{font-size:12px;color:#6b6b76;text-transform:uppercase;letter-spacing:.05em}
+#wmAs .bal{background:#16161a;color:#fff;border-radius:16px;padding:16px 18px;margin:0 0 14px}
+#wmAs .bal b{display:block;font:700 28px/1.2 "Lexend Deca",sans-serif}
+#wmAs .bal small{opacity:.75}
+#wmAs .tw{overflow-x:auto;border:1px solid #e6e6ea;border-radius:14px;background:#fff}
+#wmAs table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+#wmAs th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#6b6b76;text-align:left;padding:9px 10px;border-bottom:1px solid #e6e6ea;white-space:nowrap}
+#wmAs td{padding:9px 10px;border-top:1px solid #f0f0f3;vertical-align:top}
+#wmAs td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+#wmAs .up{color:#c2334d}#wmAs .dn{color:#1e7a4c}
+#wmAs .frm{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0;background:#fafafb;border:1px solid #e6e6ea;border-radius:14px;padding:12px}
+#wmAs .frm input,#wmAs .frm select{border:1px solid #d4d4da;border-radius:10px;padding:9px 10px;font:14px "Open Sans",sans-serif;width:100%;box-sizing:border-box}
+#wmAs .frm .w{grid-column:1/-1}
+#wmAs .x{background:none;border:0;color:#999;cursor:pointer;font-size:15px}
+#wmAs .hint{font-size:12px;color:#6b6b76;margin:6px 0}
+</style>
+<script>
+(function(){
+var T={incasare:'Încasare',cheltuiala:'Cheltuială firmă',plata:'Plată între asociate'};
+function eur(n){return (Math.round((+n||0)*100)/100).toLocaleString('ro-RO')+' €'}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function dmy(i){return i?i.split('-').reverse().join('.'):''}
+function delta(x){var a=+x.amount||0,s=x.who==='Mada'?1:x.who==='Elena'?-1:0;
+ if(x.type==='incasare'){var sh=(x.shared===''||x.shared==null)?a:+x.shared;return s*sh*0.5}
+ if(x.type==='cheltuiala')return -s*a*0.5;if(x.type==='plata')return -s*a;return 0}
+window.WM_ASOC_UI=function(el,DATA,save){
+ var D=DATA&&DATA.items?DATA:{v:1,items:[]};
+ function draw(){var it=D.items.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
+  var bal=it.reduce(function(s,x){return s+delta(x)},0),ab=Math.abs(bal);
+  var com=it.filter(function(x){return x.type==='incasare'}).reduce(function(s,x){return s+((x.shared===''||x.shared==null)?+x.amount||0:+x.shared)},0);
+  var byM=it.filter(function(x){return x.type==='incasare'&&x.who==='Mada'}).reduce(function(s,x){return s+(+x.amount||0)},0);
+  var byE=it.filter(function(x){return x.type==='incasare'&&x.who==='Elena'}).reduce(function(s,x){return s+(+x.amount||0)},0);
+  el.innerHTML='<div class="bal"><small>'+(ab<0.5?'Sunteți chit':bal>0?'Mada îi datorează Elenei':'Elena îi datorează Madei')+'</small><b>'+eur(ab)+'</b><small>Împărțire 50/50 din comision. Soldul ține cont de încasări, cheltuieli și ce v-ați dat deja una alteia.'+(D.upd?' · actualizat '+esc(D.upd):'')+'</small></div>'+
+  '<div class="sum"><div><span>Comision de împărțit</span><b>'+eur(com)+'</b></div><div><span>Încasat de Mada</span><b>'+eur(byM)+'</b></div><div><span>Încasat de Elena</span><b>'+eur(byE)+'</b></div><div><span>Partea fiecăreia</span><b>'+eur(com/2)+'</b></div></div>'+
+  '<div class="tw"><table><thead><tr><th>Data</th><th>Contract / notă</th><th>Tip</th><th>Cine</th><th>Sumă</th><th>De împărțit</th><th>Efect Mada→Elena</th><th></th></tr></thead><tbody>'+
+  (it.length?it.map(function(x){var d=delta(x);return '<tr><td>'+dmy(x.date)+'</td><td><b>'+esc(x.contract||'')+'</b>'+(x.note?'<div class="hint">'+esc(x.note)+'</div>':'')+'</td><td>'+esc(T[x.type]||x.type)+'</td><td>'+esc(x.who)+'</td><td class="n">'+eur(x.amount)+'</td><td class="n">'+(x.type==='incasare'?eur((x.shared===''||x.shared==null)?x.amount:x.shared):'–')+'</td><td class="n '+(d>0?'up':d<0?'dn':'')+'">'+(d>0?'+':d<0?'−':'')+eur(Math.abs(d))+'</td><td><button class="x" data-del="'+esc(x.id)+'" title="Șterge">×</button></td></tr>'}).join(''):'<tr><td colspan="8" class="hint">Nicio înregistrare încă.</td></tr>')+
+  '</tbody></table></div>'+
+  '<div class="frm"><select class="f_type"><option value="incasare">Încasare</option><option value="cheltuiala">Cheltuială firmă</option><option value="plata">Plată între asociate</option></select><input class="f_date" type="date"><select class="f_who"><option>Mada</option><option>Elena</option></select><input class="f_amt" type="number" step="any" placeholder="Sumă (€)"><input class="f_sh" type="number" step="any" placeholder="Din care de împărțit (€)"><input class="f_ct w" placeholder="Contract (ex. Moves 15.05.2027 – Nume client)"><input class="f_nt w" placeholder="Notă (ex. avans cash, la Elena în plic)"><button type="button" class="bt f_add w">+ Adaugă înregistrare</button><div class="hint w er"></div></div>'+
+  '<div class="hint">+ = Mada îi datorează Elenei · − = Elena îi datorează Madei. „Din care de împărțit” = comisionul agenției (fără partea trupei).</div>';
+  el.querySelector('.f_date').value=new Date().toISOString().slice(0,10);
+  el.querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Sigur?';return}D.items=D.items.filter(function(x){return x.id!==b.dataset.del});go()}});
+  el.querySelector('.f_add').onclick=function(){var q=function(c){return el.querySelector(c).value},er=el.querySelector('.er');var a=+q('.f_amt');if(!a){er.textContent='Completează suma.';return}
+   D.items.push({id:'a'+Date.now().toString(36),date:q('.f_date'),type:q('.f_type'),who:q('.f_who'),amount:a,shared:q('.f_type')==='incasare'?(q('.f_sh')===''?a:+q('.f_sh')):'',contract:q('.f_ct').trim(),note:q('.f_nt').trim()});go()}}
+ function go(){var n=new Date();D.upd=('0'+n.getDate()).slice(-2)+'.'+('0'+(n.getMonth()+1)).slice(-2)+'.'+n.getFullYear();save(D).then(draw).catch(function(){var e=el.querySelector('.er');if(e)e.textContent='Nu s-a salvat. Deblochează din nou secțiunea.'})}
+ draw()};
+})();
+</script>

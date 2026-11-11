@@ -1,0 +1,11 @@
+<script>
+/* wm-datecheck (09.11.2026): data evenimentului nu poate fi în trecut sau la peste 5 ani (ex. 1017 în loc de 2027) */
+(function(){
+function fmt(v){return String(v).split('-').reverse().join('.')}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+window.wmDateErr=function(v){if(!v)return 'Completează data evenimentului.';var d=new Date(v+'T12:00:00');if(isNaN(d.getTime()))return 'Data evenimentului nu e validă.';var t=new Date();t.setHours(0,0,0,0);if(d<t)return 'Data evenimentului ('+fmt(v)+') e în trecut. Verifică anul.';var mx=new Date();mx.setFullYear(mx.getFullYear()+5);if(d>mx)return 'Data evenimentului ('+fmt(v)+') e la peste 5 ani. Verifică anul.';return ''};
+function live(inp){if(!inp||inp.dataset.wdc)return;inp.dataset.wdc='1';var w=document.createElement('div');w.className='wm-dchk';w.style.cssText='color:#c0392b;font:600 12px/1.35 "Open Sans",sans-serif;margin-top:4px';inp.insertAdjacentElement('afterend',w);var f=function(){w.textContent=inp.value?wmDateErr(inp.value):''};inp.addEventListener('change',f);inp.addEventListener('input',f);inp.addEventListener('blur',f);f()}
+function hook(){var d=document.getElementById('nDate');if(!d)return setTimeout(hook,400);d.min=iso(new Date());live(d)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+</script>

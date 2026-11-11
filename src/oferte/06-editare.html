@@ -1,0 +1,41 @@
+<!-- ofr-edit (28.10.2026): modifică detaliile unei oferte (nume, dată, telefon, locație, trupe) -->
+<style>
+.ofr-adm .oedb{display:inline-flex;align-items:center;gap:6px;margin-top:8px;border:1px solid #ddd;background:#fff;color:#111;border-radius:999px;padding:8px 14px;font:700 12px/1 "Open Sans",sans-serif;cursor:pointer}
+.ofr-adm tr.oedr td{background:#fffdf0;border-bottom:2px solid #FBE530;padding:14px 12px}
+.ofr-adm .oedf .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0 12px}
+.ofr-adm .oedf .bp{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
+.ofr-adm .oedf .bp label{margin:0;cursor:pointer}.ofr-adm .oedf .bp input{display:none}
+.ofr-adm .oedf .bp span{display:inline-block;padding:9px 14px;border-radius:999px;border:2px solid #ddd;font:700 12.5px/1 "Open Sans",sans-serif;color:#555;margin:0}
+.ofr-adm .oedf .bp input:checked+span{background:#FBE530;border-color:#FBE530;color:#111}
+.ofr-adm .oedf .ok{color:#2e7d32;font-weight:700}.ofr-adm .oedf .er{color:#c62828;font-weight:700}
+</style>
+<script>
+(function(){
+var CFG=window.WM_SB||{url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'},O={},busy=false,t=null;
+var BN=[['moves','MOVES'],['timeout','TimeOut'],['the-mood','The MOOD'],['hotstuff','HOTSTUFF'],['overtime','OVERTIME'],['sirido','SIRIDO']];
+function at(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}return S.at||''}
+function api(path,opt){opt=opt||{};var h={'apikey':CFG.key,'Content-Type':'application/json','Authorization':'Bearer '+at()};if(opt.m==='PATCH')h.Prefer='return=representation';return fetch(CFG.url+path,{method:opt.m||'GET',headers:h,body:opt.b?JSON.stringify(opt.b):undefined}).then(function(r){if(r.status===401)throw 'login';if(!r.ok)return r.text().then(function(x){throw x});return r.json()})}
+function esc(s){return s==null?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function fld(l,k,v,ty){return '<label><span>'+l+'</span><input type="'+(ty||'text')+'" data-k="'+k+'" value="'+esc(v)+'"'+(ty==='number'?' min="0" step="1"':'')+'></label>'}
+function open(tr,o){var nx=tr.nextElementSibling;if(nx&&nx.classList.contains('oedr')){nx.remove();return}
+ var bands=[];try{bands=typeof o.bands==='string'?JSON.parse(o.bands):(o.bands||[])}catch(_){}
+ var r=document.createElement('tr');r.className='oedr';var td=document.createElement('td');td.colSpan=tr.children.length||7;r.appendChild(td);
+ td.innerHTML='<div class="oedf"><b style="display:block;font:700 15px/1.3 Lexend Deca,sans-serif;margin-bottom:10px">Modifică oferta</b><div class="g">'+fld('Numele (unul dintre miri)','bride',o.bride)+fld('Partenerul / partenera','groom',o.groom)+fld('Telefon','phone',o.phone,'tel')+fld('Email','email',o.email,'email')+fld('Data evenimentului','event_date',o.event_date?String(o.event_date).slice(0,10):'','date')+fld('Locație','venue',o.venue)+fld('Localitatea nunții','city',o.city)+fld('Km de la București (dus)','km',o.km==null?'':o.km,'number')+'</div>'
+  +'<label style="display:flex;gap:8px;align-items:center;margin:0 0 12px"><input type="checkbox" data-k="lodging" style="width:18px;height:18px"'+(o.lodging?' checked':'')+'> <span style="margin:0">Trupa are nevoie de cazare</span></label>'
+  +'<span style="display:block;font:700 13px/1.3 Open Sans,sans-serif;color:#555">Trupele din ofertă</span><div class="bp">'+BN.map(function(b){return '<label><input type="checkbox" value="'+b[0]+'"'+(bands.indexOf(b[0])>=0?' checked':'')+'><span>'+b[1]+'</span></label>'}).join('')+'</div>'
+  +'<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="abtn y sv">Salvează modificările</button><button type="button" class="abtn g cx">Închide</button><span class="ms"></span></div></div>';
+ tr.parentNode.insertBefore(r,tr.nextSibling);
+ var q=function(k){return td.querySelector('[data-k="'+k+'"]')},ms=td.querySelector('.ms');
+ q('km').addEventListener('input',function(){var k=parseInt(q('km').value,10);q('lodging').checked=k>100});
+ td.querySelector('.cx').addEventListener('click',function(){r.remove()});
+ td.querySelector('.sv').addEventListener('click',function(){var B=[].map.call(td.querySelectorAll('.bp input:checked'),function(i){return i.value}),v=function(k){return q(k).value.trim()};
+  if(!v('bride')){ms.className='ms er';ms.textContent='Completează numele.';return}if(!B.length){ms.className='ms er';ms.textContent='Bifează cel puțin o trupă.';return}if(window.wmDateErr&&v('event_date')!==(o.event_date?String(o.event_date).slice(0,10):'')){var wdE=wmDateErr(v('event_date'));if(wdE){ms.className='ms er';ms.textContent=wdE;return}}if(window.wmLogi){var wlE=wmLogi(q('city'),q('km'),q('lodging'));if(wlE){ms.className='ms er';ms.textContent=wlE;return}}
+  var b={bride:v('bride'),groom:v('groom')||null,phone:v('phone')||null,email:v('email')||null,event_date:v('event_date')||null,venue:v('venue')||null,city:v('city')||null,km:v('km')!==''?parseInt(v('km'),10):null,lodging:q('lodging').checked,bands:B};
+  var sb=this;sb.disabled=true;ms.className='ms';ms.textContent='Se salvează…';
+  api('/rest/v1/offers?id=eq.'+o.id,{m:'PATCH',b:b}).then(function(j){if(!j||!j[0])throw 'nimic';ms.className='ms ok';ms.textContent='Salvat ✓ Mirii văd noile detalii când redeschid linkul.';setTimeout(function(){if(typeof window.ofrTab==='function')window.ofrTab('list')},1400)}).catch(function(e){sb.disabled=false;ms.className='ms er';ms.textContent=e==='login'?'Sesiunea a expirat: reîncarcă pagina.':'Nu s-a salvat. Încearcă din nou.'})})}
+function paint(){document.querySelectorAll('#ofrTbody tr').forEach(function(tr){if(tr.classList.contains('oedr')||tr.querySelector('.oedb'))return;var a=tr.querySelector('a.link[href*="/oferta/?o="]');if(!a)return;var o=O[a.href.split('o=')[1]];if(!o)return;var td=tr.lastElementChild;if(!td)return;if(td.textContent.trim()==='—')td.textContent='';var b=document.createElement('button');b.type='button';b.className='oedb';b.textContent='✏️ Modifică';b.addEventListener('click',function(){open(tr,O[o.token]||o)});td.insertBefore(b,td.firstChild);if(td.children.length>1)b.style.marginRight='6px';td.insertBefore(document.createElement('div'),b.nextSibling)})}
+function refresh(){if(busy||!at())return;busy=true;api('/rest/v1/offers?select=id,token,bride,groom,phone,email,event_date,venue,city,km,lodging,bands').then(function(r){O={};(r||[]).forEach(function(o){O[o.token]=o});busy=false;paint()}).catch(function(){busy=false})}
+function hook(){var tb=document.getElementById('ofrTbody');if(!tb)return setTimeout(hook,400);new MutationObserver(function(m){if(m.some(function(x){return [].some.call(x.addedNodes,function(n){return n.nodeType===1&&!n.classList.contains('oedr')})})){clearTimeout(t);t=setTimeout(refresh,300)}}).observe(tb,{childList:true});refresh()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+</script>

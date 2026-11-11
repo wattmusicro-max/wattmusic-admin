@@ -1,0 +1,26 @@
+<!-- ofr-renew (30.10.2026): reactivează oferta încă 10 zile + retrimite pe WhatsApp -->
+<style>
+.ofr-adm .rnb{display:inline-flex;align-items:center;gap:6px;margin-top:8px;border:1px solid #c8e6c9;background:#e8f5e9;color:#1b5e20;border-radius:999px;padding:8px 14px;font:700 12px/1.2 "Open Sans",sans-serif;cursor:pointer;text-align:left}
+.ofr-adm .rnx{display:block;margin-top:6px;font:600 11.5px/1.3 "Open Sans",sans-serif;color:#777}
+.ofr-adm .rnx.x{color:#c62828}
+</style>
+<script>
+(function(){
+var CFG=window.WM_SB||{url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'},O={},busy=false,t=null,DAYS=10;
+function at(){var S={};try{S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}')||{}}catch(_){}return S.at||''}
+function api(path,opt){opt=opt||{};var h={'apikey':CFG.key,'Content-Type':'application/json','Authorization':'Bearer '+at()};if(opt.m==='PATCH')h.Prefer='return=representation';return fetch(CFG.url+path,{method:opt.m||'GET',headers:h,body:opt.b?JSON.stringify(opt.b):undefined}).then(function(r){if(r.status===401)throw 'login';if(!r.ok)return r.text().then(function(x){throw x});return r.json()})}
+function fd(d){return new Date(d).toLocaleDateString('ro-RO',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function paint(){document.querySelectorAll('#ofrTbody tr').forEach(function(tr){if(tr.classList.contains('oedr')||tr.querySelector('.rnb,.rnx'))return;var a=tr.querySelector('a.link[href*="/oferta/?o="]');if(!a)return;var o=O[a.href.split('o=')[1]];if(!o)return;
+ var exp=o.expires_at?new Date(o.expires_at):null,gone=o.status==='expired'||(o.status==='open'&&exp&&exp<new Date());
+ var st=tr.children[3];if(st&&(o.status==='open'||o.status==='expired')){var x=document.createElement('span');x.className='rnx'+(gone?' x':'');x.textContent=gone?'Expirată'+(exp?' pe '+fd(exp):''):(exp?'Expiră pe '+fd(exp):'Fără expirare');st.appendChild(x)}
+ if(!(o.status==='open'||o.status==='expired'))return;var td=tr.lastElementChild;if(!td)return;if(td.textContent.trim()==='—')td.textContent='';
+ var b=document.createElement('button');b.type='button';b.className='rnb';b.textContent=gone?'🔁 Reactivează + retrimite':'🔁 Prelungește + retrimite';td.appendChild(document.createElement('div'));td.appendChild(b);
+ b.addEventListener('click',function(){var w=o.phone&&window.ofrWaUrl?window.open('about:blank','_blank'):null;b.disabled=true;b.textContent='Se reactivează…';var ne=new Date(Date.now()+DAYS*864e5).toISOString();
+  api('/rest/v1/offers?id=eq.'+o.id,{m:'PATCH',b:{status:'open',expires_at:ne}}).then(function(j){if(!j||!j[0])throw 'nimic';var u=o.phone&&window.ofrWaUrl?window.ofrWaUrl(o.phone,o.bride,a.href):'';if(w&&u)w.location=u;else if(w)w.close();
+   b.textContent='Activă până pe '+fd(ne)+(u?' ✓ WhatsApp deschis':' ✓');if(!u){navigator.clipboard&&navigator.clipboard.writeText(a.href);b.textContent+=' (link copiat)'}setTimeout(function(){if(typeof window.ofrTab==='function')window.ofrTab('list')},2500)})
+  .catch(function(e){if(w)w.close();b.disabled=false;b.textContent=e==='login'?'Sesiunea a expirat: reîncarcă pagina':'Nu s-a putut. Încearcă din nou'})})})}
+function refresh(){if(busy||!at())return;busy=true;api('/rest/v1/offers?select=id,token,bride,phone,status,expires_at').then(function(r){O={};(r||[]).forEach(function(o){O[o.token]=o});busy=false;paint()}).catch(function(){busy=false})}
+function hook(){var tb=document.getElementById('ofrTbody');if(!tb)return setTimeout(hook,400);new MutationObserver(function(m){if(m.some(function(x){return [].some.call(x.addedNodes,function(n){return n.nodeType===1&&!n.classList.contains('oedr')})})){clearTimeout(t);t=setTimeout(refresh,350)}}).observe(tb,{childList:true});refresh()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+</script>

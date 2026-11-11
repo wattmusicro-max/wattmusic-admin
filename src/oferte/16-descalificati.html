@@ -1,0 +1,49 @@
+<!-- WM DESCALIFICATI (10.11.2026) -->
+<style>
+.dqb{background:#fff;border:1px solid #f1c4c4;color:#b42318;border-radius:999px;padding:7px 14px;font-weight:600;cursor:pointer;font-size:13px;margin-top:6px}
+.dqb:hover{background:#fdf0f0}
+.dqp{margin-top:8px;background:#fff7f7;border:1px solid #f1c4c4;border-radius:10px;padding:10px;font-size:13px;max-width:260px}
+.dqp select,.dqp input{width:100%;box-sizing:border-box;margin:6px 0;padding:7px;border:1px solid #ddd;border-radius:8px;font-size:13px;background:#fff;color:#16161a}
+.dqp .r{display:flex;gap:6px;margin-top:4px}
+.dqp button{flex:1;border-radius:8px;padding:7px;border:1px solid #ddd;background:#fff;cursor:pointer;font-weight:600;font-size:13px}
+.dqp button.ok{background:#b42318;border-color:#b42318;color:#fff}
+#wmDisq{margin:22px 0 10px;border:1px solid #f1c4c4;border-radius:14px;background:#fff;overflow:hidden}
+#wmDisq .hd{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fdf0f0;cursor:pointer;font-weight:700;color:#b42318}
+#wmDisq .bd{padding:6px 16px 12px}
+#wmDisq .it{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;color:#333}
+#wmDisq .it:last-child{border-bottom:0}
+#wmDisq .it b{color:#16161a}
+#wmDisq .why{color:#b42318;font-weight:600}
+#wmDisq .re{border:1px solid #ddd;background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;font-size:12px;font-weight:600}
+#wmDisq .empty{color:#888;font-size:13px;padding:8px 0}
+</style>
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+var REASONS=['A ales altă trupă','Nu a mai răspuns','Buget prea mic','Data ocupată / nu avem trupă liberă','Au renunțat (eveniment / trupă)','Altul'];
+var ROW=null,D={items:{}},LOADED=false,OPEN=false;
+function at(){try{return JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}').at||''}catch(_){return ''}}
+function api(p,o){o=o||{};var h={apikey:CFG.key,'Content-Type':'application/json',Authorization:'Bearer '+at()};if(o.m)h.Prefer='return=representation';return fetch(CFG.url+p,{method:o.m||'GET',headers:h,body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)return r.text().then(function(x){throw x});return r.json()})}
+function esc(s){return s==null?'':String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function load(){if(!at())return;api('/rest/v1/offers?mode=eq.disq&select=id,notes&limit=1').then(function(r){if(r&&r[0]){ROW=r[0].id;try{D=JSON.parse(r[0].notes||'{}')}catch(_){D={}}if(!D.items)D.items={}}LOADED=true;paint()}).catch(function(){})}
+function save(){D.upd=new Date().toISOString();var body={notes:JSON.stringify(D)};
+ // citește lista curentă și combină, ca să nu suprascriem alt tab
+ var p=ROW?api('/rest/v1/offers?id=eq.'+ROW+'&select=notes').then(function(r){var s={};try{s=JSON.parse((r&&r[0]&&r[0].notes)||'{}')}catch(_){}var it=(s&&s.items)||{};Object.keys(D.items).forEach(function(k){it[k]=D.items[k]});Object.keys(it).forEach(function(k){if(D.items[k]===undefined&&D._del&&D._del[k])delete it[k]});D.items=it;delete D._del;return api('/rest/v1/offers?id=eq.'+ROW,{m:'PATCH',b:{notes:JSON.stringify(D)}})})
+ :api('/rest/v1/offers',{m:'POST',b:{token:'disq-'+Date.now().toString(36),bride:'Descalificați (intern)',status:'cancelled',mode:'disq',expires_at:'2099-12-31T00:00:00Z',notes:JSON.stringify(D)}}).then(function(x){ROW=x&&x[0]&&x[0].id});
+ return p.then(paint)}
+function tokOf(tr){var a=tr.querySelector('a.link[href*="/oferta/?o="]');if(!a)return '';var m=a.href.match(/[?&]o=([^&#]+)/);return m?m[1]:''}
+function info(tr){var tds=tr.children,b=tr.querySelector('td b'),ph=tr.querySelector('a.link[href^="https://wa.me/"]');return{name:b?b.textContent.trim():'',date:tds[1]?tds[1].textContent.trim():'',bands:tds[2]?tds[2].textContent.trim():'',phone:ph?ph.textContent.replace('💬','').trim():''}}
+function panel(tr,td){if(td.querySelector('.dqp'))return;var d=document.createElement('div');d.className='dqp';d.innerHTML='<b>Descalifică – motivul:</b><select>'+REASONS.map(function(r){return '<option>'+r+'</option>'}).join('')+'</select><input placeholder="Detalii (opțional, ex. au ales trupa X)"><div class="r"><button type="button" class="no">Renunță</button><button type="button" class="ok">Descalifică</button></div>';td.appendChild(d);
+ d.querySelector('.no').onclick=function(){d.remove()};
+ d.querySelector('.ok').onclick=function(){var t=tokOf(tr);if(!t)return;var i=info(tr);this.textContent='Se salvează…';D.items[t]={r:d.querySelector('select').value,txt:d.querySelector('input').value.trim(),at:new Date().toISOString(),name:i.name,date:i.date,bands:i.bands,phone:i.phone};save().catch(function(e){d.querySelector('.ok').textContent='Eroare – reîncearcă'})}}
+function box(){var tb=document.getElementById('ofrTbody');if(!tb)return null;var tbl=tb.closest('table');if(!tbl)return null;var b=document.getElementById('wmDisq');if(!b){b=document.createElement('div');b.id='wmDisq';tbl.parentNode.insertBefore(b,tbl.nextSibling);b.addEventListener('click',function(e){var h=e.target.closest('.hd');if(h){OPEN=!OPEN;paint();return}var r=e.target.closest('.re');if(r){var k=r.getAttribute('data-k');D._del=D._del||{};D._del[k]=1;delete D.items[k];r.textContent='Se salvează…';save()}})}return b}
+function paint(){var tb=document.getElementById('ofrTbody');if(!tb||!LOADED)return;var keys=D.items||{};
+ tb.querySelectorAll('tr').forEach(function(tr){var t=tokOf(tr);if(!t)return;var dq=!!keys[t];tr.style.display=dq?'none':'';if(dq)return;var td=tr.lastElementChild;if(td&&!td.querySelector('.dqb')){var b=document.createElement('button');b.type='button';b.className='dqb';b.textContent='🚫 Descalifică';b.onclick=function(){panel(tr,td)};td.appendChild(document.createElement('div'));td.appendChild(b)}});
+ var bx=box();if(!bx)return;var ks=Object.keys(keys).sort(function(a,b){return (keys[b].at||'').localeCompare(keys[a].at||'')});
+ var H='<div class="hd"><span>🚫 DESCALIFICAȚI ('+ks.length+')</span><span>'+(OPEN?'▲ ascunde':'▼ arată')+'</span></div>'+(OPEN?'<div class="bd">'+(ks.length?ks.map(function(k){var x=keys[k];return '<div class="it"><div><b>'+esc(x.name)+'</b> · '+esc(x.date)+(x.phone?' · '+esc(x.phone):'')+'<br><span class="why">'+esc(x.r)+'</span>'+(x.txt?' – '+esc(x.txt):'')+' <span style="color:#999">· '+new Date(x.at).toLocaleDateString('ro-RO')+'</span></div><button type="button" class="re" data-k="'+esc(k)+'">↩ Reactivează</button></div>'}).join(''):'<div class="empty">Niciun client descalificat.</div>')+'</div>':'');if(bx.__h!==H){bx.__h=H;bx.innerHTML=H}}
+function start(){load();var tb=null;setInterval(function(){var n=document.getElementById('ofrTbody');if(n&&n!==tb){tb=n;new MutationObserver(function(){clearTimeout(window.__dqT);window.__dqT=setTimeout(paint,150)}).observe(n,{childList:true})}if(!LOADED&&at())load();paint()},2000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+
+

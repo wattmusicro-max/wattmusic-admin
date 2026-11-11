@@ -1,0 +1,18 @@
+<!-- ofr-meet-panel (02.11.2026): întâlnirile programate, cu link direct -->
+<div id="ofrMeetPanel" style="max-width:900px;margin:0 auto 12px;padding:0 16px;display:none"></div>
+<script>
+(function(){
+var U='https://zillhgmbhwurnmtssmqx.supabase.co',K='sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt';
+function at(){try{var S=JSON.parse(sessionStorage.getItem('wm-tm-adm')||localStorage.getItem('wm-tm-adm')||'{}');return S.at||''}catch(_){return ''}}
+function e(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''}
+function load(){var t=at(),box=document.getElementById('ofrMeetPanel');if(!t||!box)return;var adm=document.getElementById('ofrAdm');if(adm&&box.nextSibling!==adm&&adm.parentNode){adm.parentNode.insertBefore(box,adm)}
+ var since=new Date(Date.now()-3*36e5).toISOString();
+ fetch(U+'/rest/v1/offers?select=bride,groom,phone,meet_at,meet_platform,meet_link,status&mode=eq.meet&status=neq.cancelled&meet_at=gte.'+encodeURIComponent(since)+'&order=meet_at.asc&limit=20',{headers:{apikey:K,Authorization:'Bearer '+t}}).then(function(r){return r.ok?r.json():[]}).then(function(L){
+  if(!Array.isArray(L)||!L.length){box.style.display='none';return}
+  box.style.display='';
+  box.innerHTML='<div style="background:#fff;border:2px solid #FBE530;border-radius:14px;padding:12px 14px;font-family:\'Open Sans\',sans-serif"><div style="font:700 15px/1.3 \'Lexend Deca\',sans-serif;margin-bottom:8px;color:#111">📅 Întâlnirile mele programate</div>'+L.map(function(m){var d=m.meet_at?new Date(m.meet_at).toLocaleString('ro-RO',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'fără dată';var soon=m.meet_at&&Math.abs(new Date(m.meet_at)-Date.now())<36e5;
+   return '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid #f0f0f0"><div style="min-width:0;color:#222;font-size:14px"><b>'+e(m.bride)+(m.groom?' &amp; '+e(m.groom):'')+'</b> · '+e(d)+(m.meet_platform?' · '+e(m.meet_platform):'')+(soon?' <span style="background:#e8f5e9;color:#2e7d32;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700">ACUM</span>':'')+(m.meet_link?'<br><span style="font-size:11px;color:#777;word-break:break-all">'+e(m.meet_link)+'</span>':'')+'</div>'+(m.meet_link?'<a href="'+e(m.meet_link)+'" target="_blank" rel="noopener" style="background:#1a73e8;color:#fff;border-radius:999px;padding:8px 14px;font:700 13px/1 \'Open Sans\',sans-serif;text-decoration:none;white-space:nowrap">🎥 Intră în întâlnire</a>':'<span style="font-size:12px;color:#b45309">fără link</span>')+'</div>'}).join('')+'</div>';
+ }).catch(function(){})}
+load();setInterval(load,60000);var tries=0,w=setInterval(function(){if(at()){load();clearInterval(w)}if(++tries>60)clearInterval(w)},2000);
+})();
+</script>

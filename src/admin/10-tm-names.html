@@ -1,0 +1,2 @@
+<!-- tm-names (05.11.2026) -->
+<script>window.tmSyncNames=function(L,api){(L||[]).forEach(function(c){var p=c.plans&&(Array.isArray(c.plans)?c.plans[0]:c.plans),d=(p&&p.data)||{},b={},nb=String(d.mireasa||'').trim(),ng=String(d.mire||'').trim();if(!c.bride&&nb)b.bride=nb;if(!c.groom&&ng)b.groom=ng;if(Object.keys(b).length){if(b.bride)c.bride=b.bride;if(b.groom)c.groom=b.groom;try{api('/rest/v1/couples?id=eq.'+c.id,{m:'PATCH',b:b,pref:'return=minimal'})}catch(_){}}})};</script>
