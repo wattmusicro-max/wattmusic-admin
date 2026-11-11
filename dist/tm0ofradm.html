@@ -1,5 +1,5 @@
 <!-- WM ANTI-SALT (11.11.2026): blocurile se arata doar dupa ce ajung in tabul lor -->
-<style>#wmPl,#wmSt,#wmCal,#wmLd,#wmCs{display:none}.wm-ad .sec #wmPl,.wm-ad .sec #wmSt,.wm-ad .sec #wmCal,.wm-ad .sec #wmLd,.wm-ad .sec #wmCs{display:block}</style>
+<style>#wmPl,#wmSt,#wmCal,#wmLd,#wmCs{display:none}.wm-ad .vzslot #wmPl,.wm-ad .vzslot #wmSt,.wm-ad .stslot #wmSt,.wm-ad .sec[data-sec="cal"] #wmCal,.wm-ad .sec[data-sec="ldx"] #wmLd,.wm-ad .sec[data-sec="cs"] #wmCs{display:block}</style>
 <!-- WATT Music · Offer Admin — paste inside adm2.html or as separate Elementor widget -->
 <!-- Admin panel for creating and managing offers -->
 <style>
@@ -639,7 +639,7 @@ function init(){var box=document.getElementById('wmPl');if(!box)return;
  document.getElementById('wmPlAdd').onclick=function(){var g=function(i){return document.getElementById(i).value.trim()};if(!g('wmPlN'))return msg('Scrie un nume');
   ITEMS.unshift({id:'p'+Date.now().toString(36),name:g('wmPlN'),phone:g('wmPlT'),band:g('wmPlB'),date:g('wmPlDt'),loc:g('wmPlLc'),val:Number(g('wmPlV').replace(/\D/g,''))||0,note:g('wmPlNo'),st:'activ'});
   ['wmPlN','wmPlT','wmPlB','wmPlDt','wmPlLc','wmPlV','wmPlNo'].forEach(function(i){document.getElementById(i).value=''});save();draw()};
- function place(){var av=document.getElementById('wmAv'),adm=document.getElementById('ofrAdm'),ref=av||adm;if(ref&&ref.parentNode&&!(box.parentNode===ref.parentNode&&(box.compareDocumentPosition(ref)&4)))ref.parentNode.insertBefore(box,ref)}
+ function place(){if(document.querySelector('.wm-ad .vzslot'))return;/* adminul are tab propriu – nu mai mutăm blocul sub oferte (11.11.2026) */var av=document.getElementById('wmAv'),adm=document.getElementById('ofrAdm'),ref=av||adm;if(ref&&ref.parentNode&&!(box.parentNode===ref.parentNode&&(box.compareDocumentPosition(ref)&4)))ref.parentNode.insertBefore(box,ref)}
  place();setTimeout(place,3000);setTimeout(place,6000);
  load();setInterval(function(){refresh();sync()},30000);var n=0,w=setInterval(function(){if(ROW||++n>60)return clearInterval(w);load()},3000)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -751,7 +751,7 @@ function init(){var box=$('wmSt');if(!box)return;
   var m=D.months[M];(m.contracts=m.contracts||[]).push({id:'c'+Date.now().toString(36),name:g('wmStAN'),nr:g('wmStANr'),phone:g('wmStAP'),src:$('wmStASrc').value,srcName:g('wmStASn'),fee:n(g('wmStAF')),band:g('wmStAB'),date:g('wmStAD'),val:n(g('wmStAV')),com:n(g('wmStAC'))});
   ['wmStAN','wmStANr','wmStAP','wmStASn','wmStAF','wmStAB','wmStAD','wmStAV','wmStAC'].forEach(function(i){$(i).value=''});save();draw()};
  window.addEventListener('wmpl',function(){draw()});
- function place(){var pl=$('wmPl'),av=$('wmAv'),adm=$('ofrAdm');var ref=av||adm;if(pl&&pl.parentNode){if(pl.nextSibling!==box)pl.parentNode.insertBefore(box,pl.nextSibling)}else if(ref&&ref.parentNode&&box.nextSibling!==ref)ref.parentNode.insertBefore(box,ref)}
+ function place(){if(document.querySelector('.wm-ad .stslot'))return;/* adminul are tab propriu – nu mai mutăm blocul sub oferte (11.11.2026) */var pl=$('wmPl'),av=$('wmAv'),adm=$('ofrAdm');var ref=av||adm;if(pl&&pl.parentNode){if(pl.nextSibling!==box)pl.parentNode.insertBefore(box,pl.nextSibling)}else if(ref&&ref.parentNode&&box.nextSibling!==ref)ref.parentNode.insertBefore(box,ref)}
  place();setTimeout(place,3500);setTimeout(place,6500);
  load();var k=0,w=setInterval(function(){if(ROW||++k>60)return clearInterval(w);load()},3000)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
