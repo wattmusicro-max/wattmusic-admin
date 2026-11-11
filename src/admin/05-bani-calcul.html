@@ -1,0 +1,37 @@
+<!-- wm-bani (11.11.2026): calculul banilor pe contract – o singură formulă pentru Contracte semnate, Asociate și KPI -->
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+function num(v){return Number(String(v==null?'':v).replace(/\s/g,'').replace(',','.'))||0}
+function at(){try{return JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}').at||''}catch(_){return ''}}
+function api(p,o){o=o||{};return fetch(CFG.url+p,{method:o.m||'GET',headers:{apikey:CFG.key,Authorization:'Bearer '+at(),'Content-Type':'application/json',Prefer:'return=minimal'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)return r.text().then(function(t){throw {s:r.status,t:t}});return r.status===204?null:r.json()})}
+/*
+ Regula (aceeași ca în calculele Mada – Elena):
+ - comision = valoarea contractului − deal-ul trupei (artistFee); se poate fixa manual cu comOverride
+ - plățile încasate de Mada sau Elena acoperă întâi comisionul (în ordinea scadențelor);
+   ce trece peste comision sunt banii trupei care stau la voi
+ - comisionul neacoperit încă = „mai intră” (din avansuri viitoare sau de la trupă după eveniment)
+*/
+function calc(e){e=e||{};var tot=num(e.total),hasDeal=e.artistFee!==''&&e.artistFee!=null,deal=num(e.artistFee);
+ var com=(e.comOverride!==''&&e.comOverride!=null)?num(e.comOverride):Math.max(tot-deal,0);
+ var pays=(e.payments||[]).map(function(p,i){return{p:p,i:i}}).sort(function(a,b){return String(a.p.due||'').localeCompare(String(b.p.due||''))||a.i-b.i});
+ var left=com,by={Mada:0,Elena:0},held={Mada:0,Elena:0},rows=[],tagged=false,paidAg=0,paidBand=0;
+ pays.forEach(function(x){var p=x.p,a=num(p.amount),c=0,b=0;if(p.who)tagged=true;
+  if(p.paid&&(p.who==='Mada'||p.who==='Elena')){c=Math.min(left,a);left-=c;b=a-c;by[p.who]+=c;held[p.who]+=b;paidAg+=a}
+  else if(p.paid&&p.who==='Trupa')paidBand+=a;
+  rows.push({i:x.i,p:p,com:c,band:b})});
+ var col=by.Mada+by.Elena;
+ return{tot:tot,deal:deal,hasDeal:hasDeal,com:com,by:by,held:held,col:col,left:Math.max(com-col,0),rows:rows,tagged:tagged,ready:hasDeal&&tagged,paidAg:paidAg,paidBand:paidBand}}
+/* citește rândul cu evenimente, schimbă DOAR câmpurile date pe un eveniment, salvează */
+function saveEvent(id,patch){return api('/rest/v1/offers?mode=eq.events&select=id,notes&limit=1').then(function(r){var row=r&&r[0];if(!row)throw 'fara evenimente';var n=JSON.parse(row.notes||'{}'),it=(n.items||[]).find(function(x){return x.id===id});if(!it)throw 'eveniment negasit';
+  if(patch.payments){(patch.payments||[]).forEach(function(pp,i){if(it.payments&&it.payments[i]){Object.keys(pp).forEach(function(k){if(pp[k]===null)delete it.payments[i][k];else it.payments[i][k]=pp[k]})}})}
+  Object.keys(patch).forEach(function(k){if(k==='payments')return;if(patch[k]===null)delete it[k];else it[k]=patch[k]});
+  n.upd=new Date().toISOString();return api('/rest/v1/offers?id=eq.'+row.id,{m:'PATCH',b:{notes:JSON.stringify(n)}}).then(function(){return it})})}
+/* KPI: contractele din Statistici legate de eveniment (câmpul ev) primesc automat valoarea și comisionul */
+function syncStats(e){var c=calc(e);if(!c.hasDeal)return Promise.resolve(0);return api('/rest/v1/offers?mode=eq.stats&select=id,notes&limit=1').then(function(r){var row=r&&r[0];if(!row)return 0;var n=JSON.parse(row.notes||'{}'),ch=0;
+  Object.keys(n.months||{}).forEach(function(m){(n.months[m].contracts||[]).forEach(function(k){if(k.ev===e.id&&(k.val!==c.tot||k.com!==c.com)){k.val=c.tot;k.com=c.com;ch++}})});
+  if(!ch)return 0;return api('/rest/v1/offers?id=eq.'+row.id,{m:'PATCH',b:{notes:JSON.stringify(n)}}).then(function(){return ch})})}
+function loadEvents(){return api('/rest/v1/offers?mode=eq.events&select=notes&limit=1').then(function(r){var n={};try{n=JSON.parse((r&&r[0]&&r[0].notes)||'{}')}catch(_){}return n.items||[]})}
+window.WM_BANI={num:num,calc:calc,saveEvent:saveEvent,syncStats:syncStats,loadEvents:loadEvents};
+})();
+</script>

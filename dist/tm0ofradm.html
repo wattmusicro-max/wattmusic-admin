@@ -971,12 +971,23 @@ setInterval(start,2000);if(document.readyState==='loading')document.addEventList
 #wmCs .money .nx{color:#8a5a00;font-weight:600}
 #wmCs .warn{margin-top:8px;font-size:13px;color:#b42318}
 #wmCs .empty{color:#888;padding:20px 0}
+#wmCs .bani{margin-top:10px;padding:10px 12px;background:#fafaf7;border:1px solid #ecebe4;border-radius:10px;font-size:13px;color:#333;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
+#wmCs .bani b{color:#16161a}
+#wmCs .bani .td{color:#8a5a00;font-weight:600}
+#wmCs .bani button,#wmCs .bf button{border:1px solid #ddd;background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;font-weight:600;font-size:12.5px}
+#wmCs .bf{margin-top:8px;padding:12px;border:1px solid #e6e6ea;border-radius:10px;background:#fff;font-size:13px}
+#wmCs .bf .r{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;padding:6px 0;border-bottom:1px solid #f3f3f3}
+#wmCs .bf .r:last-of-type{border-bottom:0}
+#wmCs .bf .r span{flex:1 1 220px;min-width:0}
+#wmCs .bf input,#wmCs .bf select{border:1px solid #d4d4da;border-radius:8px;padding:6px 8px;font-size:13px;background:#fff;color:#16161a}
+#wmCs .bf .act{display:flex;gap:8px;align-items:center;margin-top:10px}
+#wmCs .bf button.ok{background:#16161a;color:#fff;border-color:#16161a}
 </style>
 <div id="wmCs"><div class="empty">Se încarcă… (trebuie să fii logată în admin)</div></div>
 <script>
 (function(){
 var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
-var ITEMS=null,F='2l',BUSY=false;
+var ITEMS=null,F='2l',BUSY=false,OPEN={};
 function at(){try{return JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}').at||''}catch(_){return ''}}
 function api(p){return fetch(CFG.url+p,{headers:{apikey:CFG.key,Authorization:'Bearer '+at()}}).then(function(r){if(!r.ok)throw r.status;return r.json()})}
 function esc(s){return s==null?'':String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -997,7 +1008,21 @@ function card(e){var x=info(e),d=x.d;
  +'<div class="meta">'+esc(e.artist)+' · eveniment '+dro(e.date)+(e.venue||e.city?' · '+esc(e.venue||e.city):'')+'</div>'
  +'<div class="docs">'+docs+'</div>'
  +'<div class="money"><span>Valoare: <b>'+eur(x.tot)+'</b></span><span>Încasat: <b>'+eur(x.paid)+'</b></span><span>Rămas: <b>'+eur(x.rest)+'</b></span>'+(x.nx?'<span class="nx">Următoarea: '+esc(x.nx.label||'Plată')+' · '+eur(x.nx.amount)+(x.nx.due?' · '+dro(x.nx.due):'')+'</span>':'')+'</div>'
+ +bani(e)
  +(d.warn?'<div class="warn">⚠️ '+esc(d.warn)+'</div>':'')+(x.miss.length?'<div class="warn">Lipsește: '+x.miss.join(', ')+'</div>':'')+'</div>'}
+function bani(e){var B=window.WM_BANI;if(!B)return '';var c=B.calc(e),id=esc(e.id);
+ var h='<div class="bani"><span>💶 Comision: <b>'+(c.hasDeal?eur(c.com):'?')+'</b></span>';
+ if(c.ready){h+='<span>încasat: Mada <b>'+eur(c.by.Mada)+'</b> · Elena <b>'+eur(c.by.Elena)+'</b></span><span>mai intră: <b>'+eur(c.left)+'</b></span>';if(c.held.Mada||c.held.Elena)h+='<span>bani ai trupei la voi: '+(c.held.Mada?'Mada '+eur(c.held.Mada):'')+(c.held.Mada&&c.held.Elena?' · ':'')+(c.held.Elena?'Elena '+eur(c.held.Elena):'')+'</span>'}
+ else h+='<span class="td">⚠️ de completat: '+[!c.hasDeal?'deal-ul trupei':'',!c.tagged?'cine a încasat plățile':''].filter(Boolean).join(' și ')+'</span>';
+ h+='<button type="button" data-bani="'+id+'">'+(OPEN[e.id]?'Închide':'✏️ Bani')+'</button></div>';
+ if(OPEN[e.id]){var W=['','Mada','Elena','Trupa'];
+  h+='<div class="bf" data-id="'+id+'"><div class="r"><span><b>Deal trupă</b> (cât ia trupa, €)</span><input class="dl" inputmode="decimal" value="'+esc(e.artistFee==null?'':e.artistFee)+'" style="width:110px"></div>'
+  +(e.payments||[]).map(function(p,i){return '<div class="r"><span>'+(p.paid?'✅ ':'○ ')+esc(p.label||'Plată')+' · <b>'+eur(p.amount)+'</b>'+(p.due?' · '+dro(p.due):'')+'</span><select data-i="'+i+'">'+W.map(function(w){return '<option value="'+w+'"'+((p.who||'')===w?' selected':'')+'>'+(w?'încasează '+w:'— cine încasează?')+'</option>'}).join('')+'</select></div>'}).join('')
+  +'<div class="act"><button type="button" class="ok" data-sv="'+id+'">Salvează</button><span class="ms"></span></div><div style="color:#6b6b76;font-size:12px;margin-top:6px">Comision = valoare − deal trupă. Plățile încasate de Mada/Elena acoperă întâi comisionul; ce e peste sunt banii trupei care stau la voi. Statistici și Asociate se actualizează din aceste cifre.</div></div>'}
+ return h}
+function save(id,box){var B=window.WM_BANI,ms=box.querySelector('.ms');ms.textContent='Se salvează…';
+ var dl=box.querySelector('.dl').value.trim(),pays=[];box.querySelectorAll('select[data-i]').forEach(function(s){pays[+s.getAttribute('data-i')]={who:s.value||null}});
+ B.saveEvent(id,{artistFee:dl===''?'':B.num(dl),payments:pays}).then(function(it){ITEMS=ITEMS.map(function(x){return x.id===id?it:x});return B.syncStats(it)}).then(function(){OPEN[id]=false;paint()}).catch(function(){ms.textContent='Nu s-a salvat – reîncearcă (poate a expirat sesiunea)'})}
 function paint(){var b=document.getElementById('wmCs');if(!b||!ITEMS)return;
  var lim=new Date();lim.setMonth(lim.getMonth()-2);var ls=lim.toISOString().slice(0,10);
  var L=ITEMS.filter(function(e){return F==='all'||String(e.docs.signed||'')>=ls}).sort(function(a,c){return String(c.docs.signed||'').localeCompare(String(a.docs.signed||''))});
@@ -1012,7 +1037,7 @@ function place(){var nav=document.querySelector('.tabsA'),st=document.querySelec
  var s=document.querySelector('div.sec[data-sec="cs"]');if(!s){s=document.createElement('div');s.className='sec';s.dataset.sec='cs';st.parentNode.insertBefore(s,st.nextSibling)}
  var el=document.getElementById('wmCs');if(el&&el.parentNode!==s)s.appendChild(el);
  if(!nav.__cs){nav.__cs=1;nav.addEventListener('click',function(e){var t=e.target.closest('button');if(t&&t.dataset.sec!=='cs'){bt.classList.remove('on');s.classList.remove('on')}},true)}}
-function start(){var w=document.getElementById('wmCs');if(w)w.addEventListener('click',function(e){var f=e.target.closest('[data-f]');if(f){F=f.getAttribute('data-f');paint()}});
+function start(){var w=document.getElementById('wmCs');if(w)w.addEventListener('click',function(e){var f=e.target.closest('[data-f]');if(f){F=f.getAttribute('data-f');paint();return}var bn=e.target.closest('[data-bani]');if(bn){var k=bn.getAttribute('data-bani');OPEN[k]=!OPEN[k];paint();return}var sv=e.target.closest('[data-sv]');if(sv){save(sv.getAttribute('data-sv'),sv.closest('.bf'))}});
  setInterval(function(){place();if(!ITEMS&&at())load()},1500);place();load()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();

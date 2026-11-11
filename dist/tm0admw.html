@@ -177,6 +177,43 @@ if(S.rt){if(Date.now()>S.exp){auth({refresh_token:S.rt},'refresh_token').then(fu
 })();
 </script>
 
+<!-- wm-bani (11.11.2026): calculul banilor pe contract – o singură formulă pentru Contracte semnate, Asociate și KPI -->
+<script>
+(function(){
+var CFG={url:'https://zillhgmbhwurnmtssmqx.supabase.co',key:'sb_publishable_wUOg2nD0rwVt8q8sXpkTZQ_z2xTeVpt'};
+function num(v){return Number(String(v==null?'':v).replace(/\s/g,'').replace(',','.'))||0}
+function at(){try{return JSON.parse(sessionStorage.getItem('wm-tm-adm')||'{}').at||''}catch(_){return ''}}
+function api(p,o){o=o||{};return fetch(CFG.url+p,{method:o.m||'GET',headers:{apikey:CFG.key,Authorization:'Bearer '+at(),'Content-Type':'application/json',Prefer:'return=minimal'},body:o.b?JSON.stringify(o.b):undefined}).then(function(r){if(!r.ok)return r.text().then(function(t){throw {s:r.status,t:t}});return r.status===204?null:r.json()})}
+/*
+ Regula (aceeași ca în calculele Mada – Elena):
+ - comision = valoarea contractului − deal-ul trupei (artistFee); se poate fixa manual cu comOverride
+ - plățile încasate de Mada sau Elena acoperă întâi comisionul (în ordinea scadențelor);
+   ce trece peste comision sunt banii trupei care stau la voi
+ - comisionul neacoperit încă = „mai intră” (din avansuri viitoare sau de la trupă după eveniment)
+*/
+function calc(e){e=e||{};var tot=num(e.total),hasDeal=e.artistFee!==''&&e.artistFee!=null,deal=num(e.artistFee);
+ var com=(e.comOverride!==''&&e.comOverride!=null)?num(e.comOverride):Math.max(tot-deal,0);
+ var pays=(e.payments||[]).map(function(p,i){return{p:p,i:i}}).sort(function(a,b){return String(a.p.due||'').localeCompare(String(b.p.due||''))||a.i-b.i});
+ var left=com,by={Mada:0,Elena:0},held={Mada:0,Elena:0},rows=[],tagged=false,paidAg=0,paidBand=0;
+ pays.forEach(function(x){var p=x.p,a=num(p.amount),c=0,b=0;if(p.who)tagged=true;
+  if(p.paid&&(p.who==='Mada'||p.who==='Elena')){c=Math.min(left,a);left-=c;b=a-c;by[p.who]+=c;held[p.who]+=b;paidAg+=a}
+  else if(p.paid&&p.who==='Trupa')paidBand+=a;
+  rows.push({i:x.i,p:p,com:c,band:b})});
+ var col=by.Mada+by.Elena;
+ return{tot:tot,deal:deal,hasDeal:hasDeal,com:com,by:by,held:held,col:col,left:Math.max(com-col,0),rows:rows,tagged:tagged,ready:hasDeal&&tagged,paidAg:paidAg,paidBand:paidBand}}
+/* citește rândul cu evenimente, schimbă DOAR câmpurile date pe un eveniment, salvează */
+function saveEvent(id,patch){return api('/rest/v1/offers?mode=eq.events&select=id,notes&limit=1').then(function(r){var row=r&&r[0];if(!row)throw 'fara evenimente';var n=JSON.parse(row.notes||'{}'),it=(n.items||[]).find(function(x){return x.id===id});if(!it)throw 'eveniment negasit';
+  if(patch.payments){(patch.payments||[]).forEach(function(pp,i){if(it.payments&&it.payments[i]){Object.keys(pp).forEach(function(k){if(pp[k]===null)delete it.payments[i][k];else it.payments[i][k]=pp[k]})}})}
+  Object.keys(patch).forEach(function(k){if(k==='payments')return;if(patch[k]===null)delete it[k];else it[k]=patch[k]});
+  n.upd=new Date().toISOString();return api('/rest/v1/offers?id=eq.'+row.id,{m:'PATCH',b:{notes:JSON.stringify(n)}}).then(function(){return it})})}
+/* KPI: contractele din Statistici legate de eveniment (câmpul ev) primesc automat valoarea și comisionul */
+function syncStats(e){var c=calc(e);if(!c.hasDeal)return Promise.resolve(0);return api('/rest/v1/offers?mode=eq.stats&select=id,notes&limit=1').then(function(r){var row=r&&r[0];if(!row)return 0;var n=JSON.parse(row.notes||'{}'),ch=0;
+  Object.keys(n.months||{}).forEach(function(m){(n.months[m].contracts||[]).forEach(function(k){if(k.ev===e.id&&(k.val!==c.tot||k.com!==c.com)){k.val=c.tot;k.com=c.com;ch++}})});
+  if(!ch)return 0;return api('/rest/v1/offers?id=eq.'+row.id,{m:'PATCH',b:{notes:JSON.stringify(n)}}).then(function(){return ch})})}
+function loadEvents(){return api('/rest/v1/offers?mode=eq.events&select=notes&limit=1').then(function(r){var n={};try{n=JSON.parse((r&&r[0]&&r[0].notes)||'{}')}catch(_){}return n.items||[]})}
+window.WM_BANI={num:num,calc:calc,saveEvent:saveEvent,syncStats:syncStats,loadEvents:loadEvents};
+})();
+</script>
 <!-- tm-names (05.11.2026) -->
 <script>window.tmSyncNames=function(L,api){(L||[]).forEach(function(c){var p=c.plans&&(Array.isArray(c.plans)?c.plans[0]:c.plans),d=(p&&p.data)||{},b={},nb=String(d.mireasa||'').trim(),ng=String(d.mire||'').trim();if(!c.bride&&nb)b.bride=nb;if(!c.groom&&ng)b.groom=ng;if(Object.keys(b).length){if(b.bride)c.bride=b.bride;if(b.groom)c.groom=b.groom;try{api('/rest/v1/couples?id=eq.'+c.id,{m:'PATCH',b:b,pref:'return=minimal'})}catch(_){}}})};</script>
 <!-- wm-social + vz (05.11.2026) -->
@@ -701,14 +738,18 @@ function delta(x){var a=+x.amount||0,s=x.who==='Mada'?1:x.who==='Elena'?-1:0;
  if(x.type==='cheltuiala')return -s*a*0.5;if(x.type==='plata')return -s*a;return 0}
 window.WM_ASOC_UI=function(el,DATA,save){
  var D=DATA&&DATA.items?DATA:{v:1,items:[]};
- function draw(){var it=D.items.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
-  var bal=it.reduce(function(s,x){return s+delta(x)},0),ab=Math.abs(bal);
-  var com=it.filter(function(x){return x.type==='incasare'}).reduce(function(s,x){return s+((x.shared===''||x.shared==null)?+x.amount||0:+x.shared)},0);
-  var byM=it.filter(function(x){return x.type==='incasare'&&x.who==='Mada'}).reduce(function(s,x){return s+(+x.amount||0)},0);
-  var byE=it.filter(function(x){return x.type==='incasare'&&x.who==='Elena'}).reduce(function(s,x){return s+(+x.amount||0)},0);
+ /* 11.11.2026: comisionul din contracte se calculează automat (Contracte semnate → 💶 Bani); registrul de mai jos rămâne pentru decontări, cheltuieli și încasări fără contract */
+ var AUTO={rows:[],M:0,E:0,hM:0,hE:0,left:0,ok:false};
+ function loadAuto(){var B=window.WM_BANI;if(!B)return;B.loadEvents().then(function(evs){var A={rows:[],M:0,E:0,hM:0,hE:0,left:0,ok:true};evs.forEach(function(e){var c=B.calc(e);if(!c.ready)return;A.rows.push({e:e,c:c});A.M+=c.by.Mada;A.E+=c.by.Elena;A.hM+=c.held.Mada;A.hE+=c.held.Elena;A.left+=c.left});A.rows.sort(function(a,b){return String(a.e.date||'').localeCompare(String(b.e.date||''))});AUTO=A;draw()}).catch(function(){})}
+ function draw(){var it=D.items.slice().filter(function(x){return !x.inAuto}).sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
+  var bal=it.reduce(function(s,x){return s+delta(x)},0)+(AUTO.M-AUTO.E)/2,ab=Math.abs(bal);
+  var com=it.filter(function(x){return x.type==='incasare'}).reduce(function(s,x){return s+((x.shared===''||x.shared==null)?+x.amount||0:+x.shared)},0)+AUTO.M+AUTO.E;
+  var byM=it.filter(function(x){return x.type==='incasare'&&x.who==='Mada'}).reduce(function(s,x){return s+(+x.amount||0)},0)+AUTO.M;
+  var byE=it.filter(function(x){return x.type==='incasare'&&x.who==='Elena'}).reduce(function(s,x){return s+(+x.amount||0)},0)+AUTO.E;
+  var autoH=AUTO.rows.length?'<h3 style="margin:18px 0 8px;font:600 16px/1.3 \"Lexend Deca\",sans-serif">Din contracte · calculat automat</h3><div class="tw"><table><thead><tr><th>Contract</th><th>Comision</th><th>Încasat Mada</th><th>Încasat Elena</th><th>Mai intră</th><th>Bani trupă la voi</th><th>Efect Mada→Elena</th></tr></thead><tbody>'+AUTO.rows.map(function(r){var c=r.c,d=(c.by.Mada-c.by.Elena)/2;return '<tr><td><b>'+esc(r.e.client||'')+'</b><div class="hint">'+esc(r.e.artist||'')+' · '+dmy(String(r.e.date||'').slice(0,10))+'</div></td><td class="n">'+eur(c.com)+'</td><td class="n">'+eur(c.by.Mada)+'</td><td class="n">'+eur(c.by.Elena)+'</td><td class="n">'+eur(c.left)+'</td><td class="n">'+(c.held.Mada||c.held.Elena?(c.held.Mada?'Mada '+eur(c.held.Mada):'')+(c.held.Elena?' Elena '+eur(c.held.Elena):''):'–')+'</td><td class="n '+(d>0?'up':d<0?'dn':'')+'">'+(d>0?'+':d<0?'−':'')+eur(Math.abs(d))+'</td></tr>'}).join('')+'</tbody></table></div><div class="hint">Se schimbă din tabul ✍️ Contracte semnate → 💶 Bani. Comision care mai intră: '+eur(AUTO.left)+' · bani ai trupelor la voi: Mada '+eur(AUTO.hM)+' · Elena '+eur(AUTO.hE)+'</div><h3 style="margin:18px 0 8px;font:600 16px/1.3 \"Lexend Deca\",sans-serif">Registru · decontări, cheltuieli, alte încasări</h3>':'';
   el.innerHTML='<div class="bal"><small>'+(ab<0.5?'Sunteți chit':bal>0?'Mada îi datorează Elenei':'Elena îi datorează Madei')+'</small><b>'+eur(ab)+'</b><small>Împărțire 50/50 din comision. Soldul ține cont de încasări, cheltuieli și ce v-ați dat deja una alteia.'+(D.upd?' · actualizat '+esc(D.upd):'')+'</small></div>'+
   '<div class="sum"><div><span>Comision de împărțit</span><b>'+eur(com)+'</b></div><div><span>Încasat de Mada</span><b>'+eur(byM)+'</b></div><div><span>Încasat de Elena</span><b>'+eur(byE)+'</b></div><div><span>Partea fiecăreia</span><b>'+eur(com/2)+'</b></div></div>'+
-  '<div class="tw"><table><thead><tr><th>Data</th><th>Contract / notă</th><th>Tip</th><th>Cine</th><th>Sumă</th><th>De împărțit</th><th>Efect Mada→Elena</th><th></th></tr></thead><tbody>'+
+  autoH+'<div class="tw"><table><thead><tr><th>Data</th><th>Contract / notă</th><th>Tip</th><th>Cine</th><th>Sumă</th><th>De împărțit</th><th>Efect Mada→Elena</th><th></th></tr></thead><tbody>'+
   (it.length?it.map(function(x){var d=delta(x);return '<tr><td>'+dmy(x.date)+'</td><td><b>'+esc(x.contract||'')+'</b>'+(x.note?'<div class="hint">'+esc(x.note)+'</div>':'')+'</td><td>'+esc(T[x.type]||x.type)+'</td><td>'+esc(x.who)+'</td><td class="n">'+eur(x.amount)+'</td><td class="n">'+(x.type==='incasare'?eur((x.shared===''||x.shared==null)?x.amount:x.shared):'–')+'</td><td class="n '+(d>0?'up':d<0?'dn':'')+'">'+(d>0?'+':d<0?'−':'')+eur(Math.abs(d))+'</td><td><button class="x" data-del="'+esc(x.id)+'" title="Șterge">×</button></td></tr>'}).join(''):'<tr><td colspan="8" class="hint">Nicio înregistrare încă.</td></tr>')+
   '</tbody></table></div>'+
   '<div class="frm"><select class="f_type"><option value="incasare">Încasare</option><option value="cheltuiala">Cheltuială firmă</option><option value="plata">Plată între asociate</option></select><input class="f_date" type="date"><select class="f_who"><option>Mada</option><option>Elena</option></select><input class="f_amt" type="number" step="any" placeholder="Sumă (€)"><input class="f_sh" type="number" step="any" placeholder="Din care de împărțit (€)"><input class="f_ct w" placeholder="Contract (ex. Moves 15.05.2027 – Nume client)"><input class="f_nt w" placeholder="Notă (ex. avans cash, la Elena în plic)"><button type="button" class="bt f_add w">+ Adaugă înregistrare</button><div class="hint w er"></div></div>'+
@@ -718,6 +759,6 @@ window.WM_ASOC_UI=function(el,DATA,save){
   el.querySelector('.f_add').onclick=function(){var q=function(c){return el.querySelector(c).value},er=el.querySelector('.er');var a=+q('.f_amt');if(!a){er.textContent='Completează suma.';return}
    D.items.push({id:'a'+Date.now().toString(36),date:q('.f_date'),type:q('.f_type'),who:q('.f_who'),amount:a,shared:q('.f_type')==='incasare'?(q('.f_sh')===''?a:+q('.f_sh')):'',contract:q('.f_ct').trim(),note:q('.f_nt').trim()});go()}}
  function go(){var n=new Date();D.upd=('0'+n.getDate()).slice(-2)+'.'+('0'+(n.getMonth()+1)).slice(-2)+'.'+n.getFullYear();save(D).then(draw).catch(function(){var e=el.querySelector('.er');if(e)e.textContent='Nu s-a salvat. Deblochează din nou secțiunea.'})}
- draw()};
+ draw();loadAuto()};
 })();
 </script>
