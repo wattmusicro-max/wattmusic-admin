@@ -47,13 +47,13 @@ din fiecare folder — contează, unele module se bazează pe cele dinainte.
 
 1. Modifici modulul din `src/…`.
 2. `python3 tools/build.py` → refă `dist/tm0admw.html` și `dist/tm0ofradm.html` și afișează amprenta SHA-256.
-3. Commit + push, apoi tag de versiune (`v1.0.1` etc.).
-4. Pagina încarcă `dist/` prin jsDelivr la versiunea fixată în widgetul din Elementor.
-   Revenire la o versiune veche = schimbi numărul versiunii în widget.
+3. Commit + push.
+4. În widgetul `tm0admw` din Elementor se pune la `V` codul noului commit (versiunea e fixată pe commit).
+   Revenire la o versiune veche = pui la `V` codul commit-ului vechi.
 
 ## Siguranță
 - Backup zilnic al datelor + al codului paginii: Drive → „WattMusic – Backup admin (privat)”.
-- `dist/` la tag-ul `v1.0.0` e identic, byte cu byte, cu ce era în Elementor pe 11.11.2026.
+- `dist/` la commit-ul `de4d202` e identic, byte cu byte, cu ce era în Elementor pe 11.11.2026.
 
 ## Încărcătorul din Elementor (`loader/`)
 - Widgetul `tm0admw` conține `loader/elementor-tm0admw.html` cu `__VERSIUNE__` înlocuit de codul commit-ului publicat.
