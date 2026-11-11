@@ -1,0 +1,22 @@
+<!-- WM ADMIN LOADER · codul e în GitHub: github.com/wattmusicro-max/wattmusic-admin
+     Ca să schimbi versiunea, modifici doar V (codul commit-ului). Revenire = pui V-ul vechi. -->
+<div id="wmL-tm0admw"></div>
+<script>
+(function(){
+var V='__VERSIUNE__';
+var REPO='wattmusicro-max/wattmusic-admin';
+var IDS=['tm0admw','tm0ofradm'];
+function urls(id){return['https://cdn.jsdelivr.net/gh/'+REPO+'@'+V+'/dist/'+id+'.html','https://raw.githubusercontent.com/'+REPO+'/'+V+'/dist/'+id+'.html']}
+function get(id){var u=urls(id);return fetch(u[0]).then(function(r){if(!r.ok)throw r.status;return r.text()}).catch(function(){return fetch(u[1]).then(function(r){if(!r.ok)throw r.status;return r.text()})})}
+function slot(id){return document.getElementById('wmL-'+id)}
+function mount(id,html){var el=slot(id);if(!el)return;el.innerHTML=html;
+ el.querySelectorAll('script').forEach(function(o){var s=document.createElement('script');for(var i=0;i<o.attributes.length;i++)s.setAttribute(o.attributes[i].name,o.attributes[i].value);s.textContent=o.textContent;o.replaceWith(s)})}
+function fail(){IDS.forEach(function(id){var el=slot(id);if(el&&!el.__ok)el.innerHTML='<p style="padding:24px;font:600 15px sans-serif;color:#b42318">Adminul nu s-a putut încărca. Reîncarcă pagina; dacă persistă, scrie-i lui Claude.</p>'})}
+window.WM_ADMIN_VERSION=V;
+Promise.all(IDS.map(get)).then(function(hs){
+ // ordinea contează: întâi adminul de bază, apoi ofertele (ca în Elementor)
+ IDS.forEach(function(id,i){var go=function(){mount(id,hs[i]);var el=slot(id);if(el)el.__ok=1};
+  if(slot(id))go();else document.addEventListener('DOMContentLoaded',go)});
+}).catch(fail);
+})();
+</script>

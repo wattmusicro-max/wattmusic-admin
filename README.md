@@ -54,3 +54,11 @@ din fiecare folder — contează, unele module se bazează pe cele dinainte.
 ## Siguranță
 - Backup zilnic al datelor + al codului paginii: Drive → „WattMusic – Backup admin (privat)”.
 - `dist/` la tag-ul `v1.0.0` e identic, byte cu byte, cu ce era în Elementor pe 11.11.2026.
+
+## Încărcătorul din Elementor (`loader/`)
+- Widgetul `tm0admw` conține `loader/elementor-tm0admw.html` cu `__VERSIUNE__` înlocuit de codul commit-ului publicat.
+  El descarcă `dist/tm0admw.html` și `dist/tm0ofradm.html` (jsDelivr, cu rezervă raw.githubusercontent.com)
+  și le pune în pagină în ordine: întâi adminul, apoi ofertele.
+- Widgetul `tm0ofradm` conține doar `loader/elementor-tm0ofradm.html` (locul unde intră ofertele).
+- Versiunea încărcată se vede în consolă: `WM_ADMIN_VERSION`.
+- Codul vechi, întreg, rămâne în `dist/` la commit-ul `de4d202` și în backupurile din Drive.
