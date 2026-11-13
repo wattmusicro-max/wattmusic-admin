@@ -503,6 +503,9 @@ load();setInterval(load,60000);var tries=0,w=setInterval(function(){if(at()){loa
 #wmAv td.mb{color:#999}
 #wmAv tr.mon td{background:#111;color:#FBE530;font:700 12px "Lexend Deca",sans-serif;letter-spacing:.05em}
 #wmAv .cnt{font-size:12px;color:#777;margin:6px 0}
+/* 13.11.2026: doar verificarea pe dată – fără tabel și filtre */
+#wmAv .tw,#wmAv #wmAvCnt,#wmAv .f label:not(.big){display:none!important}
+#wmAv .hint{color:#777;font-size:14px;margin:0 0 6px}
 </style>
 <div id="wmAv"><details id="wmAvD"><summary>📅 Disponibilitate trupe <span style="font:400 12px 'Open Sans',sans-serif;color:#999" id="wmAvUpd"></span></summary>
 <div class="f">
@@ -513,6 +516,7 @@ load();setInterval(load,60000);var tries=0,w=setInterval(function(){if(at()){loa
  <label>LIBERĂ TRUPA<select id="wmAvB"><option value="">Oricare</option></select></label>
  <label>CAUTĂ CLIENT<input type="text" id="wmAvQ" placeholder="ex: Lazar"></label>
 </div>
+<div class="hint" id="wmAvHint">Scrie data nunții și vezi imediat ce trupe sunt libere.</div>
 <div class="one" id="wmAvOne"></div>
 <div class="cnt" id="wmAvCnt"></div>
 <div class="tw"><table><thead><tr id="wmAvH"></tr></thead><tbody id="wmAvT"></tbody></table></div>
@@ -531,14 +535,14 @@ var NM={moves:'MOVES',timeout:'TimeOut','the-mood':'The MOOD',hotstuff:'HOTSTUFF
 var ZL=['duminică','luni','marți','miercuri','joi','vineri','sâmbătă'];
 function offersOn(v){var out=[];document.querySelectorAll('#ofrTbody tr').forEach(function(tr){var td=tr.children;if(!td[1])return;var d=td[1].textContent.replace(/\s/g,'');if(d!==v)return;if(tr.style.display==='none')return;var st=(td[3]&&td[3].textContent||'').toUpperCase();if(st.indexOf('OPEN')<0)return;var n=(tr.querySelector('td b')||{}).textContent||'';out.push(n.replace(/\s*&\s*$/,'').trim())});return out}
 function one(){var v=document.getElementById('wmAvDate').value,o=document.getElementById('wmAvOne'),tw=document.querySelector('#wmAv .tw'),cn=document.getElementById('wmAvCnt');
- if(!v){o.style.display='none';if(tw)tw.style.display='';if(cn)cn.style.display='';return}
+ var hn=document.getElementById('wmAvHint');if(hn)hn.style.display=v?'none':'';if(!v){o.style.display='none';if(tw)tw.style.display='';if(cn)cn.style.display='';return}
  var d=new Date(v+'T12:00:00'),b=B()[v]||{},lib=[],ocu=[];
  Object.keys(NM).forEach(function(k){if(b[k])ocu.push(NM[k]+' – '+b[k]);else lib.push(NM[k])});
  var g=b['georgiana']?(String(b['georgiana']).toLowerCase()==='ocupat'?'ocupată':'ocupată – '+b['georgiana']):'liberă';
  var nic=(d.getDay()===6&&d.getFullYear()===2027)?'ocupată (toate sâmbetele 2027)':'de verificat';
  var of=offersOn(v);
  o.style.display='block';o.style.borderColor=ocu.length?'#e0b400':'#2e7d32';
- o.innerHTML='<div class="t"><span>Pe '+ZL[d.getDay()]+', '+d.toLocaleDateString('ro-RO')+'</span><button type="button" id="wmAvClr">✕ arată calendarul</button></div>'
+ o.innerHTML='<div class="t"><span>Pe '+ZL[d.getDay()]+', '+d.toLocaleDateString('ro-RO')+'</span><button type="button" id="wmAvClr">✕ șterge data</button></div>'
  +(d.getDay()!==6?'<div class="wk">⚠️ Nu e sâmbătă – cade '+ZL[d.getDay()]+'</div>':'')
  +'<div class="r lib"><b>✅ Libere:</b> '+(lib.length?lib.join(', '):'niciuna')+'</div>'
  +'<div class="r ocu"><b>❌ Ocupate:</b> '+(ocu.length?e(ocu.join(' · ')):'niciuna')+'</div>'
