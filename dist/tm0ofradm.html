@@ -529,12 +529,12 @@ function stat(ds,k){var b=B()[ds]||{},d=new Date(ds+'T12:00:00');if(b[k])return[
 function place(){var box=document.getElementById('wmAv'),adm=document.getElementById('ofrAdm');if(box&&adm&&adm.parentNode&&box.nextSibling!==adm){var mp=document.getElementById('ofrMeetPanel');adm.parentNode.insertBefore(box,adm)}}
 var NM={moves:'MOVES',timeout:'TimeOut','the-mood':'The MOOD',hotstuff:'HOTSTUFF',overtime:'OVERTIME',sirido:'SIRIDO'};
 var ZL=['duminică','luni','marți','miercuri','joi','vineri','sâmbătă'];
-function offersOn(v){var out=[];document.querySelectorAll('#ofrTbody tr').forEach(function(tr){var td=tr.children;if(!td[1])return;var d=td[1].textContent.replace(/\s/g,'');if(d!==v)return;if(tr.style.display==='none')return;var st=(td[3]&&td[3].textContent||'').toUpperCase();if(st.indexOf('OPEN')<0)return;var n=(tr.querySelector('td b')||{}).textContent||'';out.push(n.trim()+' ('+(td[2]?td[2].textContent.trim().toLowerCase().replace(/\s+/g,' '):'')+')')});return out}
+function offersOn(v){var out=[];document.querySelectorAll('#ofrTbody tr').forEach(function(tr){var td=tr.children;if(!td[1])return;var d=td[1].textContent.replace(/\s/g,'');if(d!==v)return;if(tr.style.display==='none')return;var st=(td[3]&&td[3].textContent||'').toUpperCase();if(st.indexOf('OPEN')<0)return;var n=(tr.querySelector('td b')||{}).textContent||'';out.push(n.replace(/\s*&\s*$/,'').trim())});return out}
 function one(){var v=document.getElementById('wmAvDate').value,o=document.getElementById('wmAvOne'),tw=document.querySelector('#wmAv .tw'),cn=document.getElementById('wmAvCnt');
  if(!v){o.style.display='none';if(tw)tw.style.display='';if(cn)cn.style.display='';return}
  var d=new Date(v+'T12:00:00'),b=B()[v]||{},lib=[],ocu=[];
  Object.keys(NM).forEach(function(k){if(b[k])ocu.push(NM[k]+' – '+b[k]);else lib.push(NM[k])});
- var g=b['georgiana']?'ocupată – '+b['georgiana']:'liberă';
+ var g=b['georgiana']?(String(b['georgiana']).toLowerCase()==='ocupat'?'ocupată':'ocupată – '+b['georgiana']):'liberă';
  var nic=(d.getDay()===6&&d.getFullYear()===2027)?'ocupată (toate sâmbetele 2027)':'de verificat';
  var of=offersOn(v);
  o.style.display='block';o.style.borderColor=ocu.length?'#e0b400':'#2e7d32';
@@ -543,7 +543,7 @@ function one(){var v=document.getElementById('wmAvDate').value,o=document.getEle
  +'<div class="r lib"><b>✅ Libere:</b> '+(lib.length?lib.join(', '):'niciuna')+'</div>'
  +'<div class="r ocu"><b>❌ Ocupate:</b> '+(ocu.length?e(ocu.join(' · ')):'niciuna')+'</div>'
  +'<div class="r alt"><b>Georgiana:</b> '+e(g)+' · <b style="min-width:0">Nicoleta:</b> '+nic+'</div>'
- +(of.length?'<div class="r" style="color:#555"><b>📋 Oferte deschise:</b> '+e(of.join(' · '))+'</div>':'');
+ +(of.length?'<div class="r" style="color:#555"><b>📋 '+of.length+(of.length===1?' ofertă deschisă':' oferte deschise')+' pe data asta:</b> '+e(of.join(', '))+'</div>':'');
  if(tw)tw.style.display='none';if(cn)cn.style.display='none';
  var c=document.getElementById('wmAvClr');if(c)c.onclick=function(){document.getElementById('wmAvDate').value='';one()}}
 function rows(){var y=+document.getElementById('wmAvY').value,m=document.getElementById('wmAvM').value,w=document.getElementById('wmAvW').value,fb=document.getElementById('wmAvB').value,q=document.getElementById('wmAvQ').value.trim().toLowerCase();
