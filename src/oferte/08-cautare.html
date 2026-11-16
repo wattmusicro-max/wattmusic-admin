@@ -7,15 +7,16 @@
 .ofr-adm .osr .x{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;background:#eee;border-radius:50%;width:26px;height:26px;cursor:pointer;font:700 14px/1 sans-serif;color:#555;display:none}
 .ofr-adm .osr small{display:block;margin:6px 4px 0;color:#888;font-size:12px}
 </style>
+<style>/* 16.11.2026: ascunderea din căutare e o clasă, ca alte module (descalificați) să n-o anuleze */#ofrTbody tr.srch-x{display:none!important}</style>
 <script>
 (function(){
 function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
 function apply(){var i=document.getElementById('ofrSearch');if(!i)return;var q=norm(i.value.trim()),qd=q.replace(/\D/g,''),n=0,tot=0;
- document.querySelectorAll('#ofrTbody > tr').forEach(function(tr){if(tr.classList.contains('oedr'))return;tot++;var t=norm(tr.textContent),ok=!q||t.indexOf(q)>=0||(qd.length>=4&&t.replace(/\D/g,'').indexOf(qd)>=0);tr.style.display=ok?'':'none';var nx=tr.nextElementSibling;if(nx&&nx.classList.contains('oedr'))nx.style.display=ok?'':'none';if(ok)n++});
+ document.querySelectorAll('#ofrTbody > tr').forEach(function(tr){if(tr.classList.contains('oedr'))return;tot++;var t=norm(tr.textContent),ok=!q||t.indexOf(q)>=0||(qd.length>=4&&t.replace(/\D/g,'').indexOf(qd)>=0);tr.classList.toggle('srch-x',!ok);var nx=tr.nextElementSibling;if(nx&&nx.classList.contains('oedr'))nx.classList.toggle('srch-x',!ok);if(ok)n++});
  var s=document.getElementById('ofrSearchN');if(s)s.textContent=q?(n+' din '+tot+' oferte'):'';var x=document.getElementById('ofrSearchX');if(x)x.style.display=q?'block':'none'}
 function hook(){var tb=document.getElementById('ofrTbody');if(!tb)return setTimeout(hook,400);var tbl=tb.closest('table');if(!document.getElementById('ofrSearch')){var d=document.createElement('div');d.className='osr';d.innerHTML='<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="ofrSearch" type="search" placeholder="Caută după nume, telefon, oraș, dată, trupă…" autocomplete="off"><button type="button" class="x" id="ofrSearchX" aria-label="Șterge căutarea">✕</button><small id="ofrSearchN"></small>';tbl.parentNode.insertBefore(d,tbl);
  var i=d.querySelector('input');i.addEventListener('input',apply);d.querySelector('.x').addEventListener('click',function(){i.value='';apply();i.focus()})}
- var t=null;new MutationObserver(function(){clearTimeout(t);t=setTimeout(apply,150)}).observe(tb,{childList:true})}
+ var t=null;new MutationObserver(function(){clearTimeout(t);t=setTimeout(apply,150)}).observe(tb,{childList:true});setInterval(function(){var i=document.getElementById('ofrSearch');if(i&&i.value.trim())apply()},2000)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
 })();
 </script>
